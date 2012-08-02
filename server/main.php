@@ -17,7 +17,13 @@ try {
         new Frontend_ClassLoader_Php_5_2(
                 dirname(__FILE__)
         )
-    )->makeProcessor()->respond();
+    )->makeProcessor()->respond(
+        $_SERVER,
+        $_GET,
+        $_POST,
+        $_FILES,
+        $_COOKIE
+    );
     
 } catch (Exception $e) {
     

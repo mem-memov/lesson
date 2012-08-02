@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+
+RewriteEngine on
+Options +FollowSymlinks
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule .* index.php [L]
+
+</IfModule>

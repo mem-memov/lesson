@@ -1,9 +1,15 @@
 <?php
 class Frontend_Request_Factory {
     
-    public function makeHtmlRequest() {
+    public function makeHtmlRequest(
+        array $server,
+        array $get,
+        array $post,
+        array $files,
+        array $cookie
+    ) {
         
-        return new Frontend_Request_Html();
+        return new Frontend_Request_Html($server, $get, $post, $files, $cookie);
         
     }
     

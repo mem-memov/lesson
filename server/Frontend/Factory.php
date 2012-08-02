@@ -138,7 +138,7 @@ class Frontend_Factory {
 
         if (!isset($this->instances[$instance_key])) {
             $this->instances[$instance_key] = new Frontend_Action_Factory(
-                
+                $this->makeResposeFactory()
             );
         }
 
