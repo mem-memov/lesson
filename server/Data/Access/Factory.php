@@ -40,6 +40,10 @@ class Data_Access_Factory {
         $this->uniqueInstances = array();
 
     }
+    
+    public function makeAccess() {
+        
+    }
 
     
     

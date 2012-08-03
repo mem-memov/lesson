@@ -49,7 +49,7 @@ class Data_Factory {
         if (!isset($this->uniqueInstances[$instance_key])) {
             $this->uniqueInstances[$instance_key] = new Data_Access_Factory(
                 $this->storage,
-                $this->makeTypeFactory()
+                $this->makeStateFactory()
             );
         }
 
@@ -59,14 +59,14 @@ class Data_Factory {
     
     /**
      *
-     * @return Data_Type_Factory
+     * @return Data_State_Factory
      */
-    public function makeTypeFactory() {
+    public function makeStateFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->uniqueInstances[$instance_key])) {
-            $this->uniqueInstances[$instance_key] = new Data_Type_Factory(
+            $this->uniqueInstances[$instance_key] = new Data_State_Factory(
                 
             );
         }

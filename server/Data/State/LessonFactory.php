@@ -1,7 +1,10 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+class Data_State_LessonFactory implements Data_Sate_StateFactoryInterface {
+    
+    public function makeState() {
+        
+        return new Data_State_Lesson();
+        
+    }
+    
+}
