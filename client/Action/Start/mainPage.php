@@ -25,6 +25,7 @@
                 <li><a href="/pay/">Оплатить</a></li>
                 <li><a href="/teach/">Обучить</a></li>
                 <li><a href="/cashout/">Получить</a></li>
+                <li><a href="/signout/">Выход</a></li>
             </ul>
         </div>
         

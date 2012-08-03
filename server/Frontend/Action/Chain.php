@@ -73,4 +73,44 @@ class Frontend_Action_Chain {
         
     }
     
+    public function linkPageNotFound() {
+        
+        $action = new Frontend_Action_PageNotFound($this->request, $this->responseFactory, $this);
+        
+        return $action->run();
+        
+    }
+    
+    public function linkLesson() {
+        
+        $action = new Frontend_Action_Lesson($this->request, $this->responseFactory, $this);
+        
+        return $action->run();
+        
+    }
+    
+    public function linkLessonCreate() {
+        
+        $action = new Frontend_Action_LessonCreate($this->request, $this->responseFactory, $this);
+        
+        return $action->run();
+        
+    }
+    
+    public function linkSignIn() {
+        
+        $action = new Frontend_Action_SignIn($this->request, $this->responseFactory, $this);
+        
+        return $action->run();
+        
+    }
+    
+    public function linkSignOut() {
+        
+        $action = new Frontend_Action_SignOut($this->request, $this->responseFactory, $this);
+        
+        return $action->run();
+        
+    }
+    
 }

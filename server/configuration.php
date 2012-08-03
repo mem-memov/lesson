@@ -1,8 +1,12 @@
 <?php return array(
 
+    'Data' => array(),
+    
     'Domain' => array(),
     
-    'Data' => array(),
+    'Frontend' => array(
+        
+    ),
     
     'Service' => array(
         

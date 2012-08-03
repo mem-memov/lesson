@@ -1,5 +1,10 @@
 <?php
 class Frontend_Request_Factory {
+
+    
+    public function __construct() {
+  
+    }
     
     public function makeHtmlRequest(
         array $server,
@@ -8,8 +13,14 @@ class Frontend_Request_Factory {
         array $files,
         array $cookie
     ) {
-        
-        return new Frontend_Request_Html($server, $get, $post, $files, $cookie);
+
+        return new Frontend_Request_Html(
+            $server, 
+            $get, 
+            $post, 
+            $files, 
+            $cookie
+        );
         
     }
     

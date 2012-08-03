@@ -23,7 +23,7 @@ class Frontend_Response_Html implements Frontend_Response_Interface {
     public function getString() {
         
         $data = $this->data;
-        $path = __DIR__.'/../../../'.$this->templatePath;
+        $path = __DIR__.'/../../../'.ltrim($this->templatePath, '/');
    
         return self::fillTemplate($data, $path);
         

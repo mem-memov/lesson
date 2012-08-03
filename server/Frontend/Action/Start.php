@@ -29,6 +29,18 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
                 case 'cashout':
                     $contentResponse = $this->chain->linkIncome();
                     break;
+                case 'lesson':
+                    $contentResponse = $this->chain->linkLesson();
+                    break;
+                case '!':
+                    $contentResponse = $this->chain->linkSignIn();
+                    break;
+                case 'signout':
+                    $contentResponse = $this->chain->linkSignOut();
+                    break;
+                default:
+                    $contentResponse = $this->chain->linkPageNotFound();
+                    break;
             }
         }
         $content = $contentResponse->getString();

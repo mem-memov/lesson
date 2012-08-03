@@ -2,8 +2,8 @@
 class Frontend_Request_Html implements Frontend_Request_Interface {
     
     private $server;
-    private $post;
     private $get;
+    private $post;
     private $files;
     private $cookie;
     
@@ -11,15 +11,16 @@ class Frontend_Request_Html implements Frontend_Request_Interface {
         array $server,
         array $get,
         array $post,
-        array $cookie,
-        array $files
+        array $files,
+        array $cookie
     ) {
-        
+
         $this->server = $server;
         $this->get = $get;
         $this->post = $post;
-        $this->cookie = $cookie;
         $this->files = $files;
+        $this->cookie = $cookie;
+        
         
     }
     
@@ -45,6 +46,64 @@ class Frontend_Request_Html implements Frontend_Request_Interface {
         
     }
     
+    public function getUserId() {
+
+        if (
+                !array_key_exists('user_id', $this->cookie) 
+            ||  !array_key_exists('secret', $this->cookie)
+        ) {
+            header('Location: /!/'.ltrim($this->server['REQUEST_URI'], '/'));
+        }
+
+        return $this->cookie['user_id'];
+        
+    }
+    
+    public function redirectSignedUpUser($userId, $secret, $mustRemember) {
+
+        if (!$mustRemember) {
+            /* Set cookie to last 1 year */
+            setcookie('user_id', $userId, time()+60*60*24*365, '/', $this->server['HTTP_HOST']);
+            setcookie('secret', $secret, time()+60*60*24*365, '/', $this->server['HTTP_HOST']);
+        
+        } else {
+            /* Cookie expires when browser closes */
+            setcookie('user_id', $userId, false, '/', $this->server['HTTP_HOST']);
+            setcookie('secret', $secret, false, '/', $this->server['HTTP_HOST']);
+        }
+        
+        $markPosition = strpos($this->server['REQUEST_URI'], '!');
+
+        if ($markPosition == 1) {
+            header('Location: '.substr($this->server['REQUEST_URI'], 2));
+        }
+        
+    }
+    
+    public function redirectSignedOutUser() {
+        
+        setcookie('user_id', false, false, '/', $this->server['HTTP_HOST']);
+        setcookie('secret', false, false, '/', $this->server['HTTP_HOST']);
+        
+        header('Location: /');
+        
+    }
+    
+    public function hasParameter($parameter) {
+        
+        return array_key_exists($parameter, $this->post);
+        
+    }
+    
+    public function getParameter($parameter) {
+        
+        if (!$this->hasParameter($parameter)) {
+            throw new Frontend_Request_Exception('Запрос несуществующего параметра '.$parameter);
+        }
+        
+        return $this->post[$parameter];
+        
+    }
     
     private function transformFiles(array $files) {
 

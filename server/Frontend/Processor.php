@@ -52,7 +52,8 @@ class Frontend_Processor {
                     'get' => $_GET,
                     'post' => $_POST,
                     'cookie' => $_COOKIE,
-                    'files' => $_FILES
+                    'files' => $_FILES,
+                    'session' => $_SESSION
             );
 
             unset($_SERVER);
@@ -60,6 +61,7 @@ class Frontend_Processor {
             unset($_POST);
             unset($_COOKIE);
             unset($_FILES);
+            unset($_SESSION);
 
     }
     
@@ -73,6 +75,7 @@ class Frontend_Processor {
             $_POST = $this->global_arrays['post'];
             $_COOKIE = $this->global_arrays['cookie'];
             $_FILES = $this->global_arrays['files'];
+            $_SESSION = $this->global_arrays['session'];
 
     }
     
