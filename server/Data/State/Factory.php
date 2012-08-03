@@ -29,7 +29,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_AccountFactory();
+            $this->instances[$instance_key] = new Data_State_Account_Factory();
             
         }
 
@@ -47,7 +47,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_LessonFactory();
+            $this->instances[$instance_key] = new Data_State_Lesson_Factory();
             
         }
 
@@ -65,7 +65,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_StudentFactory();
+            $this->instances[$instance_key] = new Data_State_Student_Factory();
             
         }
 
@@ -83,7 +83,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_TeacherFactory();
+            $this->instances[$instance_key] = new Data_State_Teacher_Factory();
             
         }
 

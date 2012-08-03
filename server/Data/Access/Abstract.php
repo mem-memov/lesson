@@ -1,5 +1,5 @@
 <?php
-abstract class Data_Access_Abstract {
+abstract class Data_Access_Abstract implements Data_Access_CrudInterface {
     
     /**
      * Фабрика состояний
@@ -25,7 +25,7 @@ abstract class Data_Access_Abstract {
     
     abstract public function create();
     
-    abstract public function read(Data_State_TrackableInterface $state);
+    abstract public function readUsingId($id);
     
     abstract public function update(Data_State_TrackableInterface $state);
     
