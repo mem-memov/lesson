@@ -1,10 +1,10 @@
 <?php
-/**
- * Фабрика объектов доступа к двнным
- */
-class Data_Access_Factory {
+class Data_Access_Crud_Factory 
+implements 
+    Data_Access_Crud_FactoryInterface
+{
     
-    /**
+   /**
      * Контейнер для уникальных объектов
      *
      * @var array
@@ -21,100 +21,93 @@ class Data_Access_Factory {
     /**
      * Фабрика состояний
      *
-     * @var Data_State_FactoryInterface
+     * @var Data_State_Factory
      */
     private $stateFactory;
-    
-    /**
-     * Фабрика реализаций CRUD-интерфейса
-     *
-     * @var Data_Access_Crud_FactoryInterface
-     */
-    private $crudFactory;
     
     /**
      * Создаёт экземпляр класса
      */
     public function __construct(
         Service_Storage_Interface $storage,
-        Data_State_FactoryInterface $stateFactory,
-        Data_Access_Crud_FactoryInterface $crudFactory
+        Data_State_Factory $stateFactory
     ) {
         
         $this->storage = $storage;
         
         $this->stateFactory = $stateFactory;
-        
-        $this->crudFactory = $crudFactory;
 
         $this->uniqueInstances = array();
 
     }
     
-    public function makeAccess() {
-
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-            
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeAccount()
-            );
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-
-    public function makeLesson() {
-
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-            
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeLesson()
-            );
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-
-    public function makeStudent() {
-
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-            
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeStudent()
-            );
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-
-    public function makeTeacher() {
-
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-            
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeTeacher()
-            );
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-
     
+    public function makeAccount() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Crud_Account(
+                $this->stateFactory->makeAccountFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    public function makeLesson() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Crud_Lesson(
+                $this->stateFactory->makeLessonFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    public function makeStudent() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Crud_Student(
+                $this->stateFactory->makeStudentFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    public function makeTeacher() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Crud_Teacher(
+                $this->stateFactory->makeTeacherFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
     
 }

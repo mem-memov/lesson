@@ -58,7 +58,9 @@ class Service_Factory {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Service_Storage_Factory();
+            $this->instances[$instance_key] = new Service_Storage_Factory(
+                $this->configuration['Storage']
+            );
             
         }
 

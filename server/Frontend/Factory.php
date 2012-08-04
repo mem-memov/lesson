@@ -138,7 +138,8 @@ class Frontend_Factory {
 
         if (!isset($this->instances[$instance_key])) {
             $this->instances[$instance_key] = new Frontend_Action_Factory(
-                $this->makeResposeFactory()
+                $this->makeResposeFactory(),
+                $this->makeDomainFactory()
             );
         }
 
@@ -146,13 +147,13 @@ class Frontend_Factory {
         
     }
     
-    private function makeModelFactory() {
+    private function makeDomainFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
-            $this->instances[$instance_key] = new Model_Factory(
-                $this->configuration['Model'],
+            $this->instances[$instance_key] = new Domain_Factory(
+                $this->configuration['Domain'],
                 $this->makeDataFactory(),
                 $this->makeServiceFactory()
             );
@@ -172,7 +173,7 @@ class Frontend_Factory {
             
             $this->instances[$instance_key] = new Data_Factory(
                 $this->configuration['Data'],
-                $serviceFactory->makeDatasetWielder()
+                $serviceFactory->makeStorage()
             );
             
         }

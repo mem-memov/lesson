@@ -1,5 +1,8 @@
 <?php
-class Data_State_Factory {
+class Data_State_Factory 
+implements
+    Data_State_FactoryInterface
+{
     
     /**
      * Контейнер для уникальных объектов
@@ -29,7 +32,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Account_Factory();
+            $this->instances[$instance_key] = new Data_State_Factory_Account();
             
         }
 
@@ -47,7 +50,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Lesson_Factory();
+            $this->instances[$instance_key] = new Data_State_Factory_Lesson();
             
         }
 
@@ -65,7 +68,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Student_Factory();
+            $this->instances[$instance_key] = new Data_State_Factory_Student();
             
         }
 
@@ -83,7 +86,7 @@ class Data_State_Factory {
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Teacher_Factory();
+            $this->instances[$instance_key] = new Data_State_Factory_Teacher();
             
         }
 

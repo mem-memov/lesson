@@ -7,11 +7,19 @@ class Frontend_Action_Factory {
      */
     protected $responseFactory;
     
+    /**
+     * Фабрика бизнес-объектов  
+     * @var Domain_Factory
+     */
+    protected $domainFactory;
+    
     public function __construct(
-        Frontend_Response_Factory $responseFactory
+        Frontend_Response_Factory $responseFactory,
+        Domain_Factory $domainFactory
     ) {
 
         $this->responseFactory = $responseFactory;
+        $this->domainFactory = $domainFactory;
         
     }
     
@@ -25,7 +33,7 @@ class Frontend_Action_Factory {
         $request
     ) {
         
-        return new Frontend_Action_Chain($request, $this->responseFactory);
+        return new Frontend_Action_Chain($request, $this->responseFactory, $this->domainFactory);
         
     }
     

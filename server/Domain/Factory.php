@@ -50,6 +50,54 @@ class Domain_Factory {
 
     }
     
- 
+    public function makeSchool() {
+        
+        $collectionFactory = $this->makeCollectionFactory();
+        
+        return new Domain_School(
+            $collectionFactory->makeLessonCollection(),
+            $collectionFactory->makeStudentCollection(),
+            $collectionFactory->makeTeacherCollection()
+        );
+        
+    }
+    
+    /**
+     * Создаёт фабрику коллекций
+     * @return Domain_Collection_FactoryInterface
+     */
+    private function makeCollectionFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Factory(
+                $this->makeMakerFactory()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Domain_Collection_Maker_FactoryInterface
+     */
+    private function makeMakerFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Maker_Factory();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
     
 }
