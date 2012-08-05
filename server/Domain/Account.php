@@ -1,21 +1,25 @@
 <?php
-class Domain_Account extends Domain_AbstractItem {
+class Domain_Account {
     
-    public function __construct(Data_State_Account_Item $state) {
+    private $sate;
+    
+    public function __construct(
+        Data_State_Account_Item $state
+    ) {
         
         $this->state = $state;
         
     }
     
-    public function deposit($amount) {
+    public function increase($amount) {
         $this->state->setAmount( $this->state->getAmount() + $amount );
     }
     
-    public function withdraw($amount) {
+    public function decrease($amount) {
         $this->state->setAmount( $this->state->getAmount() - $amount );
     }
     
-    public function canWithdraw($amount) {
+    public function canDecrease($amount) {
         return ( $this->state->getAmount() - $amount ) >= 0;
     }
     
