@@ -1,4 +1,4 @@
-<?php require('server/main.php'); ?>1111
+<?php require('server/main.php'); ?>
 
     
     
