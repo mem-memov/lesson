@@ -77,7 +77,7 @@ class Frontend_Factory {
     }
     
     public function makeProcessor() {
-      
+
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
@@ -92,6 +92,7 @@ class Frontend_Factory {
         
     }
     
+
     /**
      *
      * @return Frontend_Request_Factory

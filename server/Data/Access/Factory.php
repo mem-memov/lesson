@@ -81,7 +81,7 @@ class Data_Access_Factory {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Student(
+            $this->instances[$instance_key] = new Data_Access_User(
                 $this->stateFactory->makeUserFactory(),
                 $this->storage
             );

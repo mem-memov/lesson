@@ -29,6 +29,10 @@ class Service_Factory {
 
         $this->uniqueInstances = array();
         $this->configuration = $configuration;
+        
+                
+        //TODO: убрать развёртывание таблиц в базе данных
+        $this->makeInstaller()->install();
 
     }
     
@@ -40,7 +44,14 @@ class Service_Factory {
             
             $storageFactory = $this->makeStorageFactory();
             
-            $this->instances[$instance_key] = $storageFactory->makeMysqlStorage('', '', '', '');
+            $configuration = $this->configuration['Storage']['Mysql'];
+            
+            $this->instances[$instance_key] = $storageFactory->makeMysqlStorage(
+                $configuration['server'], 
+                $configuration['user'], 
+                $configuration['password'], 
+                $configuration['database']
+            );
             
         }
 
@@ -60,6 +71,26 @@ class Service_Factory {
             
             $this->instances[$instance_key] = new Service_Storage_Factory(
                 $this->configuration['Storage']
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     *
+     * @return Service_Installer_Mysql_Installer
+     */
+    private function makeInstaller() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Service_Installer_Mysql_Installer(
+                $this->makeStorage()
             );
             
         }
