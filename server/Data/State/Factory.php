@@ -1,8 +1,5 @@
 <?php
-class Data_State_Factory 
-implements
-    Data_State_FactoryInterface
-{
+class Data_State_Factory {
     
     /**
      * Контейнер для уникальных объектов

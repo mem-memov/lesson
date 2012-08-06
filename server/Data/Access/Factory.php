@@ -2,7 +2,7 @@
 /**
  * Фабрика объектов доступа к двнным
  */
-class Data_Access_Factory implements Data_Access_FactoryInterface {
+class Data_Access_Factory {
     
     /**
      * Контейнер для уникальных объектов
@@ -26,26 +26,16 @@ class Data_Access_Factory implements Data_Access_FactoryInterface {
     private $stateFactory;
     
     /**
-     * Фабрика реализаций CRUD-интерфейса
-     *
-     * @var Data_Access_Crud_FactoryInterface
-     */
-    private $crudFactory;
-    
-    /**
      * Создаёт экземпляр класса
      */
     public function __construct(
         Service_Storage_Interface $storage,
-        Data_State_FactoryInterface $stateFactory,
-        Data_Access_Crud_FactoryInterface $crudFactory
+        Data_State_Factory $stateFactory
     ) {
         
         $this->storage = $storage;
         
         $this->stateFactory = $stateFactory;
-        
-        $this->crudFactory = $crudFactory;
 
         $this->uniqueInstances = array();
 
@@ -57,8 +47,9 @@ class Data_Access_Factory implements Data_Access_FactoryInterface {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeAccount()
+            $this->instances[$instance_key] = new Data_Access_Account(
+                $this->stateFactory->makeAccountFactory(),
+                $this->storage
             );
             
         }
@@ -73,8 +64,9 @@ class Data_Access_Factory implements Data_Access_FactoryInterface {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeLesson()
+            $this->instances[$instance_key] = new Data_Access_Lesson(
+                $this->stateFactory->makeLessonFactory(),
+                $this->storage
             );
             
         }
@@ -89,8 +81,9 @@ class Data_Access_Factory implements Data_Access_FactoryInterface {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeStudent()
+            $this->instances[$instance_key] = new Data_Access_Student(
+                $this->stateFactory->makeStudentFactory(),
+                $this->storage
             );
             
         }
@@ -105,8 +98,9 @@ class Data_Access_Factory implements Data_Access_FactoryInterface {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Base(
-                $this->crudFactory->makeTeacher()
+            $this->instances[$instance_key] = new Data_Access_Teacher(
+                $this->stateFactory->makeTeacherFactory(),
+                $this->storage
             );
             
         }

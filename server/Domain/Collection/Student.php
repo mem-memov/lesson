@@ -1,9 +1,9 @@
 <?php
-class Domain_Collection_Teacher {
+class Domain_Collection_Student {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_Teacher 
+     * @var Data_Access_Student 
      */
     private $dataAccess;
     
@@ -27,7 +27,7 @@ class Domain_Collection_Teacher {
 
     
     public function __construct(
-        Data_Access_Teacher $dataAcces,
+        Data_Access_Student $dataAcces,
         Domain_Collection_Account $accountCollection
     ) {
         
@@ -66,20 +66,6 @@ class Domain_Collection_Teacher {
         return $item;
         
     }
-
-    public function readUsingLessonId($lessonId) {
-        
-        $state = $this->dataAccess->readUsingLessonId($lessonId);
-        $account = $this->accountCollection->readUsingTeacherId($state->getId());
-        
-        $item = $this->make($state,$account);
-        
-        $this->states[spl_object_hash($item)] = $state;
-        $this->accounts[spl_object_hash($item)] = $account;
-        
-        return $item;
-        
-    }
     
     public function update($item) {
         
@@ -103,7 +89,7 @@ class Domain_Collection_Teacher {
     
     private function make($state, $account) {
         
-        return new Domain_Teacher($state, $account);
+        return new Domain_Student($state, $account);
         
     }
 

@@ -49,8 +49,7 @@ class Data_Factory {
         if (!isset($this->uniqueInstances[$instance_key])) {
             $this->uniqueInstances[$instance_key] = new Data_Access_Factory(
                 $this->storage,
-                $this->makeStateFactory(),
-                $this->makeAccessCrudFactory()
+                $this->makeStateFactory()
             );
         }
 
@@ -76,22 +75,4 @@ class Data_Factory {
         
     }
 
-    /**
-     * Создаёт фабрику реализаций CRUD-интерфейса
-     * @return Data_Access_Crud_FactoryInterface
-     */
-    private function makeAccessCrudFactory() {
-        
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->uniqueInstances[$instance_key])) {
-            $this->uniqueInstances[$instance_key] = new Data_Access_Crud_Factory(
-                
-            );
-        }
-
-        return $this->uniqueInstances[$instance_key];
-        
-    }
-    
 }

@@ -1,5 +1,5 @@
 <?php
-abstract class Data_Access_Crud_Abstract implements Data_Access_Crud_Interface {
+class Data_Access_Student extends Data_Access_Base {
     
     /**
      * Фабрика состояний
