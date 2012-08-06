@@ -4,53 +4,39 @@ implements
     Domain_Collection_Interface
 {
     
-    /**
-     * Объект доступа к данным (DAO)
-     * @var Data_Access_CrudInterface 
-     */
-    protected $dataAccess;
-    
-    /**
-     * Набор состояний элементов коллекции
-     * @var array 
-     */
-    protected $states;
-    
-    /**
-     * Объект для создания элементов коллекции
-     * @var Domain_Collection_Maker_Interface 
-     */
-    protected $maker;
+    protected $creator;
+    protected $reader;
+    protected $updater;
+    protected $deleter;
     
     public function __construct(
-        Domain_Collection_Maker_Interface $maker
+        Domain_Collection_Creator_Interface $creator,
+        Domain_Collection_Reader_Interface $reader,
+        Domain_Collection_Updater_Interface $updater,
+        Domain_Collection_Deleter_Interface $deleter
     ) {
         
-        $this->maker = $maker;
+        $this->creator = $creator;
+        $this->reader = $reader;
+        $this->updater = $updater;
+        $this->deleter = $deleter;
         
     }
     
     public function create() {
-        $state = $this->dataAccess->create();
-        $item = $this->maker->make($state);
-        $this->states[spl_object_hash($item)] = $state;
-        return $item;
+        return $this->creator->create();
     }
     
     public function readUsingId($id) {
-        $state = $this->dataAccess->readUsingId($id);
-        $item = $this->maker->make($state);
-        $this->states[spl_object_hash($item)] = $state;
-        return $item;
+        return $this->reader->readUsingId($id);
     }
     
     public function update($item) {
-        $this->dataAccess->update($this->states[spl_object_hash($item)]);
+        $this->updater->update($item);
     }
     
     public function delete($item) {
-        $this->dataAccess->delete($this->states[spl_object_hash($item)]);
-        unset($this->states[spl_object_hash($item)]);
+        $this->deleter->delete($item);
     }
     
 }

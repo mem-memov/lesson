@@ -1,5 +1,5 @@
 <?php
-class Domain_Collection_Maker_Lesson implements Domain_Collection_Maker_Interface {
+class Domain_Collection_Constructor_Lesson implements Domain_Collection_Constructor_Interface {
     
     public function make($state) {
         

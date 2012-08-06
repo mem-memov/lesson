@@ -11,22 +11,28 @@ implements
      */
     private $uniqueInstances;
     
-    /**
-     *
-     * @var Domain_Collection_Maker_FactoryInterface
-     */
-    private $makerFactory;
+    private $containerFactory;
+    private $creatorFactory;
+    private $readerFactory;
+    private $updaterFactory;
+    private $deleterFactory;
 
     /**
      * Создаёт экземпляр класса
-     *
-     * @param array $configuration
      */
     public function __construct(
-        Domain_Collection_Maker_FactoryInterface $makerFactory
+        Domain_Collection_Container_FactoryInterface $containerFactory,
+        Domain_Collection_Creator_FactoryInterface $creatorFactory,
+        Domain_Collection_Reader_FactoryInterface $readerFactory,
+        Domain_Collection_Updater_FactoryInterface $updaterFactory,
+        Domain_Collection_Deleter_FactoryInterface $deleterFactory
     ) {
 
-        $this->makerFactory = $makerFactory;
+        $this->containerFactory = $containerFactory;
+        $this->creatorFactory = $creatorFactory;
+        $this->readerFactory = $readerFactory;
+        $this->updaterFactory = $updaterFactory;
+        $this->deleterFactory = $deleterFactory;
         
         $this->uniqueInstances = array();
         
@@ -39,7 +45,10 @@ implements
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Base(
-                $this->makerFactory->makeAccount()
+                $this->creatorFactory->makeAccount(),
+                $this->readerFactory->makeAccount(),
+                $this->updaterFactory->makeAccount(),
+                $this->deleterFactory->makeAccount()
             );
             
         }
@@ -71,7 +80,10 @@ implements
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Base(
-                $this->makerFactory->makeStudent()
+                $this->creatorFactory->makeStudent(),
+                $this->readerFactory->makeStudent(),
+                $this->updaterFactory->makeStudent(),
+                $this->deleterFactory->makeStudent()
             );
             
         }
@@ -87,7 +99,11 @@ implements
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
-                $this->makerFactory->makeTeacher()
+                $this->creatorFactory->makeTeacher(),
+                $this->readerFactory->makeTeacher(),
+                $this->updaterFactory->makeTeacher(),
+                $this->deleterFactory->makeTeacher(),
+                $this->readerFactory->makeTeacherUsingLessinId()
             );
             
         }

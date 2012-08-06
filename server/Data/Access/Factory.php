@@ -2,7 +2,7 @@
 /**
  * Фабрика объектов доступа к двнным
  */
-class Data_Access_Factory {
+class Data_Access_Factory implements Data_Access_FactoryInterface {
     
     /**
      * Контейнер для уникальных объектов
@@ -51,7 +51,7 @@ class Data_Access_Factory {
 
     }
     
-    public function makeAccess() {
+    public function makeAccount() {
 
         $instance_key = __FUNCTION__;
 

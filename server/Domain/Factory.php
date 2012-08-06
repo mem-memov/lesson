@@ -73,7 +73,11 @@ class Domain_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Factory(
-                $this->makeMakerFactory()
+                $this->makeContainerFactory(),
+                $this->makeCreatorFactory(),
+                $this->makeReaderFactory(),
+                $this->makeUpdaterFactory(),
+                $this->makeDeleterFactory()
             );
             
         }
@@ -84,15 +88,97 @@ class Domain_Factory {
     
     /**
      * 
-     * @return Domain_Collection_Maker_FactoryInterface
+     * @return Domain_Collection_Container_FactoryInterface
      */
-    private function makeMakerFactory() {
+    private function makeContainerFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Collection_Maker_Factory();
+            $this->instances[$instance_key] = new Domain_Collection_Container_Factory(
+                
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Domain_Collection_Creator_FactoryInterface
+     */
+    private function makeCreatorFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Creator_Factory(
+                
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Domain_Collection_Reader_FactoryInterface
+     */
+    private function makeReaderFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Reader_Factory(
+                
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Domain_Collection_Updater_FactoryInterface
+     */
+    private function makeUpdaterFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Updater_Factory(
+                
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Domain_Collection_Deleter_FactoryInterface
+     */
+    private function makeDeleterFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Deleter_Factory(
+                
+            );
             
         }
 

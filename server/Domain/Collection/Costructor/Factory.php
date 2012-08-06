@@ -1,7 +1,7 @@
 <?php
-class Domain_Collection_Maker_Factory 
+class Domain_Collection_Constructor_Factory 
 implements 
-    Domain_Collection_Maker_FactoryInterface 
+    Domain_Collection_Constructor_FactoryInterface 
 {
     
     /**
@@ -30,7 +30,7 @@ implements
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Collection_Maker_Account(
+            $this->instances[$instance_key] = new Domain_Collection_Constructor_Account(
                     
             );
             
@@ -46,7 +46,7 @@ implements
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Collection_Maker_Lesson(
+            $this->instances[$instance_key] = new Domain_Collection_Constructor_Lesson(
                     
             );
             
@@ -62,7 +62,7 @@ implements
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Collection_Maker_Student(
+            $this->instances[$instance_key] = new Domain_Collection_Constructor_Student(
                     
             );
             
@@ -78,7 +78,7 @@ implements
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Collection_Maker_Teacher(
+            $this->instances[$instance_key] = new Domain_Collection_Constructor_Teacher(
                     
             );
             

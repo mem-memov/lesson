@@ -1,5 +1,5 @@
 <?php
-class Domain_Collection_Creator_Teacher implements Domain_Collection_Creator_Interface {
+class Domain_Collection_Creator_Student implements Domain_Collection_Creator_Interface {
     
     /**
      * Объект доступа к данным (DAO)
@@ -9,7 +9,7 @@ class Domain_Collection_Creator_Teacher implements Domain_Collection_Creator_Int
     
     /**
      * Объект для создания элементов данной коллекции
-     * @var Domain_Collection_Constructor_TeacherInterface 
+     * @var Domain_Collection_Constructor_StudentInterface 
      */
     protected $constructor;
     
@@ -20,20 +20,20 @@ class Domain_Collection_Creator_Teacher implements Domain_Collection_Creator_Int
     protected $accountCollection;
     
     /**
-     * Контейнер для состояний учителей
+     * Контейнер для состояний учеников
      * @var Domain_Collection_Container_Interface
      */
     protected $stateContainer;
     
     /**
-     * Контейнер для счетов учителей
+     * Контейнер для счетов учеников
      * @var Domain_Collection_Container_Interface
      */
     protected $accountContainer;
     
     public function __construct(
         Data_Access_CrudInterface $dataAccess,
-        Domain_Collection_Constructor_TeacherInterface $constructor,
+        Domain_Collection_Constructor_StudentInterface $constructor,
         Domain_Collection_Interface $accountCollection,
         Domain_Collection_Container_Interface $stateContainer,
         Domain_Collection_Container_Interface $accountContainer

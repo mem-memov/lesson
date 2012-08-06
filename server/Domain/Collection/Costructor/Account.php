@@ -1,5 +1,5 @@
 <?php
-class Domain_Collection_Maker_Account implements Domain_Collection_Maker_Interface {
+class Domain_Collection_Constructor_Account implements Domain_Collection_Constructor_Interface {
     
     public function make($state) {
         
