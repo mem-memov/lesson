@@ -1,8 +1,9 @@
 <?php
 /**
- * Доступ к данным уроков
+ * Доступ к данным пользователей
+ * Каждый пользователь может и обучать других, и учиться сам.
  */
-class Data_Access_Lesson {
+class Data_Access_User {
     
     /**
      * Фабрика состояний
@@ -27,7 +28,7 @@ class Data_Access_Lesson {
     }
     
     /**
-     * Создаёт состояние урока
+     * Создаёт состояние пользователя
      * @return Data_State_Lesson_Item
      */
     public function create() {
@@ -37,25 +38,26 @@ class Data_Access_Lesson {
     }
     
     /**
-     * Находит состояние урока по ID
+     * Находит состояние пользователя по ID
      * @param integer $id
-     * @return Data_State_Lesson_Item
+     * @return Data_State_User_Item
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
         
         $row = $this->storage->fetchRow('
             SELECT
-                `title`
+                `first_name`,
+                `last_name`
             FROM
-                `lesson`
+                `user`
             WHERE
                 `id` = '.$id.'
             ;
         ');
         
         if (empty($row)) {
-            throw new Data_Access_Exception('Урока с идентификатором - '.$id.' не существует. Чтение невозможно.');
+            throw new Data_Access_Exception('Пользователь с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
         $state = $this->create();
@@ -63,38 +65,28 @@ class Data_Access_Lesson {
         $state instanceof Data_State_Item_TrackableInterface;
         $state->setId($id);
         
-        $state instanceof Data_State_Lesson_Item;
-        $state->setTitle($row['title']);
+        $state instanceof Data_State_User_Item;
+        $state->setFirstName($row['first_name']);
+        $state->setLastName($row['last_name']);
         
         return $state;
         
     }
     
     /**
-     * Сохраняет состояние урока
-     * @param Data_State_Lesson_Item $state
+     * Сохраняет состояние пользователя
+     * @param Data_State_User_Item $state
      */
-    public function update(Data_State_Lesson_Item $state) {
+    public function update(Data_State_User_Item $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
-
-        if(!$state->hasId()) {
-            $this->storage->query('
-                INSERT INTO
-                    `lesson`
-                SET
-                    `id` = DEFAULT
-                ;
-            ');
-            $id = $this->storage->lastId();
-            $state->setId($id);
-        }
         
         $this->storage->query('
             UPDATE
-                `lesson`
+                `user`
             SET
-                `title` = '.$state->getTitle().'
+                `first_name` = '.$state->getFirstName().',
+                `last_name` = '.$state->getLastName().'
             WHERE
                 `id` = '.$state->getId().'
             ;
@@ -103,10 +95,10 @@ class Data_Access_Lesson {
     }
     
     /**
-     * Удаляет состояние урока
-     * @param Data_State_Lesson_Item $state
+     * Удаляет состояние пользователя
+     * @param Data_State_User_Item $state
      */
-    public function delete(Data_State_Lesson_Item $state) {
+    public function delete(Data_State_User_Item $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         
@@ -114,7 +106,7 @@ class Data_Access_Lesson {
         
             $this->storage->query('
                 DELETE FROM
-                    `lesson`
+                    `user`
                 WHERE
                     `id` = '.$state->getId().'
                 ;

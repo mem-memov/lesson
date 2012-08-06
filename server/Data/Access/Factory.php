@@ -75,14 +75,14 @@ class Data_Access_Factory {
         
     }
 
-    public function makeStudent() {
+    public function makeUser() {
 
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
             
             $this->instances[$instance_key] = new Data_Access_Student(
-                $this->stateFactory->makeStudentFactory(),
+                $this->stateFactory->makeUserFactory(),
                 $this->storage
             );
             
@@ -92,23 +92,4 @@ class Data_Access_Factory {
         
     }
 
-    public function makeTeacher() {
-
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-            
-            $this->instances[$instance_key] = new Data_Access_Teacher(
-                $this->stateFactory->makeTeacherFactory(),
-                $this->storage
-            );
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-
-    
-    
 }

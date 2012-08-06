@@ -3,7 +3,7 @@ class Domain_Collection_Teacher {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_Teacher 
+     * @var Data_Access_User 
      */
     private $dataAccess;
     
@@ -27,7 +27,7 @@ class Domain_Collection_Teacher {
 
     
     public function __construct(
-        Data_Access_Teacher $dataAccess,
+        Data_Access_User $dataAccess,
         Domain_Collection_Account $accountCollection
     ) {
         

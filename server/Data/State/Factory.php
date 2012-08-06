@@ -1,4 +1,7 @@
 <?php
+/**
+ * Фабрика, которая создаёт фабрики состояний
+ */
 class Data_State_Factory {
     
     /**
@@ -20,7 +23,7 @@ class Data_State_Factory {
     }
     
     /**
-     *
+     * Создаёт фабрику состояний счетов
      * @return Data_State_AccountFactory 
      */
     public function makeAccountFactory() {
@@ -38,7 +41,7 @@ class Data_State_Factory {
     }
     
     /**
-     *
+     * Создаёт фабрику состояний уроков
      * @return Data_State_LessonFactory 
      */
     public function makeLessonFactory() {
@@ -56,34 +59,16 @@ class Data_State_Factory {
     }
     
     /**
-     *
-     * @return Data_State_StudentFactory 
+     * Создаёт фабрику состояний пользователей
+     * @return Data_State_Factory_User
      */
-    public function makeStudentFactory() {
+    public function makeUserFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Factory_Student();
-            
-        }
-
-        return $this->instances[$instance_key];
-        
-    }
-    
-    /**
-     *
-     * @return Data_State_TeacherFactory 
-     */
-    public function makeTeacherFactory() {
-        
-        $instance_key = __FUNCTION__;
-
-        if (!isset($this->instances[$instance_key])) {
-
-            $this->instances[$instance_key] = new Data_State_Factory_Teacher();
+            $this->instances[$instance_key] = new Data_State_Factory_User();
             
         }
 

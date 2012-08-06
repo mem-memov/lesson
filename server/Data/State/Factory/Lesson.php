@@ -1,4 +1,7 @@
 <?php
+/**
+ * Фабрика состояний уроков
+ */
 class Data_State_Factory_Lesson implements Data_State_Factory_Interface {
     
     public function makeState() {

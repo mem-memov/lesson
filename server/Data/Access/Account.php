@@ -1,4 +1,7 @@
 <?php
+/**
+ * Доступ к данным счетов
+ */
 class Data_Access_Account {
     
     /**

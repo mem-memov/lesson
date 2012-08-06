@@ -1,4 +1,7 @@
 <?php
+/**
+ * Фабрика состояний счетов
+ */
 class Data_State_Factory_Account implements Data_State_Factory_Interface {
     
     public function makeState() {

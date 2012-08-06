@@ -62,7 +62,7 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Student(
-                $this->accessFactory->makeStudent(),
+                $this->accessFactory->makeUser(),
                 $this->makeAccountCollection()
             );
             
@@ -79,7 +79,7 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
-                $this->accessFactory->makeTeacher(),
+                $this->accessFactory->makeUser(),
                 $this->makeAccountCollection()
             );
             
