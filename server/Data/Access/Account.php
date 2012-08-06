@@ -28,10 +28,10 @@ class Data_Access_Account {
     
     /**
      * Создаёт состояние счёта
-     * @return Data_State_Account_Item
+     * @return Data_State_Item_Account
      */
     public function create() {
-        
+      
         return $this->stateFactory->makeState();
 
     }
@@ -39,7 +39,7 @@ class Data_Access_Account {
     /**
      * Находит состояние счёта по ID
      * @param integer $id
-     * @return Data_State_Account_Item
+     * @return Data_State_Item_Account
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
@@ -63,41 +63,39 @@ class Data_Access_Account {
         $state instanceof Data_State_Item_TrackableInterface;
         $state->setId($id);
         
-        $state instanceof Data_State_Account_Item;
+        $state instanceof Data_State_Item_Account;
         $state->setAmount($row['amount']);
         
         return $state;
         
     }
-    
-    
+
     /**
-     * Находит состояние счёта по ID учителя
-     * @param integer $teacherId
-     * @return Data_State_Account_Item
+     * Находит состояние счёта по ID прользователя
+     * @param integer $userId
+     * @return Data_State_Item_Account
      */
-    public function readUsingTeacherId($teacherId) {
+    public function readUsingUserId($userId) {
         
-        return $item;
+        $accountId = $this->storage->fetchValue('
+            SELECT
+                `account_id`
+            FROM
+                `user_account`
+            WHERE
+                `user_id` = '.$userId.'
+            ;
+        ');
         
-    }
-    
-    /**
-     * Находит состояние счёта по ID ученика
-     * @param integer $studentId
-     * @return Data_State_Account_Item
-     */
-    public function readUsingStudentId($studentId) {
-        
-        return $item;
+        return $this->readUsingId($accountId);
         
     }
     
     /**
      * Сохраняет состояние счёта
-     * @param Data_State_Account_Item $state
+     * @param Data_State_Item_Account $state
      */
-    public function update(Data_State_Account_Item $state) {
+    public function update(Data_State_Item_Account $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
 
@@ -127,9 +125,9 @@ class Data_Access_Account {
     
     /**
      * Удаляет счёт
-     * @param Data_State_Account_Item $state
+     * @param Data_State_Item_Account $state
      */
-    public function delete(Data_State_Account_Item $state) {
+    public function delete(Data_State_Item_Account $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         

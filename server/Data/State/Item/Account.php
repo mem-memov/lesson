@@ -2,7 +2,7 @@
 /**
  * Состояние счёта
  */
-class Data_State_Account_Item extends Data_State_Item_Abstract {
+class Data_State_Item_Account extends Data_State_Item_Abstract {
     
     /**
      * Сумма на счёте

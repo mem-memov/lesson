@@ -13,10 +13,10 @@
         'Storage' => array(
             
             'Mysql' => array(
-                'server' => 'localhost',
-                'user' => 'root',
-                'password' => '',
-                'database' => 'umapalata'
+                'server' => '127.0.0.1',
+                'user' => 'u3380317_default', //'root'
+                'password' => '51fd86up', //''
+                'database' => 'u3380317_default', //'umapalata'
             )
             
         )

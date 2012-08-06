@@ -2,7 +2,7 @@
 /**
  * Состояние урка
  */
-class Data_State_Lesson_Item extends Data_State_Item_Abstract {
+class Data_State_Item_Lesson extends Data_State_Item_Abstract {
     
     /**
      * Название урока

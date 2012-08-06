@@ -38,15 +38,8 @@ class Domain_Collection_Account {
         return $item;
     }
     
-    public function readUsingTeacherId($teacherId) {
-        $state = $this->dataAccess->readUsingTeacherId($teacherId);
-        $item = $this->make($state);
-        $this->states[spl_object_hash($item)] = $state;
-        return $item;
-    }
-    
-    public function readUsingStudentId($studentId) {
-        $state = $this->dataAccess->readUsingStudentId($studentId);
+    public function readUsingUserId($teacherId) {
+        $state = $this->dataAccess->readUsingUserId($teacherId);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
         return $item;

@@ -14,6 +14,7 @@ class Service_Installer_Mysql_Installer implements Service_Installer_Interface {
     public function install() {
         
         $this->createTables();
+        //$this->insertData();
         
     }
     
@@ -23,7 +24,21 @@ class Service_Installer_Mysql_Installer implements Service_Installer_Interface {
         
         foreach ($sql_files as $sql_file) {
             
-            $query = preg_replace('/^.*\/(.*)\.sql$/', '$1', $sql_file);
+            $query = file_get_contents($sql_file);
+         
+            $this->storage->query($query);
+            
+        }
+
+    }
+    
+    private function insertData() {
+        
+        $sql_files = glob(dirname(__FILE__).'/sql_data/*.sql');
+        
+        foreach ($sql_files as $sql_file) {
+            
+            $query = file_get_contents($sql_file);
          
             $this->storage->query($query);
             

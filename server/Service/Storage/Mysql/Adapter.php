@@ -91,7 +91,7 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
 
         $id_rows = array();
 
-        $rows = $this->rows($query);
+        $rows = $this->fetchRows($query);
 
         foreach ($rows as $row) {
             $id_rows[$row[$id_field]] = $row;
@@ -104,7 +104,7 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
 
         $columns = array();
 
-        $rows = $this->rows($query);
+        $rows = $this->fetchRows($query);
         foreach ($rows as $row) {
             foreach ($row as $field => $value) {
                 $columns[$field][] = $value;
@@ -137,7 +137,7 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
     }
     public function fetchValue($query, $field = null) {
 
-        $row = $this->row($query);
+        $row = $this->fetchRow($query);
 
         if (count($row) > 0) {
             if (is_null($field)) {

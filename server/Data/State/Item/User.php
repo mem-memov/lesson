@@ -2,7 +2,7 @@
 /**
  * Состояние пользователя
  */
-class Data_State_User_Item extends Data_State_Item_Abstract {
+class Data_State_Item_User extends Data_State_Item_Abstract {
     
     /**
      * Имя пользователя

@@ -4,7 +4,7 @@ class Domain_Account {
     private $sate;
     
     public function __construct(
-        Data_State_Account_Item $state
+        Data_State_Item_Account $state
     ) {
         
         $this->state = $state;

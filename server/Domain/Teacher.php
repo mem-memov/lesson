@@ -5,7 +5,7 @@ class Domain_Teacher {
     private $account;
     
     public function __construct(
-        Data_State_Lesson_Item $state,
+        Data_State_Item_User $state,
         Domain_Account $account
     ) {
         
