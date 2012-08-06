@@ -6,9 +6,9 @@ class Domain_School {
     private $teacherCollection;
     
     public function __construct(
-        Domain_Collection_Interface $lessonCollection,
-        Domain_Collection_Interface $studentCollection,
-        Domain_Collection_TeacherInterface $teacherCollection
+        Domain_Collection_Lesson $lessonCollection,
+        Domain_Collection_Student $studentCollection,
+        Domain_Collection_Teacher $teacherCollection
     ) {
         
         $this->lessonCollection = $lessonCollection;
@@ -38,6 +38,15 @@ class Domain_School {
     }
     
     public function prepareLesson($teacherId, $lessonArray) {
+        
+        $teacher = $this->teacherCollection->readUsingId($teacherId);
+        $teacher->prepare($lessonArray);
+        
+    }
+    
+    public function offerLessons() {
+        
+        
         
     }
     

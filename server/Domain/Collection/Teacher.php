@@ -27,7 +27,7 @@ class Domain_Collection_Teacher {
 
     
     public function __construct(
-        Data_Access_Teacher $dataAcces,
+        Data_Access_Teacher $dataAccess,
         Domain_Collection_Account $accountCollection
     ) {
         

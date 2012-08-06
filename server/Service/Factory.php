@@ -40,7 +40,7 @@ class Service_Factory {
             
             $storageFactory = $this->makeStorageFactory();
             
-            $this->instances[$instance_key] = $storageFactory->makeMysqlStorage();
+            $this->instances[$instance_key] = $storageFactory->makeMysqlStorage('', '', '', '');
             
         }
 

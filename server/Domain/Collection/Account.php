@@ -15,7 +15,7 @@ class Domain_Collection_Account {
 
     
     public function __construct(
-        Data_Access_Crud_Teacher $dataAcces
+        Data_Access_Account $dataAccess
     ) {
         
         $this->dataAccess = $dataAccess;

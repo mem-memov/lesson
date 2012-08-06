@@ -1,5 +1,5 @@
 <?php
-interface Data_Sate_Factory_Interface {
+interface Data_State_Factory_Interface {
     
     public function makeState();
     

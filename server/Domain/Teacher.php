@@ -20,6 +20,12 @@ class Domain_Teacher {
         
         
     }
+    
+    public function prepare(array $lessonArray) {
+        
+        
+        
+    }
 
     public function canWithdraw($amount) {
         

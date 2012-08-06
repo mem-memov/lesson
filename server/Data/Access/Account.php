@@ -1,9 +1,9 @@
 <?php
-class Data_Access_Account extends Data_Access_Base {
+class Data_Access_Account {
     
     /**
      * Фабрика состояний
-     * @var Data_Sate_Factory_Interface
+     * @var Data_State_Factory_Interface
      */
     protected $stateFactory;
     
@@ -14,7 +14,7 @@ class Data_Access_Account extends Data_Access_Base {
     protected $storage;
 
     public function __construct(
-        Data_Sate_Factory_Interface $stateFactory,
+        Data_State_Factory_Interface $stateFactory,
         Service_Storage_Interface $storage
     ) {
         
@@ -37,7 +37,7 @@ class Data_Access_Account extends Data_Access_Base {
      * Находит состояние счёта по ID
      * @param integer $id
      * @return Data_State_Account_Item
-     * @throws Data_Access_Crud_Exception
+     * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
         
@@ -52,7 +52,7 @@ class Data_Access_Account extends Data_Access_Base {
         ');
         
         if (empty($row)) {
-            throw new Data_Access_Crud_Exception('Счёта с идентификатором - '.$id.' не существует. Чтение невозможно.');
+            throw new Data_Access_Exception('Счёта с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
         $state = $this->create();

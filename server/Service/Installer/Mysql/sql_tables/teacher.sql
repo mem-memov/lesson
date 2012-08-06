@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS `teacher` (
+    `id` INT NOT NULL PRIMARY KEY
+);

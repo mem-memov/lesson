@@ -1,9 +1,9 @@
 <?php
-class Data_Access_Teacher extends Data_Access_Base {
+class Data_Access_Teacher {
     
     /**
      * Фабрика состояний
-     * @var Data_Sate_Factory_Interface
+     * @var Data_State_Factory_Interface
      */
     protected $stateFactory;
     
@@ -14,13 +14,23 @@ class Data_Access_Teacher extends Data_Access_Base {
     protected $storage;
 
     public function __construct(
-        Data_Sate_Factory_Interface $stateFactory,
+        Data_State_Factory_Interface $stateFactory,
         Service_Storage_Interface $storage
     ) {
         
         $this->stateFactory = $stateFactory;
         $this->storage = $storage;
         
+    }
+    
+    /**
+     * Создаёт состояние учителя
+     * @return Data_State_Lesson_Item
+     */
+    public function create() {
+        
+        return $this->stateFactory->makeState();
+
     }
     
     /**

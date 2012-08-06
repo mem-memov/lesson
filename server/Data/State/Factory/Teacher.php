@@ -1,5 +1,5 @@
 <?php
-class Data_State_Factory_Teacher implements Data_Sate_Factory_Interface {
+class Data_State_Factory_Teacher implements Data_State_Factory_Interface {
     
     public function makeState() {
         

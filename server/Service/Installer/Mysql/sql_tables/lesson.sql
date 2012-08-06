@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS `lesson` (
+    `id` INT NOT NULL PRIMARY KEY
+    `title` VARCHAR(256)
+);

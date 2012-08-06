@@ -32,7 +32,7 @@ class Service_Storage_Factory {
 
     }
     
-    public function makeMysqlStorage() {
+    public function makeMysqlStorage($server, $user, $password, $database) {
         
         return new Service_Storage_Mysql_Adapter($server, $user, $password, $database);
         
