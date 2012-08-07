@@ -80,7 +80,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
                 $this->accessFactory->makeUser(),
-                $this->makeAccountCollection()
+                $this->makeAccountCollection(),
+                $this->makeLessonCollection()
             );
             
         }

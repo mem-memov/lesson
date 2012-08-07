@@ -16,4 +16,16 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
         return $this->title;
     }
     
+    /**
+     * Описание урока
+     * @var string
+     */
+    private $description;
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+    public function getDescription() {
+        return $this->description;
+    }
+    
 }

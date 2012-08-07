@@ -28,7 +28,7 @@ class Data_Access_Lesson {
     
     /**
      * Создаёт состояние урока
-     * @return Data_State_Lesson_Item
+     * @return Data_State_Item_Lesson
      */
     public function create() {
         
@@ -39,14 +39,15 @@ class Data_Access_Lesson {
     /**
      * Находит состояние урока по ID
      * @param integer $id
-     * @return Data_State_Lesson_Item
+     * @return Data_State_Item_Lesson
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
         
         $row = $this->storage->fetchRow('
             SELECT
-                `title`
+                `title`,
+                `description`
             FROM
                 `lesson`
             WHERE
@@ -58,23 +59,39 @@ class Data_Access_Lesson {
             throw new Data_Access_Exception('Урока с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
-        $state = $this->create();
-        
-        $state instanceof Data_State_Item_TrackableInterface;
-        $state->setId($id);
-        
-        $state instanceof Data_State_Lesson_Item;
-        $state->setTitle($row['title']);
+        $state = $this->rowToState($row);
         
         return $state;
         
     }
     
+    public function readUsingFilter($filter) {
+
+        $rows = $this->storage->fetchRows('
+            SELECT
+                `title`,
+                `description`
+            FROM
+                `lesson`
+            WHERE
+                TRUE
+            ;
+        ');
+        
+        $states = array();
+        foreach ($rows as $row) {
+            $states[] = $this->rowToState($row);
+        }
+        
+        return $states;
+        
+    }
+    
     /**
      * Сохраняет состояние урока
-     * @param Data_State_Lesson_Item $state
+     * @param Data_State_Item_Lesson $state
      */
-    public function update(Data_State_Lesson_Item $state) {
+    public function update(Data_State_Item_Lesson $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
 
@@ -94,7 +111,8 @@ class Data_Access_Lesson {
             UPDATE
                 `lesson`
             SET
-                `title` = '.$state->getTitle().'
+                `title` = "'.$state->getTitle().'",
+                `description` = "'.$state->getDescription().'"
             WHERE
                 `id` = '.$state->getId().'
             ;
@@ -104,9 +122,9 @@ class Data_Access_Lesson {
     
     /**
      * Удаляет состояние урока
-     * @param Data_State_Lesson_Item $state
+     * @param Data_State_Item_Lesson $state
      */
-    public function delete(Data_State_Lesson_Item $state) {
+    public function delete(Data_State_Item_Lesson $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         
@@ -121,6 +139,21 @@ class Data_Access_Lesson {
             ');
         
         }
+        
+    }
+    
+    private function rowToState($row) {
+        
+        $state = $this->create();
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+        $state->setId($id);
+        
+        $state instanceof Data_State_Item_Lesson;
+        $state->setTitle($row['title']);
+        $state->setDescription($row['description']);
+        
+        return $state;
         
     }
     

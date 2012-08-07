@@ -29,7 +29,7 @@ class Data_Access_User {
     
     /**
      * Создаёт состояние пользователя
-     * @return Data_State_Lesson_Item
+     * @return Data_State_Item_Lesson
      */
     public function create() {
         
@@ -40,7 +40,7 @@ class Data_Access_User {
     /**
      * Находит состояние пользователя по ID
      * @param integer $id
-     * @return Data_State_User_Item
+     * @return Data_State_Item_User
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
@@ -65,7 +65,7 @@ class Data_Access_User {
         $state instanceof Data_State_Item_TrackableInterface;
         $state->setId($id);
         
-        $state instanceof Data_State_User_Item;
+        $state instanceof Data_State_Item_User;
         $state->setFirstName($row['first_name']);
         $state->setLastName($row['last_name']);
         
@@ -75,9 +75,9 @@ class Data_Access_User {
     
     /**
      * Сохраняет состояние пользователя
-     * @param Data_State_User_Item $state
+     * @param Data_State_Item_User $state
      */
-    public function update(Data_State_User_Item $state) {
+    public function update(Data_State_Item_User $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         
@@ -96,9 +96,9 @@ class Data_Access_User {
     
     /**
      * Удаляет состояние пользователя
-     * @param Data_State_User_Item $state
+     * @param Data_State_Item_User $state
      */
-    public function delete(Data_State_User_Item $state) {
+    public function delete(Data_State_Item_User $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         

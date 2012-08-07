@@ -14,6 +14,12 @@ class Domain_Collection_Teacher {
     private $accountCollection;
     
     /**
+     * Коллекция уроков
+     * @var Domain_Collection_Lesson
+     */
+    private $lessonCollection;
+    
+    /**
      * Состояния
      * @var array 
      */
@@ -28,11 +34,13 @@ class Domain_Collection_Teacher {
     
     public function __construct(
         Data_Access_User $dataAccess,
-        Domain_Collection_Account $accountCollection
+        Domain_Collection_Account $accountCollection,
+        Domain_Collection_Lesson $lessonCollection  
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->accountCollection = $accountCollection;
+        $this->lessonCollection = $lessonCollection;
         
         $this->states = array();
         $this->accounts = array();
@@ -103,7 +111,7 @@ class Domain_Collection_Teacher {
     
     private function make($state, $account) {
         
-        return new Domain_Teacher($state, $account);
+        return new Domain_Teacher($state, $account, $this->lessonCollection);
         
     }
 

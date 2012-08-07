@@ -3,14 +3,17 @@ class Domain_Teacher {
 
     private $state;
     private $account;
+    private $lessonCollection;
     
     public function __construct(
         Data_State_Item_User $state,
-        Domain_Account $account
+        Domain_Account $account,
+        Domain_Collection_Lesson $lessonCollection
     ) {
         
         $this->state = $state;
         $this->account = $account;
+        $this->lessonCollection = $lessonCollection;
         
     }
     
@@ -23,7 +26,8 @@ class Domain_Teacher {
     
     public function prepare(array $lessonArray) {
         
-        
+        $lesson = $this->lessonCollection->create($lessonArray['title'], $lessonArray['description']);
+        $this->lessonCollection->update($lesson);
         
     }
 

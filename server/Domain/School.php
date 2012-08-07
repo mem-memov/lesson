@@ -40,14 +40,21 @@ class Domain_School {
     public function prepareLesson($teacherId, $lessonArray) {
         
         $teacher = $this->teacherCollection->readUsingId($teacherId);
+
         $teacher->prepare($lessonArray);
         
     }
     
-    public function offerLessons() {
+    public function offerLessons($filter) {
         
+        $lessons = $this->lessonCollection->readUsingFilter($filter);
         
+        $lessonArrays = array();
+        foreach($lessons as $lesson) {
+            $lessonArrays[] = $lesson->toArray();
+        }
         
+        return $lessonArrays;
     }
     
     public function payWages($teacherId, $amount) {

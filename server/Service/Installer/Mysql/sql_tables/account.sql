@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS `account` (
-    `id` INT NOT NULL PRIMARY KEY,
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `amount` INT
 );

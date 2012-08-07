@@ -24,11 +24,19 @@ class Domain_Collection_Lesson {
         
     }
     
-    public function create() {
+    public function create($title, $description) {
+        
         $state = $this->dataAccess->create();
+        
+        $state->setTitle($title);
+        $state->setDescription($description);
+        
         $item = $this->make($state);
+        
         $this->states[spl_object_hash($item)] = $state;
+        
         return $item;
+        
     }
     
     public function readUsingId($id) {
@@ -36,6 +44,20 @@ class Domain_Collection_Lesson {
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
         return $item;
+    }
+    
+    public function readUsingFilter($filter) {
+        
+        $states = $this->dataAccess->readUsingFilter($filter);
+        
+        $items = array();
+        foreach ($states as $state) {
+            $item = $this->make($state);
+            $this->states[spl_object_hash($item)] = $state;
+            $items[] = $item;
+        }
+
+        return $items;
     }
     
     public function readUsingTeacherId($teacherId) {
