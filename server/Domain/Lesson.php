@@ -4,7 +4,7 @@ class Domain_Lesson {
     public function __construct(Data_State_Item_Lesson $state) {
         
         $this->state = $state;
-        
+      
     }
     
     public function toArray() {

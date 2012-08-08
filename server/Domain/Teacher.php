@@ -40,15 +40,16 @@ class Domain_Teacher {
     
     public function prepare(array $lessonArray) {
         
-        $lesson = $this->lessonCollection->create(
-                $lessonArray['title'], 
-                $lessonArray['description'],
-                $this->state->getId()
-            );
-        $this->lessonCollection->update($lesson);
-        
-        return $lesson;
-        
+        if (array_key_exists('part', $lessonArray)) {
+            
+            return $this->preparePart($lessonArray);
+            
+        } else {
+            
+            return $this->prepareLesson($lessonArray);
+            
+        }
+
     }
 
     public function canWithdraw($amount) {
@@ -68,5 +69,35 @@ class Domain_Teacher {
         $this->account->increase($amount);
         
     } 
+    
+    private function prepareLesson(array $lessonArray) {
+        
+        
+        if ($lessonArray['id'] < 1) {
+            
+            // создаём новй урок
+            
+            $lesson = $this->lessonCollection->create(
+                $lessonArray['title'], 
+                $lessonArray['description'],
+                $this->state->getId()
+            );
+            
+            $this->lessonCollection->update($lesson);
+            
+        }
+
+        
+        return $lesson;
+        
+    }
+ 
+    private function preparePart(array $lessonArray) {
+        
+        $lesson = $this->lessonCollection->readUsingId($lessonArray['id']);
+var_dump($lesson);
+        return $lesson;
+        
+    }
  
 }

@@ -46,6 +46,7 @@ class Data_Access_Lesson {
         
         $row = $this->storage->fetchRow('
             SELECT
+                `lesson`.`id` AS `id`,
                 `lesson`.`title` AS `title`,
                 `lesson`.`description` AS `description`,
                 `teacher_lesson`.`teacher_id` AS `teacher_id`
@@ -82,6 +83,7 @@ class Data_Access_Lesson {
 
         $rows = $this->storage->fetchRows('
             SELECT
+                `lesson`.`id` AS `id`,
                 `lesson`.`title` AS `title`,
                 `lesson`.`description` AS `description`,
                 `teacher_lesson`.`teacher_id` AS `teacher_id`
@@ -195,6 +197,7 @@ class Data_Access_Lesson {
         $state->setId($id);
         
         $state instanceof Data_State_Item_Lesson;
+        $state->setId($row['id']);
         $state->setTitle($row['title']);
         $state->setDescription($row['description']);
         $state->setTeacherId($row['teacher_id']);

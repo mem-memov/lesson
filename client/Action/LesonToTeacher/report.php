@@ -5,4 +5,4 @@
 <p><?php echo $data['description']; ?></p>
 
 <br />
-<a href="/lesson/part/create">Добавить часть</a>
+<a href="/lesson/part/create/<?php echo $data['id']; ?>/">Добавить часть</a>

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Школа
+ */
 class Domain_School {
     
     private $lessonCollection;

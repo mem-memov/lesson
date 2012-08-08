@@ -27,6 +27,7 @@ class Frontend_Action_LessonToTeacher extends Frontend_Action_Abstract {
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/LesonToTeacher/report.php',
             array(
+                'id' => $lessonArray['id'],
                 'title' => $lessonArray['title'],
                 'description' => $lessonArray['description']
             ),

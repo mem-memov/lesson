@@ -105,4 +105,16 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkPartCreate() {
+        
+        return  new Frontend_Action_PartCreate($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
+    public function linkPart() {
+        
+        return  new Frontend_Action_Part($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

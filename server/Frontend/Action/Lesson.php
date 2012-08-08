@@ -13,6 +13,9 @@ class Frontend_Action_Lesson extends Frontend_Action_Abstract {
                 case 'to-teacher':
                     $response = $this->chain->linkLessonToTeacher()->run();
                     break;
+                case 'part':
+                    $response = $this->chain->linkPart()->run();
+                    break;
                 default:
                     $response = $this->chain->linkPageNotFound()->run();
                     break;
