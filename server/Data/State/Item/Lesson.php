@@ -28,4 +28,16 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
         return $this->description;
     }
     
+    /**
+     * ID учителя
+     * @var string
+     */
+    private $teacherId;
+    public function setTeacherId($teacherId) {
+        $this->teacherId = $teacherId;
+    }
+    public function getTeacherId() {
+        return $this->teacherId;
+    }
+    
 }

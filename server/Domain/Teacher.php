@@ -1,8 +1,22 @@
 <?php
 class Domain_Teacher {
 
+    /**
+     * Сосояние
+     * @var Data_State_Item_User 
+     */
     private $state;
+    
+    /**
+     * Счёт
+     * @var Domain_Account 
+     */
     private $account;
+    
+    /**
+     * Коллекция уроков
+     * @var Domain_Collection_Lesson
+     */
     private $lessonCollection;
     
     public function __construct(
@@ -26,7 +40,11 @@ class Domain_Teacher {
     
     public function prepare(array $lessonArray) {
         
-        $lesson = $this->lessonCollection->create($lessonArray['title'], $lessonArray['description']);
+        $lesson = $this->lessonCollection->create(
+                $lessonArray['title'], 
+                $lessonArray['description'],
+                $this->state->getId()
+            );
         $this->lessonCollection->update($lesson);
         
     }
