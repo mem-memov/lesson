@@ -1,9 +1,19 @@
 <?php
 class Domain_Lesson {
     
-    public function __construct(Data_State_Item_Lesson $state) {
+    /**
+     * Коллекция частей урока
+     * @var Domain_Collection_Part
+     */
+    private $partCollection;
+    
+    public function __construct(
+        Data_State_Item_Lesson $state,
+        Domain_Collection_Part $partCollection
+    ) {
         
         $this->state = $state;
+        $this->partCollection = $partCollection;
       
     }
     
