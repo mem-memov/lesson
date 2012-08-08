@@ -39,4 +39,6 @@ abstract class Frontend_Action_Abstract {
         
     }
     
+    abstract public function run();
+ 
 }

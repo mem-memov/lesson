@@ -47,6 +47,8 @@ class Domain_Teacher {
             );
         $this->lessonCollection->update($lesson);
         
+        return $lesson;
+        
     }
 
     public function canWithdraw($amount) {

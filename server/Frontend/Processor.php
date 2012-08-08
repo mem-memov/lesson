@@ -31,8 +31,7 @@ class Frontend_Processor {
         
         $request = $this->requestFactory->makeHtmlRequest($server, $get, $post, $files, $cookie);
         $actionChain = $this->actionFactory->makeChain($request);
-        $response = $actionChain->linkStart();
-
+        $response = $actionChain->linkStart()->run();
         $response->appear();
         
         $this->recoverGlobalArrays();

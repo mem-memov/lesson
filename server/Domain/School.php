@@ -41,19 +41,21 @@ class Domain_School {
         
         $teacher = $this->teacherCollection->readUsingId($teacherId);
 
-        $teacher->prepare($lessonArray);
+        $lesson = $teacher->prepare($lessonArray);
+        
+        return $lesson->toArray();
         
     }
     
     public function offerLessons($filter) {
         
         $lessons = $this->lessonCollection->readUsingFilter($filter);
-        
+      
         $lessonArrays = array();
         foreach($lessons as $lesson) {
             $lessonArrays[] = $lesson->toArray();
         }
-        
+ 
         return $lessonArrays;
     }
     

@@ -9,6 +9,7 @@ class Domain_Lesson {
     
     public function toArray() {
         return array(
+            'id' => $this->state->hasId() ? $this->state->getId() : null,
             'title' => $this->state->getTitle(),
             'description' => $this->state->getDescription()
         );

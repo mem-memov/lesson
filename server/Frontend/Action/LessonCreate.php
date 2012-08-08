@@ -12,29 +12,41 @@ class Frontend_Action_LessonCreate extends Frontend_Action_Abstract {
             'description' => $this->request->hasParameter('description') ? $this->request->getParameter('description') : ''
         );
         
+        $errorsAreHere = false;
         $errors = array(
             'title_missing' => false
         );
 
         if (!empty($lessonArray['title'])) {
-            $school->prepareLesson($teacherId, $lessonArray);
+            $lessonArray = $school->prepareLesson($teacherId, $lessonArray);
         } else {
+            $errorsAreHere = true;
             $errors['title_missing'] = true;
         }
        
-        return $this->responseFactory->makeHtmlResponse(
-            'client/Action/LessonCreate/form.php',
-            array(
-                'title' => $lessonArray['title'],
-                'description' => $lessonArray['description'],
-                'errors' => array(
-                    'title_missing' => $errors['title_missing']
-                )
-            ),
-            array(),
-            array()
-        );
+        if ($errorsAreHere) {
+            
+            return $this->responseFactory->makeHtmlResponse(
+                'client/Action/LessonCreate/form.php',
+                array(
+                    'title' => $lessonArray['title'],
+                    'description' => $lessonArray['description'],
+                    'errors' => array(
+                        'title_missing' => $errors['title_missing']
+                    )
+                ),
+                array(),
+                array()
+            );
+            
+        } else {
+            
+            return $this->chain->linkLessonToTeacher()->respond($lessonArray['id'], $teacherId);
+            
+        }
+
         
     }
+    
     
 }

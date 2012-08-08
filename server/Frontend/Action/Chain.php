@@ -35,90 +35,74 @@ class Frontend_Action_Chain {
     
     public function linkStart() {
         
-        $action = new Frontend_Action_Start($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_Start($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkProjectPresentation() {
         
-        $action = new Frontend_Action_ProjectPresentation($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_ProjectPresentation($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkLessonList() {
         
-        $action = new Frontend_Action_LessonList($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_LessonList($this->request, $this->responseFactory, $this, $this->domainFactory);
+ 
     }
     
     public function linkPayment() {
         
-        $action = new Frontend_Action_Payment($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_Payment($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkWorkshop() {
         
-        $action = new Frontend_Action_Workshop($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_Workshop($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkIncome() {
         
-        $action = new Frontend_Action_Income($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_Income($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkPageNotFound() {
         
-        $action = new Frontend_Action_PageNotFound($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_PageNotFound($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkLesson() {
         
-        $action = new Frontend_Action_Lesson($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_Lesson($this->request, $this->responseFactory, $this, $this->domainFactory);
+ 
     }
     
     public function linkLessonCreate() {
         
-        $action = new Frontend_Action_LessonCreate($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_LessonCreate($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkSignIn() {
         
-        $action = new Frontend_Action_SignIn($this->request, $this->responseFactory, $this, $this->domainFactory);
-        
-        return $action->run();
-        
+        return  new Frontend_Action_SignIn($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
     public function linkSignOut() {
         
-        $action = new Frontend_Action_SignOut($this->request, $this->responseFactory, $this, $this->domainFactory);
+        return  new Frontend_Action_SignOut($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
+    public function linkLessonToTeacher() {
         
-        return $action->run();
-        
+        return  new Frontend_Action_LessonToTeacher($this->request, $this->responseFactory, $this, $this->domainFactory);
+
     }
     
 }

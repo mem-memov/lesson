@@ -4,19 +4,22 @@ class Frontend_Action_Lesson extends Frontend_Action_Abstract {
     public function run() {
 
         if (!$this->request->hasDirectory(2)) {
-            $contentResponse = $this->chain->linkPageNotFound();
+            $response = $this->chain->linkPageNotFound()->run();
         } else {
             switch ($this->request->getDirectory(2)) {
                 case 'create':
-                    $contentResponse = $this->chain->linkLessonCreate();
+                    $response = $this->chain->linkLessonCreate()->run();
+                    break;
+                case 'to-teacher':
+                    $response = $this->chain->linkLessonToTeacher()->run();
                     break;
                 default:
-                    $contentResponse = $this->chain->linkPageNotFound();
+                    $response = $this->chain->linkPageNotFound()->run();
                     break;
             }
         }
         
-        return $contentResponse;
+        return $response;
         
     }
     

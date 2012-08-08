@@ -14,32 +14,32 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
         
         
         if (!$this->request->hasDirectory(1)) {
-            $contentResponse = $this->chain->linkProjectPresentation();
+            $contentResponse = $this->chain->linkProjectPresentation()->run();
         } else {
             switch ($this->request->getDirectory(1)) {
                 case 'learn':
-                    $contentResponse = $this->chain->linkLessonList();
+                    $contentResponse = $this->chain->linkLessonList()->run();
                     break;
                 case 'pay':
-                    $contentResponse = $this->chain->linkPayment();
+                    $contentResponse = $this->chain->linkPayment()->run();
                     break;
                 case 'teach':
-                    $contentResponse = $this->chain->linkWorkshop();
+                    $contentResponse = $this->chain->linkWorkshop()->run();
                     break;
                 case 'cashout':
-                    $contentResponse = $this->chain->linkIncome();
+                    $contentResponse = $this->chain->linkIncome()->run();
                     break;
                 case 'lesson':
-                    $contentResponse = $this->chain->linkLesson();
+                    $contentResponse = $this->chain->linkLesson()->run();
                     break;
                 case '!':
-                    $contentResponse = $this->chain->linkSignIn();
+                    $contentResponse = $this->chain->linkSignIn()->run();
                     break;
                 case 'signout':
-                    $contentResponse = $this->chain->linkSignOut();
+                    $contentResponse = $this->chain->linkSignOut()->run();
                     break;
                 default:
-                    $contentResponse = $this->chain->linkPageNotFound();
+                    $contentResponse = $this->chain->linkPageNotFound()->run();
                     break;
             }
         }
