@@ -25,4 +25,10 @@ class Domain_Lesson {
         );
     }
     
+    public function appendPart(array $partArray) {
+        
+        $part = $this->partCollection->create();
+        
+    }
+    
 }

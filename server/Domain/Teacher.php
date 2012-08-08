@@ -95,7 +95,9 @@ class Domain_Teacher {
     private function preparePart(array $lessonArray) {
         
         $lesson = $this->lessonCollection->readUsingId($lessonArray['id']);
-var_dump($lesson);
+
+        $lesson->appendPart($lessonArray['part']);
+        
         return $lesson;
         
     }

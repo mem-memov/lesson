@@ -77,16 +77,16 @@ class Data_State_Factory {
     }
     
     /**
-     * Создаёт фабрику состояний частей урока
-     * @return Data_State_Factory_Part_Factory
+     * Создаёт фабрику состояний текстовых частей урока
+     * @return Data_State_Factory_PartText
      */
-    public function makePartFactory() {
+    public function makePartTextFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Factory_Part_Factory();
+            $this->instances[$instance_key] = new Data_State_Factory_PartText();
             
         }
 

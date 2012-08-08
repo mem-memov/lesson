@@ -2,7 +2,7 @@
 /**
  * Фабрика текстовых частей урока
  */
-class Data_Factory_Part_Text implements Data_State_Factory_Interface {
+class Data_State_Factory_PartText implements Data_State_Factory_Interface {
     
     public function makeState() {
         

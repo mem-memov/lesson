@@ -30,7 +30,7 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
     
     /**
      * ID учителя
-     * @var string
+     * @var integer
      */
     private $teacherId;
     public function setTeacherId($teacherId) {

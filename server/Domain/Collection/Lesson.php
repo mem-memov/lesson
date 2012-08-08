@@ -94,7 +94,7 @@ class Domain_Collection_Lesson {
     
     private function make($state) {
         
-        return new Domain_Lesson($state);
+        return new Domain_Lesson($state, $this->partCollection);
         
     }
     

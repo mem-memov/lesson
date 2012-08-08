@@ -137,8 +137,8 @@ class Data_Access_Lesson {
                 INSERT INTO
                     `teacher_lesson`
                 SET
-                    `teacher_id` = "'.$state->getTeacherId().'",
-                    `lesson_id` = "'.$state->getId().'"
+                    `teacher_id` = '.$state->getTeacherId().',
+                    `lesson_id` = '.$state->getId().'
                 ;
             ');
             
@@ -206,10 +206,9 @@ class Data_Access_Lesson {
         $state = $this->create();
         
         $state instanceof Data_State_Item_TrackableInterface;
-        $state->setId($id);
+        $state->setId($row['id']);
         
         $state instanceof Data_State_Item_Lesson;
-        $state->setId($row['id']);
         $state->setTitle($row['title']);
         $state->setDescription($row['description']);
         $state->setTeacherId($row['teacher_id']);

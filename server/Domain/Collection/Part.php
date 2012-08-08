@@ -3,9 +3,9 @@ class Domain_Collection_Part {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_Crud_Part 
+     * @var Data_Access_PartText 
      */
-    private $dataAccess;
+    private $partTextAccess;
     
     /**
      * Состояния
@@ -15,12 +15,16 @@ class Domain_Collection_Part {
 
     
     public function __construct(
-        Data_Access_Part $dataAccess
+        Data_Access_PartText $partTextAccess
     ) {
         
-        $this->dataAccess = $dataAccess;
+        $this->partTextAccess = $partTextAccess;
         
         $this->states = array();
+        
+    }
+    
+    public function create() {
         
     }
     
