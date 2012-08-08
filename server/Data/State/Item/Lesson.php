@@ -40,4 +40,16 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
         return $this->teacherId;
     }
     
+    /**
+     * ID частей урока
+     * @var array 
+     */
+    private $partIds;
+    public function setPartIds(array $partIds) {
+        $this->partIds = $partIds;
+    }
+    public function getPartIds() {
+        return $this->partIds;
+    }
+    
 }

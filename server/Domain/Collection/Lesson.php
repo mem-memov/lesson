@@ -12,13 +12,21 @@ class Domain_Collection_Lesson {
      * @var array 
      */
     private $states;
+    
+    /**
+     * Коллекция частей урока
+     * @var Domain_Collection_Part
+     */
+    private $partCollection;
 
     
     public function __construct(
-        Data_Access_Lesson $dataAccess
+        Data_Access_Lesson $dataAccess,
+        Domain_Collection_Part $partCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->partCollection = $partCollection;
         
         $this->states = array();
         

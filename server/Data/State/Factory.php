@@ -76,4 +76,22 @@ class Data_State_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику состояний частей урока
+     * @return Data_State_Factory_Part_Factory
+     */
+    public function makePartFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Data_State_Factory_Part_Factory();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }

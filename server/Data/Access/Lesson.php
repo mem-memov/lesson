@@ -64,7 +64,9 @@ class Data_Access_Lesson {
             throw new Data_Access_Exception('Урока с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
+        
         $state = $this->rowToState($row);
+        $state = $this->addPartIdsToState($state);
         
         return $state;
         
@@ -96,11 +98,9 @@ class Data_Access_Lesson {
             ;
         ');
         
-        $states = array();
-        foreach ($rows as $row) {
-            $states[] = $this->rowToState($row);
-        }
-        
+        $states = $this->rowsToStates($rows);
+        $states = $this->addPartIdsToStates($states);
+
         return $states;
         
     }
@@ -189,7 +189,19 @@ class Data_Access_Lesson {
         
     }
     
-    private function rowToState($row) {
+    private function rowsToStates(array $rows) {
+        
+        $states = array();
+
+        foreach ($rows as $row) {
+            $states[] = $this->rowToState($row);
+        }
+        
+        return $states;
+        
+    }
+    
+    private function rowToState(array $row) {
         
         $state = $this->create();
         
@@ -203,6 +215,86 @@ class Data_Access_Lesson {
         $state->setTeacherId($row['teacher_id']);
         
         return $state;
+        
+    }
+    
+    /**
+     * Добавляет ID частей к состоянию урока
+     * @param Data_State_Item_Lesson $state
+     * @return Data_State_Item_Lesson
+     */
+    private function addPartIdsToState($state) {
+        
+        $partIds = $this->storage->fetchColumn('
+            SELECT
+                `part_id`
+            FROM
+                `lesson_part`
+            WHERE
+                `lesson_id` = '.$state->getId().'
+            ;
+        ');
+        
+        $state->setPartIds($partIds);
+        
+        return $state;
+        
+    }
+    
+    /**
+     * Добавляет ID частей к нескольким состояниям уроков
+     * @param Data_State_Item_Lesson[] $states
+     * @return Data_State_Item_Lesson[]
+     */
+    private function addPartIdsToStates(array $states) {
+        
+        $ids = array();
+        foreach($states as $state) {
+            
+            $state instanceof Data_State_Item_Lesson;
+            $ids[] = $state->getId();
+            
+        }
+        
+        $rows = $this->storage->fetchRows('
+            SELECT
+                `lesson_id`,
+                `part_id`
+            FROM
+                `lesson_part`
+            WHERE
+                `lesson_id` IN ('.implode(', ', $ids).')
+            ;
+        ');
+
+        $partIds = array();
+        foreach ($rows as $row) {
+
+            if (!array_key_exists($row['lesson_id'], $partIds)) {
+                $partIds[$row['lesson_id']] = array();
+            }
+
+            $partIds[$row['lesson_id']][] = $row['part_id'];
+
+        }
+
+        foreach ($states as &$state) {
+
+            $state instanceof Data_State_Item_Lesson;
+
+            if (array_key_exists($state->getId(), $partIds)) {
+
+                $state->setPartIds($partIds[$state->getId()]);
+
+            } else {
+
+                $state->setPartIds(array());
+
+            }
+
+        }
+
+        return $states;
         
     }
     

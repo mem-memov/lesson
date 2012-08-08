@@ -46,7 +46,8 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Lesson(
-                $this->accessFactory->makeLesson()
+                $this->accessFactory->makeLesson(),
+                $this->makePartCollection()
             );
             
         }
@@ -82,6 +83,22 @@ class Domain_Collection_Factory {
                 $this->accessFactory->makeUser(),
                 $this->makeAccountCollection(),
                 $this->makeLessonCollection()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    public function makePartCollection() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Part(
+                $this->accessFactory->makePart()
             );
             
         }

@@ -1,8 +1,8 @@
 <?php
 /**
- * Доступ к текстовым частям урока
+ * Доступ к частям урока
  */
-class Data_Access_PartText {
+class Data_Access_Part_Access {
     
     /**
      * Фабрика состояний
@@ -24,6 +24,16 @@ class Data_Access_PartText {
         $this->stateFactory = $stateFactory;
         $this->storage = $storage;
         
+    }
+    
+    /**
+     * Создаёт состояние части урока
+     * @return 
+     */
+    public function create($type) {
+        
+        return $this->stateFactory->makeState($type);
+
     }
     
 }

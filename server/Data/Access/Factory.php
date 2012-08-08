@@ -92,4 +92,21 @@ class Data_Access_Factory {
         
     }
 
+    public function makePart() {
+
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Part(
+                $this->stateFactory->makePartFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
 }
