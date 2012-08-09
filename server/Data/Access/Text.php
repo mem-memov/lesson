@@ -1,8 +1,8 @@
 <?php
 /**
- * Доступ к текстовым частям урока
+ * Доступ к текстам
  */
-class Data_Access_PartText {
+class Data_Access_Text {
     
     /**
      * Фабрика состояний
@@ -27,8 +27,8 @@ class Data_Access_PartText {
     }
     
     /**
-     * Создаёт состояние части урока
-     * @return Data_State_Item_PartText
+     * Создаёт состояние текста
+     * @return Data_State_Item_Text
      */
     public function create() {
         
@@ -37,9 +37,9 @@ class Data_Access_PartText {
     }
     
     /**
-     * Находит состояние текстовой части урока по ID
+     * Находит состояние текста по ID
      * @param integer $id
-     * @return Data_State_Item_Part_Text
+     * @return Data_State_Item_Text
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
@@ -49,16 +49,16 @@ class Data_Access_PartText {
                 `id`,
                 `text`
             FROM
-                `part_text`
+                `text`
             WHERE
-                `part`.`id` = '.$id.'
+                `id` = '.$id.'
             LIMIT
                 1
             ;
         ');
 
         if (empty($row)) {
-            throw new Data_Access_Exception('Части урока с идентификатором - '.$id.' не существует. Чтение невозможно.');
+            throw new Data_Access_Exception('Текста с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
         $state = $this->rowToState($row);
@@ -68,51 +68,18 @@ class Data_Access_PartText {
     }
     
     /**
-     * Сохраняет состояние текстовой части урока
-     * @param Data_State_Item_PartText $state
+     * Сохраняет состояние текста
+     * @param Data_State_Item_Text $state
      */
-    public function update(Data_State_Item_PartText $state) {
+    public function update(Data_State_Item_Text $state) {
         
-        $state instanceof Data_State_Item_TrackableInterface;
-
-        if(!$state->hasId()) {
-            
-            // Находим ID и записываем тип для части урока
-            
-            $typeId = $this->fetchTypeId($state);
-            $this->storage->query('
-                INSERT INTO
-                    `part`
-                SET
-                    `id` = DEFAULT,
-                    `type_id` = '.$typeId.'
-                ;
-            ');
-            $id = $this->storage->lastId();
-            $state->setId($id);
-            
-            // Связываем часть с уроком
-            
-            if ($state->getLessonId() < 1) {
-                throw new Data_Access_Exception('Часть урока должна быть связана с уроком.');
-            }
-            
-            $this->storage->query('
-                INSERT INTO
-                    `lesson_part`
-                SET
-                    `lesson_id` = '.$state->getLessonId().',
-                    `part_id` = '.$state->getId().'
-                ;
-            ');
-            
-        }
+        // Находим ID для текста
+        $this->secureId($state);
         
-        // Сохраняем параметры урока в базе данных
-        
+        // Сохраняем параметры текста в базе данных
         $this->storage->query('
             UPDATE
-                `part_text`
+                `text`
             SET
                 `text` = "'.$state->getText().'"
             WHERE
@@ -123,10 +90,10 @@ class Data_Access_PartText {
     }
     
     /**
-     * Удаляет состояние текстовой части урока
-     * @param Data_State_Item_PartText $state
+     * Удаляет состояние текста
+     * @param Data_State_Item_Text $state
      */
-    public function delete(Data_State_Item_PartText $state) {
+    public function delete(Data_State_Item_Text $state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
         
@@ -134,25 +101,9 @@ class Data_Access_PartText {
         
             $this->storage->query('
                 DELETE FROM
-                    `part`
+                    `text`
                 WHERE
                     `id` = '.$state->getId().'
-                ;
-            ');
-        
-            $this->storage->query('
-                DELETE FROM
-                    `part_text`
-                WHERE
-                    `id` = '.$state->getId().'
-                ;
-            ');
-        
-            $this->storage->query('
-                DELETE FROM
-                    `lesson_part`
-                WHERE
-                    `part_id` = '.$state->getId().'
                 ;
             ');
         
@@ -167,9 +118,8 @@ class Data_Access_PartText {
         $state instanceof Data_State_Item_TrackableInterface;
         $state->setId($row['id']);
         
-        $state instanceof Data_State_Item_Lesson;
-        $state->setTitle($row['type']);
-        $state->setDescription($row['text']);
+        $state instanceof Data_State_Item_Text;
+        $state->setText($row['text']);
         
         return $state;
         
@@ -201,6 +151,30 @@ class Data_Access_PartText {
         }
         
         return $typeId;
+        
+    }
+    
+    /**
+     * Снабжает состояние идентификатором, если его пока нет
+     * @param Data_State_Item_Text $state
+     */
+    private function secureId(Data_State_Item_Text $state) {
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+
+        if(!$state->hasId()) {
+
+            $this->storage->query('
+                INSERT INTO
+                    `text`
+                SET
+                    `id` = DEFAULT
+                ;
+            ');
+            $id = $this->storage->lastId();
+            $state->setId($id);
+            
+        }
         
     }
     
