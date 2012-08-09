@@ -66,7 +66,7 @@ class Data_Access_Lesson {
         
         
         $state = $this->rowToState($row);
-        $state = $this->addPartIdsToState($state);
+        $this->addPartsToState($state);
         
         return $state;
         
@@ -99,7 +99,7 @@ class Data_Access_Lesson {
         ');
         
         $states = $this->rowsToStates($rows);
-        $states = $this->addPartIdsToStates($states);
+        $this->addPartsToStates($states);
 
         return $states;
         
@@ -127,7 +127,7 @@ class Data_Access_Lesson {
             $id = $this->storage->lastId();
             $state->setId($id);
             
-            // Связываем урок с учиелем
+            // Связываем урок с учителем
             
             if ($state->getTeacherId() < 1) {
                 throw new Data_Access_Exception('Урок должен быть связан с учителем.');
@@ -222,30 +222,29 @@ class Data_Access_Lesson {
      * @param Data_State_Item_Lesson $state
      * @return Data_State_Item_Lesson
      */
-    private function addPartIdsToState($state) {
+    private function addPartsToState($state) {
         
         $partIds = $this->storage->fetchColumn('
             SELECT
-                `part_id`
+                `id`
             FROM
-                `lesson_part`
+                `part`
             WHERE
                 `lesson_id` = '.$state->getId().'
+            ORDER BY
+                `order` ASC
             ;
         ');
         
         $state->setPartIds($partIds);
-        
-        return $state;
         
     }
     
     /**
      * Добавляет ID частей к нескольким состояниям уроков
      * @param Data_State_Item_Lesson[] $states
-     * @return Data_State_Item_Lesson[]
      */
-    private function addPartIdsToStates(array $states) {
+    private function addPartsToStates(array &$states) {
         
         $ids = array();
         foreach($states as $state) {
@@ -257,12 +256,15 @@ class Data_Access_Lesson {
         
         $rows = $this->storage->fetchRows('
             SELECT
-                `lesson_id`,
-                `part_id`
+                `id`,
+                `lesson_id`
             FROM
-                `lesson_part`
+                `part`
             WHERE
                 `lesson_id` IN ('.implode(', ', $ids).')
+            ORDER BY
+                `lesson_id` ASC,
+                `order` ASC
             ;
         ');
 
@@ -273,7 +275,7 @@ class Data_Access_Lesson {
                 $partIds[$row['lesson_id']] = array();
             }
 
-            $partIds[$row['lesson_id']][] = $row['part_id'];
+            $partIds[$row['lesson_id']][] = $row['id'];
 
         }
 

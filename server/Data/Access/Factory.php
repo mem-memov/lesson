@@ -92,14 +92,31 @@ class Data_Access_Factory {
         
     }
 
-    public function makePartText() {
+    public function makePart() {
 
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_PartText(
-                $this->stateFactory->makePartTextFactory(),
+            $this->instances[$instance_key] = new Data_Access_Part(
+                $this->stateFactory->makePartFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    public function makeText() {
+
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Text(
+                $this->stateFactory->makeTextFactory(),
                 $this->storage
             );
             

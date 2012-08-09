@@ -27,8 +27,14 @@ class Domain_Lesson {
     
     public function appendPart(array $partArray) {
         
-        $part = $this->partCollection->create();
+        $part = $this->partCollection->create(
+            $partArray['price'], 
+            $partArray['order'],
+            $partArray['lesson_id']
+        );
         
+        $this->partCollection->update($part);
+       
     }
     
 }

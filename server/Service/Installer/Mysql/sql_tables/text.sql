@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `part_text` (
+CREATE TABLE IF NOT EXISTS `text` (
     `id` INT NOT NULL PRIMARY KEY,
     `text` TEXT
 );

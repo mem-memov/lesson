@@ -12,11 +12,13 @@ class Frontend_Action_PartCreate extends Frontend_Action_Abstract {
         } else {
             $lessonId = $this->request->getDirectory(4);
         }
-        
+      
         $lessonArray = array(
             'id' => $lessonId,
             'part' => array(
-                
+                'lesson_id' => $lessonId,
+                'price' => 0,
+                'order' => 1
             )
         );
         

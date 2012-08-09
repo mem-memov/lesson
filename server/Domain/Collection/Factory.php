@@ -98,7 +98,7 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Part(
-                $this->accessFactory->makePartText()
+                $this->accessFactory->makePart()
             );
             
         }

@@ -1,7 +1,7 @@
 <?php
 class Domain_Account {
     
-    private $sate;
+    private $state;
     
     public function __construct(
         Data_State_Item_Account $state

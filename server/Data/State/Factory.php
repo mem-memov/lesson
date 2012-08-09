@@ -77,16 +77,34 @@ class Data_State_Factory {
     }
     
     /**
-     * Создаёт фабрику состояний текстовых частей урока
-     * @return Data_State_Factory_PartText
+     * Создаёт фабрику состояний частей урока
+     * @return Data_State_Factory_Part
      */
-    public function makePartTextFactory() {
+    public function makePartFactory() {
+         
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Data_State_Factory_Part();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику состояний текстов
+     * @return Data_State_Factory_Text
+     */
+    public function makeTextFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Data_State_Factory_PartText();
+            $this->instances[$instance_key] = new Data_State_Factory_Text();
             
         }
 

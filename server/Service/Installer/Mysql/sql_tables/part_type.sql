@@ -1,4 +1,0 @@
-CREATE TABLE IF NOT EXISTS `part_type` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `type` VARCHAR(256)
-);
