@@ -2,6 +2,12 @@
 class Domain_Lesson {
     
     /**
+     * Сосояние
+     * @var Data_State_Item_Lesson 
+     */
+    private $state;
+    
+    /**
      * Коллекция частей урока
      * @var Domain_Collection_Part
      */
@@ -17,6 +23,36 @@ class Domain_Lesson {
       
     }
     
+    public function getId() {
+        
+        return $this->state->getId();
+        
+    }
+    
+    public function getTitle() {
+        
+        return $this->state->getTitle();
+        
+    }
+    
+    public function setTitle($title) {
+        
+        return $this->state->setTitle($title);
+        
+    }
+    
+    public function getDescription() {
+        
+        return $this->state->getDescription();
+        
+    }
+    
+    public function setDescription($description) {
+        
+        return $this->state->setDescription($description);
+        
+    }
+    
     public function toArray() {
         return array(
             'id' => $this->state->hasId() ? $this->state->getId() : null,
@@ -25,13 +61,16 @@ class Domain_Lesson {
         );
     }
     
-    public function appendPart(array $partArray) {
+    public function addPart($price, $after = null) {
         
         $part = $this->partCollection->create(
-            $partArray['price'], 
-            $partArray['order'],
-            $partArray['lesson_id']
+            $this->state->getId()
         );
+        
+        $partCount = count($this->state->getPartIds());
+
+        $part->setOrder($partCount + 1);
+        $part->setPrice($price);
         
         $this->partCollection->update($part);
        

@@ -103,7 +103,7 @@ class Data_Access_Part {
         
         // Находим ID для части урока
         $this->secureId($state);
-        
+
         // Сохраняем параметры части урока в базе данных
         $this->storage->query('
             UPDATE

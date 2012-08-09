@@ -22,14 +22,14 @@ class Frontend_Action_LessonToTeacher extends Frontend_Action_Abstract {
     
     public function respond($lessonId, $teacherId) {
        
-        $lessonArray = $this->fetchLessonArray($lessonId, $teacherId);
+        $lesson = $this->fetchLesson($lessonId, $teacherId);
         
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/LesonToTeacher/report.php',
             array(
-                'id' => $lessonArray['id'],
-                'title' => $lessonArray['title'],
-                'description' => $lessonArray['description']
+                'id' => $lesson->getId(),
+                'title' => $lesson->getTitle(),
+                'description' => $lesson->getDescription()
             ),
             array(),
             array()
@@ -37,15 +37,21 @@ class Frontend_Action_LessonToTeacher extends Frontend_Action_Abstract {
         
     }
     
-    public function fetchLessonArray($lessonId, $teacherId) {
+    /**
+     * Возвращает урок учителя
+     * @param integer $lessonId
+     * @param integer $teacherId
+     * @return Domain_Lesson
+     */
+    public function fetchLesson($lessonId, $teacherId) {
         
         $school = $this->domainFactory->makeSchool();
         
         $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
         
-        $lessonArrays = $school->offerLessons($filter);
+        $lessons = $school->offerLessons($filter);
 
-        return $lessonArrays[0];
+        return $lessons[0];
         
     }
     

@@ -11,4 +11,16 @@ class Domain_Part {
         
     }
     
+    public function setOrder($order) {
+        
+        $this->state->setOrder($order);
+        
+    }
+    
+    public function setPrice($price) {
+        
+        $this->state->setPrice($price);
+        
+    }
+    
 }

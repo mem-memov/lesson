@@ -50,6 +50,10 @@ class Domain_Factory {
 
     }
     
+    /**
+     * Создаёт школу
+     * @return Domain_School
+     */
     public function makeSchool() {
         
         $collectionFactory = $this->makeCollectionFactory();

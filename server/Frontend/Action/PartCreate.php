@@ -12,26 +12,45 @@ class Frontend_Action_PartCreate extends Frontend_Action_Abstract {
         } else {
             $lessonId = $this->request->getDirectory(4);
         }
-      
-        $lessonArray = array(
-            'id' => $lessonId,
-            'part' => array(
-                'lesson_id' => $lessonId,
-                'price' => 0,
-                'order' => 1
-            )
-        );
         
-        $lessonArray = $school->prepareLesson($teacherId, $lessonArray);
+        $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
+        
+        $lessons = $school->offerLessons($filter);
+
+        $lesson = $lessons[0];
+        
+        $lesson instanceof Domain_Lesson;
+
+        $lesson->addPart(0);
+        
+        $lesson = $school->prepareLesson($teacherId, $lesson);
         
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/PartCreate/form.php',
             array(
-                'lesson_id' => $lessonArray['id']
+                'lesson_id' => $lesson->getId()
             ),
             array(),
             array()
         );
+    }
+    
+    /**
+     * Возвращает урок учителя
+     * @param integer $lessonId
+     * @param integer $teacherId
+     * @return Domain_Lesson
+     */
+    public function fetchLesson($lessonId, $teacherId) {
+        
+        $school = $this->domainFactory->makeSchool();
+        
+        $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
+        
+        $lessons = $school->offerLessons($filter);
+
+        return $lessons[0];
+        
     }
     
 }

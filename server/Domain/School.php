@@ -40,26 +40,26 @@ class Domain_School {
         
     }
     
-    public function prepareLesson($teacherId, $lessonArray) {
+    /**
+     * Подготавливает урок
+     * @param integer $teacherId
+     * @param integer|null $lesson Null означает, что нужно создать новый урок
+     * @return Domain_Lesson
+     */
+    public function prepareLesson($teacherId, $lesson = null) {
         
         $teacher = $this->teacherCollection->readUsingId($teacherId);
 
-        $lesson = $teacher->prepare($lessonArray);
+        $lesson = $teacher->prepare($lesson);
         
-        return $lesson->toArray();
+        return $lesson;
         
     }
     
     public function offerLessons($filter) {
         
-        $lessons = $this->lessonCollection->readUsingFilter($filter);
-      
-        $lessonArrays = array();
-        foreach($lessons as $lesson) {
-            $lessonArrays[] = $lesson->toArray();
-        }
- 
-        return $lessonArrays;
+        return $this->lessonCollection->readUsingFilter($filter);
+
     }
     
     public function payWages($teacherId, $amount) {

@@ -24,12 +24,10 @@ class Domain_Collection_Part {
         
     }
     
-    public function create($price, $order, $lessonId) {
+    public function create($lessonId) {
         
         $state = $this->dataAccess->create();
         
-        $state->setPrice($price);
-        $state->setOrder($order);
         $state->setLessonId($lessonId);
         
         $item = $this->make($state);

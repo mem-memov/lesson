@@ -32,12 +32,10 @@ class Domain_Collection_Lesson {
         
     }
     
-    public function create($title, $description, $teacherId) {
+    public function create($teacherId) {
         
         $state = $this->dataAccess->create();
-        
-        $state->setTitle($title);
-        $state->setDescription($description);
+
         $state->setTeacherId($teacherId);
         
         $item = $this->make($state);
