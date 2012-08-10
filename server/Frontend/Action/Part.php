@@ -10,6 +10,9 @@ class Frontend_Action_Part extends Frontend_Action_Abstract {
                 case 'create':
                     $response = $this->chain->linkPartCreate()->run();
                     break;
+                case 'edit':
+                    $response = $this->chain->linkPartEdit()->run();
+                    break;
                 default:
                     $response = $this->chain->linkPageNotFound()->run();
                     break;

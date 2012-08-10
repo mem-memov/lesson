@@ -53,6 +53,12 @@ class Domain_Lesson {
         
     }
     
+    public function getPartIds() {
+        
+        return $this->state->getPartIds();
+        
+    }
+    
     public function toArray() {
         return array(
             'id' => $this->state->hasId() ? $this->state->getId() : null,
@@ -73,6 +79,8 @@ class Domain_Lesson {
         $part->setPrice($price);
         
         $this->partCollection->update($part);
+        
+        return $part->getId();
        
     }
     

@@ -11,6 +11,12 @@ class Domain_Part {
         
     }
     
+    public function getId() {
+        
+        return $this->state->getId();
+        
+    }
+    
     public function setOrder($order) {
         
         $this->state->setOrder($order);

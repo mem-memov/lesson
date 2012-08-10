@@ -117,4 +117,10 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkPartEdit() {
+        
+        return  new Frontend_Action_PartEdit($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

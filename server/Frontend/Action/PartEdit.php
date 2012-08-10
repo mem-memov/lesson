@@ -1,36 +1,32 @@
 <?php
-class Frontend_Action_LessonToTeacher extends Frontend_Action_Abstract {
+class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
     
     public function run() {
-
+        
         $teacherId = $this->request->getUserId();
         
-        if (!$this->request->hasDirectory(3)) {
+        if (!$this->request->hasDirectory(4) || !$this->request->hasDirectory(5)) {
             $response = $this->chain->linkPageNotFound()->run();
         } else {
             
-            $lessonId = $this->request->getDirectory(3);
-            $response = $this->respond($teacherId, $lessonId);
+            $lessonId = $this->request->getDirectory(4);
+            $partId = $this->request->getDirectory(5);
+            $response = $this->respond($teacherId, $lessonId, $partId);
             
         }
 
         return $response;
         
-
-        
     }
     
-    public function respond($teacherId, $lessonId) {
-       
+    public function respond($teacherId, $lessonId, $partId) {
+        
         $lesson = $this->fetchLesson($teacherId, $lessonId);
-
+        
         return $this->responseFactory->makeHtmlResponse(
-            'client/Action/LesonToTeacher/report.php',
+            'client/Action/PartEdit/form.php',
             array(
-                'id' => $lesson->getId(),
-                'title' => $lesson->getTitle(),
-                'description' => $lesson->getDescription(),
-                'part_ids' => $lesson->getPartIds()
+                'part_id' => $partId
             ),
             array(),
             array()

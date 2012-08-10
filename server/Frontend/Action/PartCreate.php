@@ -21,35 +21,11 @@ class Frontend_Action_PartCreate extends Frontend_Action_Abstract {
         
         $lesson instanceof Domain_Lesson;
 
-        $lesson->addPart(0);
+        $partId = $lesson->addPart(0);
         
         $lesson = $school->prepareLesson($teacherId, $lesson);
         
-        return $this->responseFactory->makeHtmlResponse(
-            'client/Action/PartCreate/form.php',
-            array(
-                'lesson_id' => $lesson->getId()
-            ),
-            array(),
-            array()
-        );
-    }
-    
-    /**
-     * Возвращает урок учителя
-     * @param integer $lessonId
-     * @param integer $teacherId
-     * @return Domain_Lesson
-     */
-    public function fetchLesson($lessonId, $teacherId) {
-        
-        $school = $this->domainFactory->makeSchool();
-        
-        $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
-        
-        $lessons = $school->offerLessons($filter);
-
-        return $lessons[0];
+        return $this->chain->linkPartEdit()->respond($teacherId, $lesson->getId(), $partId);
         
     }
     

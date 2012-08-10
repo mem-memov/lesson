@@ -15,24 +15,27 @@ class Frontend_Action_LessonCreate extends Frontend_Action_Abstract {
             'title_missing' => false
         );
 
-        if (
-                $this->request->hasParameter('title') // значит была отправлена форма
-            &&  !empty($this->request->getParameter('title'))
-        ) {
+        if ($this->request->hasParameter('title')) { // значит была отправлена форма
             
-            $lesson = $school->prepareLesson($teacherId);
-            $lesson->setTitle($title);
-            $lesson->setDescription($description);
-            $lesson = $school->prepareLesson($teacherId, $lesson);
+            if ($this->request->getParameter('title') != '') {
+                
+                $lesson = $school->prepareLesson($teacherId);
+                $lesson->setTitle($title);
+                $lesson->setDescription($description);
+                $lesson = $school->prepareLesson($teacherId, $lesson);
             
-        } else {
-            
-            $errorsDetected = true;
-            $errors['title_missing'] = true;
-            
+            } else {
+                
+                $errorsDetected = true;
+                $errors['title_missing'] = true;
+                
+            }
+
         }
        
         if ($errorsDetected) {
+            
+            // Ошибка в форме
             
             return $this->responseFactory->makeHtmlResponse(
                 'client/Action/LessonCreate/form.php',
@@ -48,8 +51,30 @@ class Frontend_Action_LessonCreate extends Frontend_Action_Abstract {
             );
             
         } else {
+
+            if (isset($lesson)) {
+                
+                // Обработка формы
+                
+                return $this->chain->linkLessonToTeacher()->respond($teacherId, $lesson->getId());
+                
+            } else {
+                
+                // Показ формы
+                
+                return $this->responseFactory->makeHtmlResponse(
+                    'client/Action/LessonCreate/form.php',
+                    array(
+                        'title' => '',
+                        'description' => '',
+                        'errors' => array()
+                    ),
+                    array(),
+                    array()
+                );
+                
+            }
             
-            return $this->chain->linkLessonToTeacher()->respond($lesson->getId(), $teacherId);
             
         }
 
