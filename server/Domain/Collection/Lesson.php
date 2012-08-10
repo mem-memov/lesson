@@ -19,7 +19,6 @@ class Domain_Collection_Lesson {
      */
     private $partCollection;
 
-    
     public function __construct(
         Data_Access_Lesson $dataAccess,
         Domain_Collection_Part $partCollection
@@ -32,6 +31,11 @@ class Domain_Collection_Lesson {
         
     }
     
+    /**
+     * Создаёт урок
+     * @param integer $teacherId
+     * @return Domain_Lesson
+     */
     public function create($teacherId) {
         
         $state = $this->dataAccess->create();
@@ -46,6 +50,11 @@ class Domain_Collection_Lesson {
         
     }
     
+    /**
+     * Извлекает урок по ID
+     * @param integer $id
+     * @return Domain_Lesson
+     */
     public function readUsingId($id) {
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
@@ -92,7 +101,10 @@ class Domain_Collection_Lesson {
     
     private function make($state) {
         
-        return new Domain_Lesson($state, $this->partCollection);
+        return new Domain_Lesson(
+            $state, 
+            $this->partCollection
+        );
         
     }
     

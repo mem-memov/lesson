@@ -11,4 +11,10 @@ class Domain_Text {
         
     }
     
+    public function getId() {
+        
+        return $this->state->getId();
+        
+    }
+    
 }

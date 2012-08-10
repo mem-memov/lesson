@@ -84,4 +84,12 @@ class Domain_Lesson {
        
     }
     
+    public function insertText($partId, $textString) {
+        
+        $part = $this->partCollection->readUsingId($partId);
+        $part->addText($textString);
+        $this->partCollection->update($part);
+
+    }
+    
 }

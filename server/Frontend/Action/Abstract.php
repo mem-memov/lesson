@@ -3,7 +3,7 @@ abstract class Frontend_Action_Abstract {
     
     /**
      * Запрос
-     * @var type 
+     * @var Frontend_Request_Html|Frontend_Request_Json
      */
     protected $request;
     

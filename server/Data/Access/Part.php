@@ -116,6 +116,9 @@ class Data_Access_Part {
                 `id` = '.$state->getId().'
             ;
         ');
+        
+        // Привязываем к учебным пособиям
+        $this->updateWidgets($state);
   
     }
     
@@ -274,6 +277,43 @@ class Data_Access_Part {
         }
 
         return $states;
+        
+    }
+    
+    private function updateWidgets(Data_State_Item_Part $state) {
+        
+        $rows = $this->storage->fetchRows('
+            SELECT
+                `widget_id`,
+                `widget_type_id`
+            FROM
+                `part_widget`
+            WHERE
+                `part_id` = '.$state->getId().'
+            ;
+        ');
+        
+        $oldWidgetIds = array();
+        $oldWidgetTypeIds = array();
+        
+        foreach ($rows as $row) {
+            $oldWidgetIds[] = $row['widget_id'];
+            $oldWidgetTypeIds[] = $row['widget_type_id'];
+        }
+        
+        $newWidgetIds = $state->getWidgetIds();
+        $newWidgetTypeIds = $state->getWidgetTypeIds();
+        
+        $widgetIdsToBeDeleted = array_diff($oldWidgetIds, $newWidgetIds);
+        $widgetTypeIdsToBeDeleted = array_diff($oldWidgetTypeIds, $newWidgetTypeIds);
+        
+        $widgetIdsToBeInserted = array_diff($newWidgetIds, $oldWidgetIds);
+        $widgetTypeIdsToBeInserted = array_diff($oldWidgetTypeIds, $newWidgetTypeIds);
+        
+        $widgetIdsToBeModified = array_intersect($newWidgetIds, $oldWidgetIds);
+        $widgetTypeIdsToBeModified = array_intersect($oldWidgetTypeIds, $newWidgetTypeIds);
+        
+        $deleteConditions = array();
         
     }
     

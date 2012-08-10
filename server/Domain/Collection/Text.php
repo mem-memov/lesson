@@ -24,6 +24,11 @@ class Domain_Collection_Text {
         
     }
     
+    /**
+     * Создаёт текст
+     * @param string $text
+     * @return Domain_Text
+     */
     public function create($text) {
         
         $state = $this->dataAccess->create();
@@ -38,6 +43,11 @@ class Domain_Collection_Text {
         
     }
     
+    /**
+     * Извлекает текст по ID
+     * @param integer $id
+     * @return Domain_Text
+     */
     public function readUsingId($id) {
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);

@@ -1,1 +1,6 @@
-Редактирование части урока (<?php echo $data['part_id']; ?>)
+Редактирование части урока
+
+<form>
+    <textarea name="text"></textarea>
+    <input type="submit" name="create_text" value="Вставить текст">
+</form>

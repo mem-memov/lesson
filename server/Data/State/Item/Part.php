@@ -64,4 +64,19 @@ class Data_State_Item_Part extends Data_State_Item_Abstract {
         return $this->widgetTypeIds;
     }
     
+    /**
+     * Расположение пособий
+     * @var array 
+     */
+    /*
+    private $widgetTypeIds;
+    public function setWidgetTypeIds(array $widgetTypeIds) {
+        $this->widgetTypeIds = $widgetTypeIds;
+    }
+    public function getWidgetTypeIds() {
+        return $this->widgetTypeIds;
+    }
+     * 
+     */
+    
 }

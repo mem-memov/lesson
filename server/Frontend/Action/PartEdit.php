@@ -11,7 +11,17 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
             
             $lessonId = $this->request->getDirectory(4);
             $partId = $this->request->getDirectory(5);
-            $response = $this->respond($teacherId, $lessonId, $partId);
+            
+            $parameters = array();
+            if ($this->request->hasParameter('create_text')) {
+                $parameters['widget_type'] = 'text';
+                $parameters['text'] = $this->request->hasParameter('text') 
+                                                        ? $this->request->getParameter('text') 
+                                                        : ''
+                ;
+            }
+            
+            $response = $this->respond($teacherId, $lessonId, $partId, $parameters);
             
         }
 
@@ -19,9 +29,15 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
         
     }
     
-    public function respond($teacherId, $lessonId, $partId) {
+    public function respond($teacherId, $lessonId, $partId, $parameters = array()) {
         
         $lesson = $this->fetchLesson($teacherId, $lessonId);
+        
+        switch ($parameters['widget_type']) {
+            case 'text':
+                $lesson->insertText($partId, $parameters['text']);
+                break;
+        }
         
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/PartEdit/form.php',

@@ -13,17 +13,30 @@ class Domain_Collection_Part {
      */
     private $states;
 
+    /**
+     * Коллекция тексов
+     * @var Domain_Collection_Text
+     */
+    private $textCollection;
+
     
     public function __construct(
-        Data_Access_Part $dataAccess
+        Data_Access_Part $dataAccess,
+        Domain_Collection_Text $textCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->textCollection = $textCollection;
         
         $this->states = array();
         
     }
     
+    /**
+     * Создаёт часть урока
+     * @param integer $lessonId
+     * @return Domain_Part
+     */
     public function create($lessonId) {
         
         $state = $this->dataAccess->create();
@@ -38,6 +51,11 @@ class Domain_Collection_Part {
         
     }
     
+    /**
+     * Извлекает часть урока по ID
+     * @param integer $id
+     * @return Domain_Part
+     */
     public function readUsingId($id) {
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
@@ -70,7 +88,10 @@ class Domain_Collection_Part {
     
     private function make($state) {
         
-        return new Domain_Part($state);
+        return new Domain_Part(
+            $state, 
+            $this->textCollection
+        );
         
     }
     

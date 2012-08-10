@@ -104,7 +104,7 @@ class Frontend_Request_Html implements Frontend_Request_Interface {
         return $this->post[$parameter];
         
     }
-    
+
     private function transformFiles(array $files) {
 
         $transformed_files = array();

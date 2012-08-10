@@ -98,7 +98,24 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Part(
-                $this->accessFactory->makePart()
+                $this->accessFactory->makePart(),
+                $this->makeTextCollection()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    public function makeTextCollection() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Text(
+                $this->accessFactory->makeText()
             );
             
         }
