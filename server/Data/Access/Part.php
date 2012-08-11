@@ -176,7 +176,7 @@ class Data_Access_Part {
      * Снабжает состояние идентификатором, если его пока нет
      * @param Data_State_Item_Part $state
      */
-    private function secureId(Data_State_Item_Part $state) {
+    private function secureId(Data_State_Item_Part &$state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
 
@@ -211,8 +211,8 @@ class Data_Access_Part {
             WHERE
                 `part_id` = '.$state->getId().'
             ;
-        ');
-        
+        ', array('widget_id', 'widget_type_id'));
+
         $state->setWidgetIds($columns['widget_id']);
         $state->setWidgetTypeIds($columns['widget_type_id']);
 
@@ -282,6 +282,7 @@ class Data_Access_Part {
     
     private function updateWidgets(Data_State_Item_Part $state) {
         
+        // Получаем старый список пособий, относящихся к данной части урока
         $rows = $this->storage->fetchRows('
             SELECT
                 `widget_id`,
@@ -293,28 +294,116 @@ class Data_Access_Part {
             ;
         ');
         
-        $oldWidgetIds = array();
-        $oldWidgetTypeIds = array();
-        
-        foreach ($rows as $row) {
-            $oldWidgetIds[] = $row['widget_id'];
-            $oldWidgetTypeIds[] = $row['widget_type_id'];
-        }
-        
+        // Получаем новый список пособий, относящихся к данной части урока
         $newWidgetIds = $state->getWidgetIds();
         $newWidgetTypeIds = $state->getWidgetTypeIds();
         
-        $widgetIdsToBeDeleted = array_diff($oldWidgetIds, $newWidgetIds);
-        $widgetTypeIdsToBeDeleted = array_diff($oldWidgetTypeIds, $newWidgetTypeIds);
+        // Составляем список пособий на удаление
+        $widgetIdsToBeDeleted = array();
+        $widgetTypeIdsToBeDeleted = array();
+        foreach ($rows as $row) {
+            
+            $isFound = false;
+            
+            foreach ($newWidgetIds as $index => $newWidgetId) {
+
+                if (
+                    $row['widget_id'] == $newWidgetId
+                    && $row['widget_type_id'] == $newWidgetTypeIds[$index]
+                ) {
+                    $isFound = true;
+                    break;
+                }
+
+            }
+            
+            // Пособия из старого списка, которые не найдены в новом, нужно удалить.
+            if (!$isFound) {
+                
+                $widgetIdsToBeDeleted[] = $row['widget_id'];
+                $widgetTypeIdsToBeDeleted = $row['widget_type_id'];
+                
+            }
+            
+        }
         
-        $widgetIdsToBeInserted = array_diff($newWidgetIds, $oldWidgetIds);
-        $widgetTypeIdsToBeInserted = array_diff($oldWidgetTypeIds, $newWidgetTypeIds);
+        // Составляем список пособий на вставку
+        $widgetIdsToBeInserted = array();
+        $widgetTypeIdsToBeInserted = array();
+        foreach ($newWidgetIds as $index => $newWidgetId) {
+            
+            $isFound = false;
+            
+            foreach ($rows as $row) {
+                
+                if (
+                    $newWidgetId == $row['widget_id']
+                    && $newWidgetTypeIds[$index] == $row['widget_type_id']
+                ) {
+                    $isFound = true;
+                    break;
+                }
+
+            }
+            
+            // Пособия из нового списка, которые не найдены в старом списке обновления, нужно вставить в данную часть урока
+            if (!$isFound) {
+                $widgetIdsToBeInserted[] = $newWidgetId;
+                $widgetTypeIdsToBeInserted[] = $newWidgetTypeIds[$index];
+            }
+            
+        }
+
+        // Убираем пособия из данной части урока
+        if (!empty($widgetIdsToBeDeleted)) {
+            
+            $deletes = array();
+            foreach ($widgetIdsToBeDeleted as $deleteIndex => $widgetIdToBeDeleted) {
+                $deletes[] = '
+                    (
+                        `part_id` = '.$state->getId().'
+                         AND `widget_type_id` = '.$widgetTypeIdsToBeDeleted[$deleteIndex].'
+                         AND `widget_id` = '.$widgetIdToBeDeleted.'
+                     )
+                ';
+            }
+            
+            $this->storage->query('
+                DELETE FROM
+                    `part_widget`
+                WHERE
+                    '.implode(' OR ', $deletes).'
+                ;
+            ');
+            
+        }
         
-        $widgetIdsToBeModified = array_intersect($newWidgetIds, $oldWidgetIds);
-        $widgetTypeIdsToBeModified = array_intersect($oldWidgetTypeIds, $newWidgetTypeIds);
+        // Добавляем пособия к данной части урока
+        if (!empty($widgetIdsToBeInserted)) {
+            
+            $inserts = array();
+            foreach ($widgetIdsToBeInserted as $insertIndex => $widgetIdToBeInserted) {
+                $inserts[] = '('.
+                                    $state->getId().','.
+                                    $widgetTypeIdsToBeInserted[$insertIndex ].','.
+                                    $widgetIdToBeInserted.
+                ')';
+            }
         
-        $deleteConditions = array();
+            $this->storage->query('
+                INSERT INTO
+                    `part_widget` (
+                                    `part_id`, 
+                                    `widget_type_id`, 
+                                    `widget_id`
+                     )
+                VALUES
+                    '.implode(', ', $inserts).'
+                ;
+            ');
         
+        }
+
     }
     
 }

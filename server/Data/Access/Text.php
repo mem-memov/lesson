@@ -158,7 +158,7 @@ class Data_Access_Text {
      * Снабжает состояние идентификатором, если его пока нет
      * @param Data_State_Item_Text $state
      */
-    private function secureId(Data_State_Item_Text $state) {
+    private function secureId(Data_State_Item_Text &$state) {
         
         $state instanceof Data_State_Item_TrackableInterface;
 

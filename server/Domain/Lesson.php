@@ -67,6 +67,14 @@ class Domain_Lesson {
         );
     }
     
+    public function showPart($partId) {
+        
+        $part = $this->partCollection->readUsingId($partId);
+        
+        return $part->show();
+        
+    }
+    
     public function addPart($price, $after = null) {
         
         $part = $this->partCollection->create(
@@ -85,7 +93,7 @@ class Domain_Lesson {
     }
     
     public function insertText($partId, $textString) {
-        
+     
         $part = $this->partCollection->readUsingId($partId);
         $part->addText($textString);
         $this->partCollection->update($part);

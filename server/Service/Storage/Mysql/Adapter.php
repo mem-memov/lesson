@@ -100,9 +100,13 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
         return $id_rows;
 
     }
-    public function fetchColumns($query) {
+    public function fetchColumns($query, array $fields) {
 
         $columns = array();
+        
+        foreach ($fields as $field) {
+            $columns[$field] = array();
+        }
 
         $rows = $this->fetchRows($query);
         foreach ($rows as $row) {
@@ -114,25 +118,11 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
         return $columns;
 
     }
-    public function fetchColumn($query, $field = null) {
+    public function fetchColumn($query, $field) {
 
         $columns = $this->fetchColumns($query);
 
-        if (count($columns) > 0) {
-            if (is_null($field)) {
-                $column = array_shift($columns);
-            }else{
-                if (isset($columns[$field])) {
-                    $column = $columns[$field];
-                }else{
-                    $column = array();
-                }
-            }
-        }else{
-            $column = array();
-        }
-
-        return $column;
+        return $column[$field];
 
     }
     public function fetchValue($query, $field = null) {

@@ -1,5 +1,8 @@
 <?php
-class Domain_Text {
+class Domain_Text 
+implements
+    Domain_CanBeShown
+{
     
     private $state;
     
@@ -14,6 +17,15 @@ class Domain_Text {
     public function getId() {
         
         return $this->state->getId();
+        
+    }
+    
+    public function show() {
+        
+        return array(
+            'id' => $this->state->getId(),
+            'text' => $this->state->getText()
+        );
         
     }
     

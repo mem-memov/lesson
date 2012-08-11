@@ -20,7 +20,7 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
                                                         : ''
                 ;
             }
-            
+
             $response = $this->respond($teacherId, $lessonId, $partId, $parameters);
             
         }
@@ -30,7 +30,7 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
     }
     
     public function respond($teacherId, $lessonId, $partId, $parameters = array()) {
-        
+
         $lesson = $this->fetchLesson($teacherId, $lessonId);
         
         switch ($parameters['widget_type']) {
@@ -39,11 +39,15 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
                 break;
         }
         
+        $school = $this->domainFactory->makeSchool();
+        
+        $lesson = $school->prepareLesson($teacherId, $lesson);
+        
+        $partData = $lesson->showPart($partId);
+
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/PartEdit/form.php',
-            array(
-                'part_id' => $partId
-            ),
+            $partData,
             array(),
             array()
         );
