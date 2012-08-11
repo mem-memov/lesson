@@ -75,6 +75,7 @@ implements
         
         foreach ($widgetIds as $index => $widgetId) {
             $widget = $this->getWidget($widgetTypeIds[$index], $widgetId);
+            $widget instanceof Domain_CanBeShown;
             $widgetData = $widget->show();
             $widgetData['widget_type'] = $this->widgetTypes[$widgetTypeIds[$index]];
             $data['widgets'][] = $widgetData;

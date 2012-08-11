@@ -70,7 +70,7 @@ class Domain_Lesson {
     public function showPart($partId) {
         
         $part = $this->partCollection->readUsingId($partId);
-        
+        $part instanceof Domain_CanBeShown;
         return $part->show();
         
     }

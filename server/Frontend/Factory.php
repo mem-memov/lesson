@@ -76,6 +76,10 @@ class Frontend_Factory {
 
     }
     
+    /**
+     * 
+     * @return Frontend_Processor
+     */
     public function makeProcessor() {
 
         $instance_key = __FUNCTION__;
@@ -93,6 +97,24 @@ class Frontend_Factory {
     }
     
 
+    /**
+     *
+     * @return Frontend_Input_Factory
+     */
+    public function makeInputFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            $this->instances[$instance_key] = new Frontend_Input_Factory(
+                $this->configuration['Frontend']['switch']
+            );
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
     /**
      *
      * @return Frontend_Request_Factory

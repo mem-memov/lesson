@@ -44,7 +44,7 @@ class Data_State_Item_Part extends Data_State_Item_Abstract {
      * ID пособий
      * @var array 
      */
-    private $widgetIds;
+    private $widgetIds = array();
     public function setWidgetIds(array $widgetIds) {
         $this->widgetIds = $widgetIds;
     }
@@ -56,7 +56,7 @@ class Data_State_Item_Part extends Data_State_Item_Abstract {
      * ID видов пособий
      * @var array 
      */
-    private $widgetTypeIds;
+    private $widgetTypeIds = array();
     public function setWidgetTypeIds(array $widgetTypeIds) {
         $this->widgetTypeIds = $widgetTypeIds;
     }

@@ -5,7 +5,7 @@
     'Domain' => array(),
     
     'Frontend' => array(
-        
+        'switch' => 'Browser' // Browser|Test
     ),
     
     'Service' => array(

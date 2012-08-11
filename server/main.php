@@ -12,17 +12,29 @@ require_once('Frontend/Factory.php');
 
 try {
 
-    Frontend_Factory::construct(
+    $frontendFactory = Frontend_Factory::construct(
         require_once('configuration.php'),
         new Frontend_ClassLoader_Php_5_2(
                 dirname(__FILE__)
         )
-    )->makeProcessor()->respond(
-        $_SERVER,
-        $_GET,
-        $_POST,
-        $_FILES,
-        $_COOKIE
+    );
+    
+    $inputFactory = $frontendFactory->makeInputFactory();
+    
+    $server = $inputFactory->makeServer();
+    $get = $inputFactory->makeGet();
+    $post = $inputFactory->makePost();
+    $files = $inputFactory->makeFiles();
+    $cookie = $inputFactory->makeCookie($server->getHttpHost());
+    
+    $processor = $frontendFactory->makeProcessor();
+    
+    $processor->respond(
+        $server, 
+        $get, 
+        $post, 
+        $files, 
+        $cookie
     );
     
 } catch (Exception $e) {

@@ -297,7 +297,7 @@ class Data_Access_Part {
         // Получаем новый список пособий, относящихся к данной части урока
         $newWidgetIds = $state->getWidgetIds();
         $newWidgetTypeIds = $state->getWidgetTypeIds();
-        
+       
         // Составляем список пособий на удаление
         $widgetIdsToBeDeleted = array();
         $widgetTypeIdsToBeDeleted = array();

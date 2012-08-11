@@ -7,11 +7,11 @@ class Frontend_Request_Factory {
     }
     
     public function makeHtmlRequest(
-        array $server,
-        array $get,
-        array $post,
-        array $files,
-        array $cookie
+        Frontend_Input_ServerInterface $server,
+        Frontend_Input_KeyValueInterface $get,
+        Frontend_Input_KeyValueInterface $post,
+        Frontend_Input_FilesInterface $files,
+        Frontend_Input_CookieInterface $cookie
     ) {
 
         return new Frontend_Request_Html(
