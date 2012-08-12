@@ -124,6 +124,22 @@ class Domain_Collection_Factory {
         
     }
     
+    public function makeVisitCollection() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Visit(
+                $this->accessFactory->makeVisit()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 
     
 }

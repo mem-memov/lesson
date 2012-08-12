@@ -8,7 +8,7 @@
 
 <?php endforeach; ?>
 
-<form method="post">
+<form method="post" action="/lesson/part/edit/<?php echo $data['lesson_id']; ?>/<?php echo $data['part_id']; ?>/">
     <textarea name="text"></textarea>
     <input type="submit" name="create_text" value="Вставить текст">
 </form>

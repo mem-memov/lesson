@@ -174,6 +174,8 @@ class Data_Access_Lesson {
                     `lesson`
                 WHERE
                     `id` = '.$state->getId().'
+                LIMIT
+                    1
                 ;
             ');
         

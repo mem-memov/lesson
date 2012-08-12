@@ -104,6 +104,8 @@ class Data_Access_Text {
                     `text`
                 WHERE
                     `id` = '.$state->getId().'
+                LIMIT
+                    1
                 ;
             ');
         

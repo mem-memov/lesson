@@ -137,6 +137,8 @@ class Data_Access_Part {
                     `part`
                 WHERE
                     `id` = '.$state->getId().'
+                LIMIT
+                    1
                 ;
             ');
        

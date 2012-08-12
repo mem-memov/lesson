@@ -123,4 +123,10 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkLessonShow() {
+        
+        return  new Frontend_Action_LessonShow($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

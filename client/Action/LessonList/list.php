@@ -3,7 +3,9 @@
 <table>
     <?php foreach($data['lessons'] as $lesson): ?>
     <tr>
-        <td><?php echo $lesson['title']; ?></td>
+        <td>
+            <a href="/lesson/show/<?php echo $lesson['id']; ?>/"><?php echo $lesson['title']; ?></a>
+        </td>
     </tr>
     <?php endforeach; ?>
 </table>

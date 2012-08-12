@@ -112,4 +112,22 @@ class Data_State_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику состояний для посещений
+     * @return Data_State_Factory_Visit
+     */
+    public function makeVisitFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Data_State_Factory_Visit();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }

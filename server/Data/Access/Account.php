@@ -138,6 +138,8 @@ class Data_Access_Account {
                     `account`
                 WHERE
                     `id` = '.$state->getId().'
+                LIMIT
+                    1
                 ;
             ');
         

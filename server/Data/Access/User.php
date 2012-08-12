@@ -109,6 +109,8 @@ class Data_Access_User {
                     `user`
                 WHERE
                     `id` = '.$state->getId().'
+                LIMIT
+                    1
                 ;
             ');
         
