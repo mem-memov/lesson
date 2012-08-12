@@ -120,9 +120,9 @@ class Service_Storage_Mysql_Adapter implements Service_Storage_Interface {
     }
     public function fetchColumn($query, $field) {
 
-        $columns = $this->fetchColumns($query);
+        $columns = $this->fetchColumns($query, array($field));
 
-        return $column[$field];
+        return $columns[$field];
 
     }
     public function fetchValue($query, $field = null) {

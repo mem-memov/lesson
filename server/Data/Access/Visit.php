@@ -28,7 +28,7 @@ class Data_Access_Visit {
     
     /**
      * Создаёт состояние посещения
-     * @return Data_State_Item_Lesson
+     * @return Data_State_Item_Visit
      */
     public function create() {
         
@@ -50,7 +50,7 @@ class Data_Access_Visit {
                 `lesson_id`,
                 `part_id`,
                 `student_id`,
-                `teacher_id`,
+                `teacher_id`
             FROM
                 `visit`
             WHERE
@@ -94,7 +94,7 @@ class Data_Access_Visit {
                 `lesson_id`,
                 `part_id`,
                 `student_id`,
-                `teacher_id`,
+                `teacher_id`
             FROM
                 `visit`
             WHERE

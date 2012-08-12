@@ -236,8 +236,8 @@ class Data_Access_Lesson {
             ORDER BY
                 `order` ASC
             ;
-        ');
-        
+        ', 'id');
+
         $state->setPartIds($partIds);
         
     }

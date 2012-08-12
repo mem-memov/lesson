@@ -31,6 +31,12 @@ class Domain_Teacher {
         
     }
     
+    public function getId() {
+        
+        return $this->state->getId();
+        
+    }
+    
     
     public function teach($lesson) {
         

@@ -28,9 +28,14 @@ class Domain_Collection_Visit {
      * Создаёт посещение
      * @return Domain_Visit
      */
-    public function create() {
-        
+    public function create($lessonId, $partId, $teacherId, $studentId) {
+
         $state = $this->dataAccess->create();
+        
+        $state->setLessonId($lessonId);
+        $state->setPartId($partId);
+        $state->setTeacherId($teacherId);
+        $state->setStudentId($studentId);
 
         $item = $this->make($state);
         
@@ -50,6 +55,20 @@ class Domain_Collection_Visit {
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
         return $item;
+    }
+    
+    public function readUsingFilter($filter) {
+        
+        $states = $this->dataAccess->readUsingFilter($filter);
+        
+        $items = array();
+        foreach ($states as $state) {
+            $item = $this->make($state);
+            $this->states[spl_object_hash($item)] = $state;
+            $items[] = $item;
+        }
+
+        return $items;
     }
     
     public function update($item) {

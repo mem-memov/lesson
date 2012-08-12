@@ -132,7 +132,7 @@ class Data_Access_Factory {
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Data_Access_Text(
+            $this->instances[$instance_key] = new Data_Access_Visit(
                 $this->stateFactory->makeVisitFactory(),
                 $this->storage
             );

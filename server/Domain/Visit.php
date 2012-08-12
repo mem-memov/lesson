@@ -17,4 +17,16 @@ class Domain_Visit {
         
     }
     
+    public function getPartId() {
+        
+        return $this->state->getPartId();
+        
+    }
+    
+    public function setPartId($partId) {
+        
+        $this->state->setPartId($partId);
+        
+    }
+    
 }

@@ -56,7 +56,7 @@ class Domain_Collection_Student {
     public function readUsingId($id) {
         
         $state = $this->dataAccess->readUsingId($id);
-        $account = $this->accountCollection->readUsingTeacherId($id);
+        $account = $this->accountCollection->readUsingUserId($id);
         
         $item = $this->make($state,$account);
         

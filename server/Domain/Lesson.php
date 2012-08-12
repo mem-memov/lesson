@@ -59,6 +59,56 @@ class Domain_Lesson {
         
     }
     
+    public function getTeacherId() {
+        
+        return $this->state->getTeacherId();
+        
+    }
+    
+    public function hasNextPartId($partId) {
+        
+        $partIds = $this->state->getPartIds();
+        $partCount = count($partIds);
+        
+        if ($partCount == 0) {
+            return false;
+        }
+        
+        $index = array_search($partId, $partIds);
+        
+        if ($index === false) {
+            throw new Domain_Exception('Такой части в уроке нет.');
+        }
+        
+        $maxIndex = $partCount - 1;
+        
+        return $index < $maxIndex;
+        
+    }
+    
+    public function getNextPartId($partId = null) {
+
+        $partIds = $this->state->getPartIds();
+        
+        if (is_null($partId)) {
+            
+            $nextPartId = $partIds[0];
+            
+        } else {
+            
+            if (!$this->hasNextPartId($partId)) {
+                throw new Domain_Exception('Следующей части урока нет.');
+            }
+            
+            $index = array_search($partId, $partIds);
+            $nextPartId = $partIds[$index + 1];
+            
+        }
+        
+        return $nextPartId;
+        
+    }
+    
     public function toArray() {
         return array(
             'id' => $this->state->hasId() ? $this->state->getId() : null,

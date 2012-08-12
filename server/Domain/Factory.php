@@ -61,14 +61,15 @@ class Domain_Factory {
         return new Domain_School(
             $collectionFactory->makeLessonCollection(),
             $collectionFactory->makeStudentCollection(),
-            $collectionFactory->makeTeacherCollection()
+            $collectionFactory->makeTeacherCollection(),
+            $collectionFactory->makeVisitCollection()
         );
         
     }
     
     /**
      * Создаёт фабрику коллекций
-     * @return Domain_Collection_FactoryInterface
+     * @return Domain_Collection_Factory
      */
     private function makeCollectionFactory() {
         
