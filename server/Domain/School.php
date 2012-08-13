@@ -21,91 +21,16 @@ class Domain_School {
      * Возвращает параметры следующей части урока
      * @param int $studentId
      * @param int $lessonId
-     * @return arra Description
+     * @return Domain_Message_Item_Presentation показ
      */
     public function educate($studentId, $lessonId) {
-        
+
         $educationRequest = $this->educationRequestFactory->makeMessage($studentId, $lessonId);
         $teacher = $this->teacherCollection->readUsingLessonId($lessonId);
-        $educationResponce = $teacher->teach($educationRequest);
+        $presentation = $teacher->teach($educationRequest);
         
-        return $educationResponce;
-        
-        
-        
-        $filter = array('lesson_id' => $lessonId, 'student_id' => $studentId);
-        $visits = $this->visitCollection->readUsingFilter($filter);
-        if (empty($visits)) {
-            $visit = $this->visitCollection->create($lessonId, $studentId);
-        } else {
-            $visit = $visits[0];
-        }
-        
-        $data = $visit->happen();
-        
-        $visit = $this->visitCollection->update($visit);
-        
-        return $data;
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return $presentation;
 
-        $lesson = $this->lessonCollection->readUsingId($lessonId);
-        
-        $lesson->beArrangedForStudent($studentId);
-
-        return $lesson;
-        
-        
-        
-        $student = $this->studentCollection->readUsingId($studentId);
-        $teacher = $this->teacherCollection->readUsingId($lesson->getTeacherId());
-        
-        $filter = array('lesson_id' => $lessonId, 'student_id' => $studentId);
-        $visits = $this->visitCollection->readUsingFilter($filter);
-        if (empty($visits)) {
-            $partId = $lesson->getNextPartId();
-            $visit = $this->visitCollection->create($lessonId, $partId, $teacher->getId(), $studentId);
-        } else {
-            $visit = $visits[0];
-            $partId = $visit->getPartId();
-        }
-        
-
-        //$teacher->teach($lesson);
-        //$student->learn($lesson);
-        
-        //$presentationArray = $lesson->getPresentation();
-        
-        //return $presentationArray;
-        if (!$lesson->hasNextPartId($partId)) {
-            $this->visitCollection->delete($visit);
-        } else {
-            
-        
-            $nextPartId = $lesson->getNextPartId($partId);
-            $visit->setPartId($nextPartId);
-            $this->visitCollection->update($visit);
-
-            return $lesson->showPart($partId);
-        
-        }
-        
     }
     
     /**

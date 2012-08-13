@@ -57,7 +57,8 @@ class Domain_Collection_Factory {
                 $this->accessFactory->makeLesson(),
                 $this->makePartCollection(),
                 $this->makeVisitCollection(),
-                $this->messageFactory->makeContinueRequestFactory()
+                $this->messageFactory->makeContinueRequestFactory(),
+                $this->messageFactory->makeVisitRequestFactory()
             );
             
         }
@@ -90,7 +91,7 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
-                $this->accessFactory->makeUser(),
+                $this->accessFactory->makeTeacher(),
                 $this->makeAccountCollection(),
                 $this->makeLessonCollection(),
                 $this->messageFactory->makePresentationRequestFactory()
@@ -110,7 +111,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Part(
                 $this->accessFactory->makePart(),
-                $this->makeTextCollection()
+                $this->makeTextCollection(),
+                $this->makeVisitCollection()
             );
             
         }

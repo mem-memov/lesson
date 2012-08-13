@@ -143,4 +143,21 @@ class Data_Access_Factory {
         
     }
 
+    public function makeTeacher() {
+
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Teacher(
+                $this->stateFactory->makeTeacherFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
 }

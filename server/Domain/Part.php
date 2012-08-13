@@ -13,6 +13,12 @@ implements
     private $textCollection;
     
     /**
+     * Коллекция посещений
+     * @var Domain_Collection_Visit
+     */
+    private $visitCollection;
+    
+    /**
      * Индекс типов учебных пособий
      * @var array
      */
@@ -26,11 +32,13 @@ implements
     
     public function __construct(
         Data_State_Item_Part $state,
-        Domain_Collection_Text $textCollection
+        Domain_Collection_Text $textCollection,
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->state = $state;
         $this->textCollection = $textCollection;
+        $this->visitCollection = $visitCollection;
         
         $this->widgetIndex = array( // только уникальные соответствия!!!
             1 => 'Domain_Text'
@@ -39,6 +47,21 @@ implements
         $this->widgetTypes = array( // только уникальные соответствия!!!
             1 => 'text'
         );
+        
+    }
+    
+    public function startVisit(
+        Domain_Message_Item_VisitRequest $visitRequest
+    ) {
+        
+        $visit = $this->visitCollection->create(
+            $visitRequest->getStudentId(), 
+            $visitRequest->getTeacherId(),
+            $this->state->getLessonId(),
+            $this->getId()
+        );
+        
+        $this->visitCollection->update($visit);
         
     }
     

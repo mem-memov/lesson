@@ -1,4 +1,7 @@
 <?php
+/**
+ * Урок
+ */
 class Domain_Lesson {
     
     /**
@@ -25,17 +28,25 @@ class Domain_Lesson {
      */
     private $continueRequestFactory;
     
+    /**
+     * Фабрика запросов на посещение урока
+     * @var Domain_Message_Factory_VisitRequest
+     */
+    private $visitRequestFactory;
+    
     public function __construct(
         Data_State_Item_Lesson $state,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_ContinueRequest $continueRequestFactory
+        Domain_Message_Factory_ContinueRequest $continueRequestFactory,
+        Domain_Message_Factory_VisitRequest $visitRequestFactory
     ) {
         
         $this->state = $state;
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
+        $this->visitRequestFactory = $visitRequestFactory;
       
     }
 
@@ -58,12 +69,12 @@ class Domain_Lesson {
         }
         catch (Domain_Collection_Exception_StudentIsAbsent $exception) {
             
-            $visit = $this->visitCollection->create(
-                    $presentationRequest->getStudentId(), 
-                    $this->state->getTeacherId(),
-                    $this->state->getId(),
-                    $this->getFirstPartId()
-                );
+            $this->visitFirstPart( $presentationRequest->getStudentId() );
+            
+            $visit = $this->visitCollection->readForVisitingStudent(
+                $this->state->getId(),
+                $presentationRequest->getStudentId()
+            );
             
         }
         
@@ -83,77 +94,31 @@ class Domain_Lesson {
 
     }
     
-    public function getFirstPartId() {
+    public function visitFirstPart($studentId) {
         
-        $partIds = $this->state->getPartIds();
+        $parts = $this->partCollection->readUsingLessonId( $this->state->getId() );
         
-        if (empty($partIds)) {
+        if (empty($parts)) {
             throw new Domain_Exception_LessonIsEmpty();
         }
         
-        return $partIds[0];
+        $firstPart = $parts[0];
         
-    }
-    
-    public function hasNextPartId($partId) {
+        $firstPart instanceof Domain_Part;
         
-        $partIds = $this->state->getPartIds();
-        $partCount = count($partIds);
-        
-        if ($partCount == 0) {
-            return false;
-        }
-        
-        $index = array_search($partId, $partIds);
-        
-        if ($index === false) {
-            throw new Domain_Exception('Такой части в уроке нет.');
-        }
-        
-        $maxIndex = $partCount - 1;
-        
-        return $index < $maxIndex;
-        
-    }
-    
-    public function getNextPartId($partId = null) {
-
-        $partIds = $this->state->getPartIds();
-        
-        if (is_null($partId)) {
-            
-            $nextPartId = $partIds[0];
-            
-        } else {
-            
-            if (!$this->hasNextPartId($partId)) {
-                throw new Domain_Exception('Следующей части урока нет.');
-            }
-            
-            $index = array_search($partId, $partIds);
-            $nextPartId = $partIds[$index + 1];
-            
-        }
-        
-        return $nextPartId;
-        
-    }
-    
-    public function toArray() {
-        return array(
-            'id' => $this->state->hasId() ? $this->state->getId() : null,
-            'title' => $this->state->getTitle(),
-            'description' => $this->state->getDescription()
+        $visitRequest = $this->visitRequestFactory->makeMessage(
+                                                                $studentId, 
+                                                                $this->state->getId()
         );
+        
+        $firstPart->startVisit($visitRequest);
+            
     }
+
     
-    public function showPart($partId) {
-        
-        $part = $this->partCollection->readUsingId($partId);
-        $part instanceof Domain_CanBeShown;
-        return $part->show();
-        
-    }
+    
+    
+    
     
     public function addPart($price, $after = null) {
         

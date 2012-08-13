@@ -129,21 +129,24 @@ class Domain_Message_Factory {
     }
     
     /**
-     * Создаёт фабрику показов
-     * @return Domain_Message_Factory_Presentation 
+     * Создаёт фабрику запросов на посещение урока
+     * @return Domain_Message_Factory_VisitRequest 
      */
-    public function makePresentationFactory() {
+    public function makeVisitRequestFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
 
-            $this->instances[$instance_key] = new Domain_Message_Factory_Presentation();
+            $this->instances[$instance_key] = new Domain_Message_Factory_VisitRequest();
             
         }
 
         return $this->instances[$instance_key];
         
     }
+
+    
+
     
 }

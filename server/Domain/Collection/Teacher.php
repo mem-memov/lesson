@@ -39,7 +39,7 @@ class Domain_Collection_Teacher {
 
     
     public function __construct(
-        Data_Access_User $dataAccess,
+        Data_Access_Teacher $dataAccess,
         Domain_Collection_Account $accountCollection,
         Domain_Collection_Lesson $lessonCollection,
         Domain_Message_Factory_PresentationRequest $presentationRequestFactory

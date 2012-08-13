@@ -66,7 +66,6 @@ class Data_Access_Lesson {
         
         
         $state = $this->rowToState($row);
-        $this->addPartsToState($state);
         
         return $state;
         
@@ -99,7 +98,6 @@ class Data_Access_Lesson {
         ');
         
         $states = $this->rowsToStates($rows);
-        $this->addPartsToStates($states);
 
         return $states;
         
@@ -218,87 +216,5 @@ class Data_Access_Lesson {
         return $state;
         
     }
-    
-    /**
-     * Добавляет ID частей к состоянию урока
-     * @param Data_State_Item_Lesson $state
-     * @return Data_State_Item_Lesson
-     */
-    private function addPartsToState($state) {
-        
-        $partIds = $this->storage->fetchColumn('
-            SELECT
-                `id`
-            FROM
-                `part`
-            WHERE
-                `lesson_id` = '.$state->getId().'
-            ORDER BY
-                `order` ASC
-            ;
-        ', 'id');
 
-        $state->setPartIds($partIds);
-        
-    }
-    
-    /**
-     * Добавляет ID частей к нескольким состояниям уроков
-     * @param Data_State_Item_Lesson[] $states
-     */
-    private function addPartsToStates(array &$states) {
-        
-        $ids = array();
-        foreach($states as $state) {
-            
-            $state instanceof Data_State_Item_Lesson;
-            $ids[] = $state->getId();
-            
-        }
-        
-        $rows = $this->storage->fetchRows('
-            SELECT
-                `id`,
-                `lesson_id`
-            FROM
-                `part`
-            WHERE
-                `lesson_id` IN ('.implode(', ', $ids).')
-            ORDER BY
-                `lesson_id` ASC,
-                `order` ASC
-            ;
-        ');
-
-        $partIds = array();
-        foreach ($rows as $row) {
-
-            if (!array_key_exists($row['lesson_id'], $partIds)) {
-                $partIds[$row['lesson_id']] = array();
-            }
-
-            $partIds[$row['lesson_id']][] = $row['id'];
-
-        }
-
-        foreach ($states as &$state) {
-
-            $state instanceof Data_State_Item_Lesson;
-
-            if (array_key_exists($state->getId(), $partIds)) {
-
-                $state->setPartIds($partIds[$state->getId()]);
-
-            } else {
-
-                $state->setPartIds(array());
-
-            }
-
-        }
-
-        return $states;
-        
-    }
-    
 }

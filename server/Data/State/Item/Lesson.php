@@ -8,7 +8,7 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
      * Название урока
      * @var string
      */
-    private $title;
+    private $title = null;
     public function setTitle($title) {
         $this->title = $title;
     }
@@ -20,7 +20,7 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
      * Описание урока
      * @var string
      */
-    private $description;
+    private $description = null;
     public function setDescription($description) {
         $this->description = $description;
     }
@@ -32,24 +32,12 @@ class Data_State_Item_Lesson extends Data_State_Item_Abstract {
      * ID учителя
      * @var integer
      */
-    private $teacherId;
+    private $teacherId = null;
     public function setTeacherId($teacherId) {
         $this->teacherId = $teacherId;
     }
     public function getTeacherId() {
         return $this->teacherId;
-    }
-    
-    /**
-     * ID частей урока
-     * @var array 
-     */
-    private $partIds;
-    public function setPartIds(array $partIds) {
-        $this->partIds = $partIds;
-    }
-    public function getPartIds() {
-        return $this->partIds;
     }
     
 }

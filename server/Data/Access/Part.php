@@ -53,7 +53,7 @@ class Data_Access_Part {
             FROM
                 `part`
             WHERE
-                `part`.`id` = '.$id.'
+                `id` = '.$id.'
             LIMIT
                 1
             ;
@@ -67,6 +67,30 @@ class Data_Access_Part {
         $this->addWidgetsToState($state);
         
         return $state;
+        
+    }
+    
+    public function readUsingLessonId($lessonId) {
+        
+        $rows = $this->storage->fetchRows('
+            SELECT
+                `id`,
+                `lesson_id`,
+                `order`,
+                `price`
+            FROM
+                `part`
+            WHERE
+                `lesson_id` = '.$lessonId.'
+            ORDER BY
+                `order` ASC
+            ;
+        ');
+        
+        $states = $this->rowsToStates($rows);
+        $this->addWidgetsToStates($states);
+
+        return $states;
         
     }
     

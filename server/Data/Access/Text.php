@@ -127,6 +127,7 @@ class Data_Access_Text {
         
     }
     
+    //TODO: удалить?
     private function fetchTypeId($state) {
         
         $typeId = $this->storage->fetchValue('

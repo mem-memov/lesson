@@ -3,7 +3,7 @@ class Domain_Teacher {
 
     /**
      * Сосояние
-     * @var Data_State_Item_User 
+     * @var Data_State_Item_Teacher 
      */
     private $state;
     
@@ -26,7 +26,7 @@ class Domain_Teacher {
     private $presentationRequestFactory;
     
     public function __construct(
-        Data_State_Item_User $state,
+        Data_State_Item_Teacher $state,
         Domain_Account $account,
         Domain_Collection_Lesson $lessonCollection,
         Domain_Message_Factory_PresentationRequest $presentationRequestFactory

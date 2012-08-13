@@ -18,15 +18,23 @@ class Domain_Collection_Part {
      * @var Domain_Collection_Text
      */
     private $textCollection;
+    
+    /**
+     * Коллекция посещений
+     * @var Domain_Collection_Visit
+     */
+    private $visitCollection;
 
     
     public function __construct(
         Data_Access_Part $dataAccess,
-        Domain_Collection_Text $textCollection
+        Domain_Collection_Text $textCollection,
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->textCollection = $textCollection;
+        $this->visitCollection = $visitCollection;
         
         $this->states = array();
         
@@ -63,7 +71,21 @@ class Domain_Collection_Part {
         return $item;
     }
     
-    public function readUsingFilter($filter) {
+    public function readUsingLessonId($lessonId) {
+        
+        $states = $this->dataAccess->readUsingLessonId($lessonId);
+        
+        $items = array();
+        foreach ($states as $state) {
+            $item = $this->make($state);
+            $this->states[spl_object_hash($item)] = $state;
+            $items[] = $item;
+        }
+
+        return $items;
+    }
+
+    private function readUsingFilter($filter) {
         
         $states = $this->dataAccess->readUsingFilter($filter);
         
@@ -90,7 +112,8 @@ class Domain_Collection_Part {
         
         return new Domain_Part(
             $state, 
-            $this->textCollection
+            $this->textCollection,
+            $this->visitCollection
         );
         
     }

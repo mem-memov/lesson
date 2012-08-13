@@ -30,18 +30,26 @@ class Domain_Collection_Lesson {
      * @var Domain_Message_Factory_ContinueRequest
      */
     private $continueRequestFactory;
+    
+    /**
+     * Фабрика запросов на посещение урока
+     * @var Domain_Message_Factory_VisitRequest
+     */
+    private $visitRequestFactory;
 
     public function __construct(
         Data_Access_Lesson $dataAccess,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_ContinueRequest $continueRequestFactory
+        Domain_Message_Factory_ContinueRequest $continueRequestFactory,
+        Domain_Message_Factory_VisitRequest $visitRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
+        $this->visitRequestFactory = $visitRequestFactory;
         
         $this->states = array();
         
@@ -121,7 +129,8 @@ class Domain_Collection_Lesson {
             $state, 
             $this->partCollection,
             $this->visitCollection,
-            $this->continueRequestFactory
+            $this->continueRequestFactory,
+            $this->visitRequestFactory
         );
         
     }
