@@ -144,7 +144,8 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Visit(
-                $this->accessFactory->makeVisit()
+                $this->accessFactory->makeVisit(),
+                $this->messageFactory->makePartIdentificationRequestFactory()
             );
             
         }

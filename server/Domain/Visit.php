@@ -2,41 +2,52 @@
 class Domain_Visit {
     
     private $state;
+    
+    /**
+     * Фабрика запросов на идентификацию части урока
+     * @var Domain_Message_Factory_PartIdentificationRequest
+     */
+    private $partIdentificationRequestFactory;
 
     
     public function __construct(
-        Data_State_Item_Visit $state
+        Data_State_Item_Visit $state,
+        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory
     ) {
         
         $this->state = $state;
+        $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         
     }
     
     public function continuePresentation(
         Domain_Message_Item_ContinueRequest $continueRequest
     ) {
+
+        $partCollection = $continueRequest->getPartCollection();
         
-        $partIds = $continueRequest->getPartIds();
+        $parts = $partCollection->readUsingLessonId( $this->state->getLessonId() );
         
-        $maxIndex = count($partIds) - 1;
-        
-        $index = array_search($this->state->getPartId(), $partIds);
-        
-        if ($index == false) {
+        $oldPart = $partCollection->readUsingId( $this->state->getPartId() );
+
+        $maxIndex = count($parts) - 1;
+
+        $index = array_search($oldPart, $parts, true);
+
+        if ($index === false) {
             throw new Domain_Exception_PartIsMissing();
         }
-        
-        if ($index == $maxIndex) {
+
+        if ($index === $maxIndex) {
             throw new Domain_Collection_Exception_LessonCanNotContinue();
         }
         
-        $part = $this->partCollection->readUsingId( $this->state->getPartId() );
+        $newPart = $parts[$index + 1];
         
-        $nextPartId = $partIds[$index + 1];
-        
-        $this->state->setPartId($nextPartId);
-        
-        
+        $partIdentificationRequest = $this->partIdentificationRequestFactory->makeMessage($this->state);
+
+        $newPart->transferId($partIdentificationRequest);
+
     }
     
 }

@@ -14,6 +14,12 @@ class Domain_Collection_Lesson {
     private $states;
     
     /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
+    
+    /**
      * Коллекция частей урока
      * @var Domain_Collection_Part
      */
@@ -52,6 +58,7 @@ class Domain_Collection_Lesson {
         $this->visitRequestFactory = $visitRequestFactory;
         
         $this->states = array();
+        $this->items = array();
         
     }
     
@@ -69,6 +76,7 @@ class Domain_Collection_Lesson {
         $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         
         return $item;
         
@@ -80,10 +88,18 @@ class Domain_Collection_Lesson {
      * @return Domain_Lesson
      */
     public function readUsingId($id) {
+        
+        $existingItem = $this->findById($id);
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
+        
     }
     
     public function readUsingFilter($filter) {
@@ -92,26 +108,36 @@ class Domain_Collection_Lesson {
         
         $items = array();
         foreach ($states as $state) {
-            $item = $this->make($state);
-            $this->states[spl_object_hash($item)] = $state;
-            $items[] = $item;
+            
+            $existingItem = $this->findById( $state->getId() );
+            if ($existingItem !== false) {
+                $items[] = $existingItem;
+            } else {
+                $item = $this->make($state);
+                $this->states[spl_object_hash($item)] = $state;
+                $this->items[spl_object_hash($state)] = $item;
+                $items[] = $item;
+            }
+            
         }
 
         return $items;
     }
     
     public function readUsingTeacherId($teacherId) {
+        
         $state = $this->dataAccess->readUsingTeacherId($teacherId);
+        
+        $existingItem = $this->findById( $state->getId() );
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
-    }
-    
-    public function readUsingStudentId($studentId) {
-        $state = $this->dataAccess->readUsingStudentId($studentId);
-        $item = $this->make($state);
-        $this->states[spl_object_hash($item)] = $state;
-        return $item;
+        
     }
     
     public function update($item) {
@@ -121,6 +147,22 @@ class Domain_Collection_Lesson {
     public function delete($item) {
         $this->dataAccess->delete($this->states[spl_object_hash($item)]);
         unset($this->states[spl_object_hash($item)]);
+    }
+    
+    private function findById($id) {
+        
+        foreach ($this->states as $state) {
+            
+            $state instanceof Data_State_Item_TrackableInterface;
+
+            if ($state->getId() === $id) {
+                return $this->items[spl_object_hash($state)];
+            }
+            
+        }
+        
+        return false;
+        
     }
     
     private function make($state) {

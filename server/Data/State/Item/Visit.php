@@ -1,6 +1,6 @@
 <?php
 /**
- * Часть урока
+ * Посещение части урока
  */
 class Data_State_Item_Visit extends Data_State_Item_Abstract {
     

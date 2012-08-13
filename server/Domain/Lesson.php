@@ -65,10 +65,10 @@ class Domain_Lesson {
                 $this->state->getId(),
                 $presentationRequest->getStudentId()
             );
-            
+
         }
         catch (Domain_Collection_Exception_StudentIsAbsent $exception) {
-            
+
             $this->visitFirstPart( $presentationRequest->getStudentId() );
             
             $visit = $this->visitCollection->readForVisitingStudent(
@@ -80,8 +80,9 @@ class Domain_Lesson {
         
         try {
             
-            $continueRequest = $this->continueRequestFactory->makeMessage( $this->state->getPartIds() );
+            $continueRequest = $this->continueRequestFactory->makeMessage( $this->partCollection );
             $presentationResponce = $visit->continuePresentation($continueRequest);
+            $this->visitCollection->update($visit);
         
         }
         catch (Domain_Collection_Exception_LessonCanNotContinue $exception) {
@@ -108,12 +109,13 @@ class Domain_Lesson {
         
         $visitRequest = $this->visitRequestFactory->makeMessage(
                                                                 $studentId, 
-                                                                $this->state->getId()
+                                                                $this->state->getTeacherId()
         );
         
         $firstPart->startVisit($visitRequest);
             
     }
+
 
     
     

@@ -8,18 +8,33 @@ class Domain_Collection_Visit {
     private $dataAccess; 
     
     /**
+     * Фабрика запросов на идентификацию части урока
+     * @var Domain_Message_Factory_PartIdentificationRequest
+     */
+    private $partIdentificationRequestFactory;
+    
+    /**
      * Состояния
      * @var array 
      */
     private $states;
+    
+    /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
 
     public function __construct(
-        Data_Access_Visit $dataAccess
+        Data_Access_Visit $dataAccess,
+        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         
         $this->states = array();
+        $this->items = array();
         
     }
     
@@ -39,6 +54,7 @@ class Domain_Collection_Visit {
         $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         
         return $item;
         
@@ -50,10 +66,18 @@ class Domain_Collection_Visit {
      * @return Domain_Visit
      */
     public function readUsingId($id) {
+        
+        $existingItem = $this->findById($id);
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
+        
     }
     
     public function readForVisitingStudent($lessonId, $studentId) {
@@ -69,14 +93,15 @@ class Domain_Collection_Visit {
         $state = $states[0];
         
         $state instanceof Data_State_Item_Visit;
-
-        $state->setStudentId($studentId);
-        $state->setTeacherId($teacherId);
-        $state->setLessonId($lessonId);
-        $state->setPartId($partId);
+        
+        $existingItem = $this->findById( $state->getId() );
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
 
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
 
         return $item;
         
@@ -93,10 +118,27 @@ class Domain_Collection_Visit {
         unset($this->states[spl_object_hash($item)]);
     }
     
+    private function findById($id) {
+        
+        foreach ($this->states as $state) {
+            
+            $state instanceof Data_State_Item_TrackableInterface;
+
+            if ($state->getId() === $id) {
+                return $this->items[spl_object_hash($state)];
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
     private function make($state) {
         
         return new Domain_Visit(
-            $state
+            $state,
+            $this->partIdentificationRequestFactory
          );
         
     }

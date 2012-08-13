@@ -65,6 +65,31 @@ implements
         
     }
     
+    /**
+     * Сообщает ID части урокаs
+     * @param Domain_Message_Item_PartIdentificationRequest $partIdentificationRequest
+     */
+    public function transferId(
+        Domain_Message_Item_PartIdentificationRequest $partIdentificationRequest
+    ) {
+        
+        $partIdentificationRequest->setPartId( $this->state->getId() );
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public function getId() {
         
         return $this->state->getId();

@@ -32,6 +32,12 @@ class Domain_Collection_Teacher {
     private $states;
     
     /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
+    
+    /**
      * Счета
      * @var array 
      */
@@ -51,6 +57,7 @@ class Domain_Collection_Teacher {
         $this->presentationRequestFactory = $presentationRequestFactory;
         
         $this->states = array();
+        $this->items = array();
         $this->accounts = array();
         
     }
@@ -63,6 +70,7 @@ class Domain_Collection_Teacher {
         $item = $this->make($state,$account);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
@@ -71,12 +79,20 @@ class Domain_Collection_Teacher {
     
     public function readUsingId($id) {
         
+        $existingItem = $this->findById($id);
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
+        
+        
         $state = $this->dataAccess->readUsingId($id);
         $account = $this->accountCollection->readUsingUserId($id);
         
         $item = $this->make($state,$account);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
@@ -86,11 +102,20 @@ class Domain_Collection_Teacher {
     public function readUsingLessonId($lessonId) {
         
         $state = $this->dataAccess->readUsingLessonId($lessonId);
+        
+        $existingItem = $this->findById( $state->getId() );
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
+        
+        
         $account = $this->accountCollection->readUsingUserId($state->getId());
         
         $item = $this->make($state,$account);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
@@ -115,7 +140,21 @@ class Domain_Collection_Teacher {
         
     }
     
+    private function findById($id) {
+        
+        foreach ($this->states as $state) {
+            
+            $state instanceof Data_State_Item_TrackableInterface;
 
+            if ($state->getId() === $id) {
+                return $this->items[spl_object_hash($state)];
+            }
+            
+        }
+        
+        return false;
+        
+    }
     
     private function make($state, $account) {
         

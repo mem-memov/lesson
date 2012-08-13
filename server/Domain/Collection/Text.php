@@ -12,6 +12,12 @@ class Domain_Collection_Text {
      * @var array 
      */
     private $states;
+    
+    /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
 
     
     public function __construct(
@@ -21,6 +27,7 @@ class Domain_Collection_Text {
         $this->dataAccess = $dataAccess;
         
         $this->states = array();
+        $this->items = array();
         
     }
     
@@ -38,6 +45,7 @@ class Domain_Collection_Text {
         $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         
         return $item;
         
@@ -49,10 +57,18 @@ class Domain_Collection_Text {
      * @return Domain_Text
      */
     public function readUsingId($id) {
+        
+        $existingItem = $this->findById($id);
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
+        
     }
     
     public function update($item) {
@@ -62,6 +78,22 @@ class Domain_Collection_Text {
     public function delete($item) {
         $this->dataAccess->delete($this->states[spl_object_hash($item)]);
         unset($this->states[spl_object_hash($item)]);
+    }
+    
+    private function findById($id) {
+        
+        foreach ($this->states as $state) {
+            
+            $state instanceof Data_State_Item_TrackableInterface;
+
+            if ($state->getId() === $id) {
+                return $this->items[spl_object_hash($state)];
+            }
+            
+        }
+        
+        return false;
+        
     }
     
     private function make($state) {

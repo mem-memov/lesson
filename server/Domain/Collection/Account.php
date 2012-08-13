@@ -12,6 +12,12 @@ class Domain_Collection_Account {
      * @var array 
      */
     private $states;
+    
+    /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
 
     
     public function __construct(
@@ -21,6 +27,7 @@ class Domain_Collection_Account {
         $this->dataAccess = $dataAccess;
         
         $this->states = array();
+        $this->items = array();
         
     }
     
@@ -28,21 +35,39 @@ class Domain_Collection_Account {
         $state = $this->dataAccess->create();
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
     }
     
     public function readUsingId($id) {
+        
+        $existingItem = $this->findById($id);
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
+        
     }
     
-    public function readUsingUserId($teacherId) {
-        $state = $this->dataAccess->readUsingUserId($teacherId);
+    public function readUsingUserId($userId) {
+        
+        $state = $this->dataAccess->readUsingUserId($userId);
+        
+        $existingItem = $this->findById( $state->getId() );
+        if ($existingItem !== false) {
+            return $existingItem;
+        }
+        
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
         return $item;
+        
     }
     
     public function update($item) {
@@ -52,6 +77,22 @@ class Domain_Collection_Account {
     public function delete($item) {
         $this->dataAccess->delete($this->states[spl_object_hash($item)]);
         unset($this->states[spl_object_hash($item)]);
+    }
+    
+    private function findById($id) {
+        
+        foreach ($this->states as $state) {
+            
+            $state instanceof Data_State_Item_TrackableInterface;
+
+            if ($state->getId() === $id) {
+                return $this->items[spl_object_hash($state)];
+            }
+            
+        }
+        
+        return false;
+        
     }
     
     private function make($state) {

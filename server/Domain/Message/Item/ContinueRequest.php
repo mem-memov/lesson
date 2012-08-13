@@ -5,28 +5,30 @@
 class Domain_Message_Item_ContinueRequest {
     
     /**
-     * ID частей урока
-     * @var integer[]
+     * Коллекция частей урока
+     * @var Domain_Collection_Part
      */
-    private $partIds;
+    private $partCollection;
     
     /**
      * Создаёт экземпляр класса
-     * @param integer[] $partIds ID частей урока
+     * @param Domain_Collection_Part $partCollection коллекция частей урока
      */
-    public function __construct(array $partIds) {
+    public function __construct(
+        Domain_Collection_Part $partCollection
+    ) {
         
-        $this->partIds = $partIds;
+        $this->partCollection = $partCollection;
         
     }
     
     /**
-     * Сообщает ID частей урока
-     * @return integer[]
+     * Передаёт коллекцию частей урока
+     * @return Domain_Collection_Part
      */
-    public function getPartIds() {
+    public function getPartCollection() {
         
-        return $this->partIds;
+        return $this->partCollection;
         
     }
     

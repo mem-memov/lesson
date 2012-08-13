@@ -43,7 +43,7 @@ class Data_Access_Part {
      * @throws Data_Access_Exception
      */
     public function readUsingId($id) {
-        
+
         $row = $this->storage->fetchRow('
             SELECT
                 `id`,
