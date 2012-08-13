@@ -19,15 +19,23 @@ class Domain_Teacher {
      */
     private $lessonCollection;
     
+    /**
+     * Фабрика презентационных запросов
+     * @var Domain_Message_Factory_PresentationRequest
+     */
+    private $presentationRequestFactory;
+    
     public function __construct(
         Data_State_Item_User $state,
         Domain_Account $account,
-        Domain_Collection_Lesson $lessonCollection
+        Domain_Collection_Lesson $lessonCollection,
+        Domain_Message_Factory_PresentationRequest $presentationRequestFactory
     ) {
         
         $this->state = $state;
         $this->account = $account;
         $this->lessonCollection = $lessonCollection;
+        $this->presentationRequestFactory = $presentationRequestFactory;
         
     }
     
@@ -38,9 +46,15 @@ class Domain_Teacher {
     }
     
     
-    public function teach($lesson) {
+    public function teach(
+        Domain_Message_Item_EducationRequest $educationRequest
+    ) {
         
+        $lesson = $this->lessonCollection->readUsingId($educationRequest->getLessonId());
+        $presentationRequest = $this->presentationRequestFactory->makeMessage($educationRequest->getStudentId());
+        $presentationResponce = $lesson->bePresented($presentationRequest);
         
+        return $presentationResponce;
         
     }
     

@@ -2,7 +2,7 @@
 class Domain_Lesson {
     
     /**
-     * Сосояние
+     * Состояние
      * @var Data_State_Item_Lesson 
      */
     private $state;
@@ -13,15 +13,42 @@ class Domain_Lesson {
      */
     private $partCollection;
     
+    /**
+     * Коллекция посещений
+     * @var Domain_Collection_Visit
+     */
+    private $visitCollection;
+    
+    /**
+     * ID ученика
+     * @var integer
+     */
+    private $studentId;
+
+    
     public function __construct(
         Data_State_Item_Lesson $state,
-        Domain_Collection_Part $partCollection
+        Domain_Collection_Part $partCollection,
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->state = $state;
         $this->partCollection = $partCollection;
+        $this->visitCollection = $visitCollection;
       
     }
+
+    public function bePresented(
+        Domain_Message_Item_PresentationRequest $presentationRequest
+    ) {
+        
+        
+        
+    }
+    
+    
+    
+    
     
     public function getId() {
         

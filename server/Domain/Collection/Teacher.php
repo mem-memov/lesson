@@ -20,6 +20,12 @@ class Domain_Collection_Teacher {
     private $lessonCollection;
     
     /**
+     * Фабрика презентационных запросов
+     * @var Domain_Message_Factory_PresentationRequest
+     */
+    private $presentationRequestFactory;
+    
+    /**
      * Состояния
      * @var array 
      */
@@ -35,12 +41,14 @@ class Domain_Collection_Teacher {
     public function __construct(
         Data_Access_User $dataAccess,
         Domain_Collection_Account $accountCollection,
-        Domain_Collection_Lesson $lessonCollection  
+        Domain_Collection_Lesson $lessonCollection,
+        Domain_Message_Factory_PresentationRequest $presentationRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->accountCollection = $accountCollection;
         $this->lessonCollection = $lessonCollection;
+        $this->presentationRequestFactory = $presentationRequestFactory;
         
         $this->states = array();
         $this->accounts = array();
@@ -111,7 +119,12 @@ class Domain_Collection_Teacher {
     
     private function make($state, $account) {
         
-        return new Domain_Teacher($state, $account, $this->lessonCollection);
+        return new Domain_Teacher(
+            $state, 
+            $account, 
+            $this->lessonCollection,
+            $this->presentationRequestFactory
+        );
         
     }
 

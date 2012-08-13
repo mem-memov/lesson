@@ -12,12 +12,20 @@ class Domain_Collection_Factory {
      * @var Data_Access_Factory 
      */
     private $accessFactory;
+    
+    /**
+     * Фабрика, создающая фабрики сообщений
+     * @var Domain_Message_Factory
+     */
+    private $messageFactory;
 
     public function __construct(
-        Data_Access_Factory $accessFactory
+        Data_Access_Factory $accessFactory,
+        Domain_Message_Factory $messageFactory
     ) {
 
         $this->accessFactory = $accessFactory;
+        $this->messageFactory = $messageFactory;
         
         $this->uniqueInstances = array();
         
@@ -47,7 +55,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Lesson(
                 $this->accessFactory->makeLesson(),
-                $this->makePartCollection()
+                $this->makePartCollection(),
+                $this->makeVisitCollection()
             );
             
         }
@@ -82,7 +91,8 @@ class Domain_Collection_Factory {
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
                 $this->accessFactory->makeUser(),
                 $this->makeAccountCollection(),
-                $this->makeLessonCollection()
+                $this->makeLessonCollection(),
+                $this->messageFactory->makePresentationRequestFactory()
             );
             
         }

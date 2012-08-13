@@ -12,15 +12,29 @@ class Domain_Collection_Visit {
      * @var array 
      */
     private $states;
+    
+    private $lessonCollection;
+    private $studentCollection;
+    private $teacherCollection;
+    private $visitCollection;
 
     
     public function __construct(
-        Data_Access_Visit $dataAccess
+        Data_Access_Visit $dataAccess,
+        Domain_Collection_Lesson $lessonCollection,
+        Domain_Collection_Student $studentCollection,
+        Domain_Collection_Teacher $teacherCollection,
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->dataAccess = $dataAccess;
         
         $this->states = array();
+        
+        $this->lessonCollection = $lessonCollection;
+        $this->studentCollection = $studentCollection;
+        $this->teacherCollection = $teacherCollection;
+        $this->visitCollection = $visitCollection;
         
     }
     
@@ -28,7 +42,7 @@ class Domain_Collection_Visit {
      * Создаёт посещение
      * @return Domain_Visit
      */
-    public function create($lessonId, $partId, $teacherId, $studentId) {
+    public function create($studentId, $lessonId) {
 
         $state = $this->dataAccess->create();
         

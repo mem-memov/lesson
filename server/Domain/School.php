@@ -4,22 +4,16 @@
  */
 class Domain_School {
     
-    private $lessonCollection;
-    private $studentCollection;
     private $teacherCollection;
-    private $visitCollection;
+    private $educationRequestFactory;
     
     public function __construct(
-        Domain_Collection_Lesson $lessonCollection,
-        Domain_Collection_Student $studentCollection,
         Domain_Collection_Teacher $teacherCollection,
-        Domain_Collection_Visit $visitCollection
+        Domain_Message_Factory_EducationRequest $educationRequestFactory
     ) {
-        
-        $this->lessonCollection = $lessonCollection;
-        $this->studentCollection = $studentCollection;
+
         $this->teacherCollection = $teacherCollection;
-        $this->visitCollection = $visitCollection;
+        $this->educationRequestFactory = $educationRequestFactory;
         
     }
     
@@ -27,10 +21,58 @@ class Domain_School {
      * Возвращает параметры следующей части урока
      * @param int $studentId
      * @param int $lessonId
+     * @return arra Description
      */
     public function educate($studentId, $lessonId) {
+        
+        $educationRequest = $this->educationRequestFactory->makeMessage($studentId, $lessonId);
+        $teacher = $this->teacherCollection->readUsingLessonId($lessonId);
+        $educationResponce = $teacher->teach($educationRequest);
+        
+        return $educationResponce;
+        
+        
+        
+        $filter = array('lesson_id' => $lessonId, 'student_id' => $studentId);
+        $visits = $this->visitCollection->readUsingFilter($filter);
+        if (empty($visits)) {
+            $visit = $this->visitCollection->create($lessonId, $studentId);
+        } else {
+            $visit = $visits[0];
+        }
+        
+        $data = $visit->happen();
+        
+        $visit = $this->visitCollection->update($visit);
+        
+        return $data;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         $lesson = $this->lessonCollection->readUsingId($lessonId);
+        
+        $lesson->beArrangedForStudent($studentId);
+
+        return $lesson;
+        
+        
+        
         $student = $this->studentCollection->readUsingId($studentId);
         $teacher = $this->teacherCollection->readUsingId($lesson->getTeacherId());
         

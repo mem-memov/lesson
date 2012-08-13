@@ -57,12 +57,11 @@ class Domain_Factory {
     public function makeSchool() {
         
         $collectionFactory = $this->makeCollectionFactory();
+        $messageFactory = $this->makeMessageFactory();
         
         return new Domain_School(
-            $collectionFactory->makeLessonCollection(),
-            $collectionFactory->makeStudentCollection(),
             $collectionFactory->makeTeacherCollection(),
-            $collectionFactory->makeVisitCollection()
+            $messageFactory->makeEducationRequestFactory()
         );
         
     }
@@ -78,7 +77,28 @@ class Domain_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Factory(
-                $this->dataFactory->makeAccessFactory()
+                $this->dataFactory->makeAccessFactory(),
+                $this->makeMessageFactory()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику, создающую фабрики сообщений
+     * @return Domain_Message_Factory
+     */
+    private function makeMessageFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory(
+                
             );
             
         }
