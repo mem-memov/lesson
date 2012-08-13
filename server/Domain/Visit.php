@@ -23,9 +23,26 @@ class Domain_Visit {
         Domain_Message_Item_ContinueRequest $continueRequest
     ) {
         
-        $curren
-        $part = 
-        Domain_Collection_Exception_LessonCanNotContinue
+        $partIds = $continueRequest->getPartIds();
+        
+        $maxIndex = count($partIds) - 1;
+        
+        $index = array_search($this->state->getPartId(), $partIds);
+        
+        if ($index == false) {
+            throw new Domain_Exception_PartIsMissing();
+        }
+        
+        if ($index == $maxIndex) {
+            throw new Domain_Collection_Exception_LessonCanNotContinue();
+        }
+        
+        $part = $this->partCollection->readUsingId( $this->state->getPartId() );
+        
+        $nextPartId = $partIds[$index + 1];
+        
+        $this->state->setPartId($nextPartId);
+        
         
     }
     

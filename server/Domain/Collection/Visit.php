@@ -108,20 +108,6 @@ class Domain_Collection_Visit {
         unset($this->states[spl_object_hash($item)]);
     }
     
-    private function readUsingFilter($filter) {
-        
-        $states = $this->dataAccess->readUsingFilter($filter);
-        
-        $items = array();
-        foreach ($states as $state) {
-            $item = $this->make($state);
-            $this->states[spl_object_hash($item)] = $state;
-            $items[] = $item;
-        }
-
-        return $items;
-    }
-    
     private function make($state) {
         
         return new Domain_Visit($state);

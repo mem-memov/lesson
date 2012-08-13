@@ -74,4 +74,76 @@ class Domain_Message_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику показов текста
+     * @return Domain_Message_Factory_TextPresentation 
+     */
+    public function makeTextPresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_TextPresentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику показов части урока
+     * @return Domain_Message_Factory_PartPresentation 
+     */
+    public function makePartPresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartPresentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику показов урока
+     * @return Domain_Message_Factory_LessonPresentation 
+     */
+    public function makeLessonPresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_LessonPresentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику показов
+     * @return Domain_Message_Factory_Presentation 
+     */
+    public function makePresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_Presentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }
