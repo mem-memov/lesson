@@ -56,7 +56,8 @@ class Domain_Collection_Factory {
             $this->instances[$instance_key] = new Domain_Collection_Lesson(
                 $this->accessFactory->makeLesson(),
                 $this->makePartCollection(),
-                $this->makeVisitCollection()
+                $this->makeVisitCollection(),
+                $this->messageFactory->makeContinueRequestFactory()
             );
             
         }

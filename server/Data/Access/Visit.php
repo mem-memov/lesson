@@ -71,6 +71,11 @@ class Data_Access_Visit {
         
     }
     
+    /**
+     * 
+     * @param type $filter
+     * @return Data_State_Item_Visit[]
+     */
     public function readUsingFilter($filter) {
        
         $conditions = array();

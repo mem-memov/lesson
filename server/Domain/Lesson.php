@@ -20,75 +20,78 @@ class Domain_Lesson {
     private $visitCollection;
     
     /**
-     * ID ученика
-     * @var integer
+     * Фабрика запросов на продолжение урока
+     * @var Domain_Message_Factory_ContinueRequest
      */
-    private $studentId;
-
+    private $continueRequestFactory;
     
     public function __construct(
         Data_State_Item_Lesson $state,
         Domain_Collection_Part $partCollection,
-        Domain_Collection_Visit $visitCollection
+        Domain_Collection_Visit $visitCollection,
+        Domain_Message_Factory_ContinueRequest $continueRequestFactory
     ) {
         
         $this->state = $state;
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
+        $this->continueRequestFactory = $continueRequestFactory;
       
     }
 
+    /**
+     * 
+     * @param Domain_Message_Item_PresentationRequest $presentationRequest
+     * @return type
+     */
     public function bePresented(
         Domain_Message_Item_PresentationRequest $presentationRequest
     ) {
         
+        try {
+            
+            $visit = $this->visitCollection->readForVisitingStudent(
+                $this->state->getId(),
+                $presentationRequest->getStudentId()
+            );
+            
+        }
+        catch (Domain_Collection_Exception_StudentIsAbsent $exception) {
+            
+            $visit = $this->visitCollection->create(
+                    $presentationRequest->getStudentId(), 
+                    $this->state->getTeacherId(),
+                    $this->state->getId(),
+                    $this->getFirstPartId()
+                );
+            
+        }
         
+        try {
+            
+            $continueRequest = $this->continueRequestFactory->makeMessage( $this->state->getPartIds() );
+            $presentationResponce = $visit->continuePresentation($continueRequest);
         
+        }
+        catch (Domain_Collection_Exception_LessonCanNotContinue $exception) {
+            
+            
+            
+        }
+        
+        return $presentationResponce;
+
     }
     
-    
-    
-    
-    
-    public function getId() {
+    public function getFirstPartId() {
         
-        return $this->state->getId();
+        $partIds = $this->state->getPartIds();
         
-    }
-    
-    public function getTitle() {
+        if (empty($partIds)) {
+            throw new Domain_Exception_LessonIsEmpty();
+        }
         
-        return $this->state->getTitle();
-        
-    }
-    
-    public function setTitle($title) {
-        
-        return $this->state->setTitle($title);
-        
-    }
-    
-    public function getDescription() {
-        
-        return $this->state->getDescription();
-        
-    }
-    
-    public function setDescription($description) {
-        
-        return $this->state->setDescription($description);
-        
-    }
-    
-    public function getPartIds() {
-        
-        return $this->state->getPartIds();
-        
-    }
-    
-    public function getTeacherId() {
-        
-        return $this->state->getTeacherId();
+        return $partIds[0];
         
     }
     

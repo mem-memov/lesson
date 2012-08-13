@@ -8,7 +8,7 @@ class Data_State_Item_Visit extends Data_State_Item_Abstract {
      * ID урока
      * @var integer
      */
-    private $lessonId;
+    private $lessonId = null;
     public function setLessonId($lessonId) {
         $this->lessonId = $lessonId;
     }
@@ -20,7 +20,7 @@ class Data_State_Item_Visit extends Data_State_Item_Abstract {
      * ID части урока
      * @var integer
      */
-    private $partId;
+    private $partId = null;
     public function setPartId($partId) {
         $this->partId = $partId;
     }
@@ -32,7 +32,7 @@ class Data_State_Item_Visit extends Data_State_Item_Abstract {
      * ID ученика
      * @var integer
      */
-    private $studentId;
+    private $studentId = null;
     public function setStudentId($studentId) {
         $this->studentId = $studentId;
     }
@@ -44,7 +44,7 @@ class Data_State_Item_Visit extends Data_State_Item_Abstract {
      * ID учителя
      * @var integer
      */
-    private $teacherId;
+    private $teacherId = null;
     public function setTeacherId($teacherId) {
         $this->teacherId = $teacherId;
     }

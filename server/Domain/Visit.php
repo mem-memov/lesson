@@ -3,29 +3,29 @@ class Domain_Visit {
     
     private $state;
     
+    /**
+     * Коллекция частей урока
+     * @var Domain_Collection_Part
+     */
+    private $partCollection;
+    
     public function __construct(
-        Data_State_Item_Visit $state
+        Data_State_Item_Visit $state,
+        Domain_Collection_Part $partCollection
     ) {
         
         $this->state = $state;
+        $this->partCollection = $partCollection;
         
     }
     
-    public function getId() {
+    public function continuePresentation(
+        Domain_Message_Item_ContinueRequest $continueRequest
+    ) {
         
-        return $this->state->getId();
-        
-    }
-    
-    public function getPartId() {
-        
-        return $this->state->getPartId();
-        
-    }
-    
-    public function setPartId($partId) {
-        
-        $this->state->setPartId($partId);
+        $curren
+        $part = 
+        Domain_Collection_Exception_LessonCanNotContinue
         
     }
     

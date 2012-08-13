@@ -56,4 +56,22 @@ class Domain_Message_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику запросов на продолжение урока
+     * @return Domain_Message_Factory_ContinueRequest 
+     */
+    public function makeContinueRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_ContinueRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }

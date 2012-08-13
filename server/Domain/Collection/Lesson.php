@@ -18,14 +18,30 @@ class Domain_Collection_Lesson {
      * @var Domain_Collection_Part
      */
     private $partCollection;
+    
+    /**
+     * Коллекция посещений
+     * @var Domain_Collection_Visit
+     */
+    private $visitCollection;
+    
+    /**
+     * Фабрика запросов на продолжение урока
+     * @var Domain_Message_Factory_ContinueRequest
+     */
+    private $continueRequestFactory;
 
     public function __construct(
         Data_Access_Lesson $dataAccess,
-        Domain_Collection_Part $partCollection
+        Domain_Collection_Part $partCollection,
+        Domain_Collection_Visit $visitCollection,
+        Domain_Message_Factory_ContinueRequest $continueRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->partCollection = $partCollection;
+        $this->visitCollection = $visitCollection;
+        $this->continueRequestFactory = $continueRequestFactory;
         
         $this->states = array();
         
@@ -103,7 +119,9 @@ class Domain_Collection_Lesson {
         
         return new Domain_Lesson(
             $state, 
-            $this->partCollection
+            $this->partCollection,
+            $this->visitCollection,
+            $this->continueRequestFactory
         );
         
     }
