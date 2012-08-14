@@ -31,19 +31,20 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
     
     public function respond($teacherId, $lessonId, $partId, $parameters = array()) {
 
-        $lesson = $this->fetchLesson($teacherId, $lessonId);
+        $school = $this->domainFactory->makeSchool();
         
+        $lesson = $school->prepareLesson($teacherId, $lessonId);
+
         switch ($parameters['widget_type']) {
             case 'text':
                 $lesson->insertText($partId, $parameters['text']);
                 break;
         }
-        
-        $school = $this->domainFactory->makeSchool();
-        
-        $lesson = $school->prepareLesson($teacherId, $lesson);
+
+        $lesson = $school->prepareLesson($teacherId, $lessonId, $lesson);
         
         $partData = $lesson->showPart($partId);
+        $partData['lesson_id'] = $lessonId;
 
         return $this->responseFactory->makeHtmlResponse(
             'client/Action/PartEdit/form.php',
@@ -51,24 +52,6 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
             array(),
             array()
         );
-        
-    }
-    
-    /**
-     * Возвращает урок учителя
-     * @param integer $teacherId
-     * @param integer $lessonId
-     * @return Domain_Lesson
-     */
-    public function fetchLesson($teacherId, $lessonId) {
-        
-        $school = $this->domainFactory->makeSchool();
-        
-        $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
-        
-        $lessons = $school->offerLessons($filter);
-
-        return $lessons[0];
         
     }
     

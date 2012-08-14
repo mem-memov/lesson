@@ -39,14 +39,15 @@ class Domain_School {
     /**
      * Подготавливает урок
      * @param integer $teacherId
-     * @param integer|null $lesson Null означает, что нужно создать новый урок
+     * @param integer|null $lessonId Null означает, что нужно создать новый урок
+     * @param Domain_Lesson|null новый вариант урока
      * @return Domain_Lesson
      */
-    public function prepareLesson($teacherId, $lesson = null) {
+    public function prepareLesson($teacherId, $lessonId = null, $newVersion = null) {
         
         $teacher = $this->teacherCollection->readUsingId($teacherId);
 
-        $lesson = $teacher->prepare($lesson);
+        $lesson = $teacher->prepare($lessonId, $newVersion);
         
         return $lesson;
         

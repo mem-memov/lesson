@@ -31,4 +31,12 @@ implements
         
     }
     
+    public function joinPart(
+        Domain_Message_Item_PartJoinCall $joinCall
+    ) {
+        
+        $joinCall->addWidgetId( $this->state->getId() );
+        
+    }
+    
 }

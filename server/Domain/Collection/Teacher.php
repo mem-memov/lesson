@@ -146,7 +146,7 @@ class Domain_Collection_Teacher {
             
             $state instanceof Data_State_Item_TrackableInterface;
 
-            if ($state->getId() === $id) {
+            if ($state->hasId() && $state->getId() === $id) {
                 return $this->items[spl_object_hash($state)];
             }
             

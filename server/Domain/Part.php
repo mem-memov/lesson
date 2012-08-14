@@ -42,12 +42,19 @@ implements
      */
     private $announcementFactory;
     
+    /**
+     * Фабрика  запросов на прикрепление пособия к части урока
+     * @var Domain_Message_Factory_PartJoinCall
+     */
+    private $partJoinCallFactory;
+    
     public function __construct(
         Data_State_Item_Part $state,
         Domain_Collection_Text $textCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_PartPresentation $presentationFactory,
-        Domain_Message_Factory_PartAnnouncement $announcementFactory
+        Domain_Message_Factory_PartAnnouncement $announcementFactory,
+        Domain_Message_Factory_PartJoinCall $partJoinCallFactory
     ) {
         
         $this->state = $state;
@@ -55,6 +62,7 @@ implements
         $this->visitCollection = $visitCollection;
         $this->presentationFactory = $presentationFactory;
         $this->announcementFactory = $announcementFactory;
+        $this->partJoinCallFactory = $partJoinCallFactory;
         
         $this->widgetIndex = array( // только уникальные соответствия!!!
             1 => 'Domain_Text'
@@ -134,6 +142,21 @@ implements
         return $partAnnouncement;
         
     }
+    
+    public function beInspected(
+        Domain_Message_Item_PartInspector $partInspector
+    ) {
+        
+        $partInspector->addPartId( $this->state->getId() );
+        $partInspector->increasePrice( $this->state->getPrice() );
+        
+    }
+    
+    public function belongsToLesson($lessonId) {
+        
+        return $this->state->getLessonId() === $lessonId;
+        
+    }
 
     public function addText($textString) {
 
@@ -143,9 +166,11 @@ implements
         $widgetIds = $this->state->getWidgetIds();
         $widgetTypeIds = $this->state->getWidgetTypeIds();
 
-        $widgetIds[] = $text->getId();
+        // дополняет список ID пособий
+        $joinCall = $this->partJoinCallFactory->makeMessage($widgetIds);
+        $text->joinPart($joinCall);
         $widgetTypeIds[] = $this->getWidgetTypeId($text);
-        
+
         $this->state->setWidgetIds($widgetIds);
         $this->state->setWidgetTypeIds($widgetTypeIds);
         

@@ -12,18 +12,14 @@ class Frontend_Action_PartCreate extends Frontend_Action_Abstract {
         } else {
             $lessonId = $this->request->getDirectory(4);
         }
-        
-        $filter = array('lesson_id' => $lessonId, 'teacher_id' => $teacherId);
-        
-        $lessons = $school->offerLessons($filter);
 
-        $lesson = $lessons[0];
+        $lesson = $school->prepareLesson($teacherId, $lessonId);
         
         $lesson instanceof Domain_Lesson;
 
         $partId = $lesson->addPart(0);
         
-        $lesson = $school->prepareLesson($teacherId, $lesson);
+        $lesson = $school->prepareLesson($teacherId, $lessonId, $lesson);
         
         return $this->chain->linkPartEdit()->respond($teacherId, $lesson->getId(), $partId);
         

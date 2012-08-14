@@ -43,13 +43,20 @@ implements
      */
     private $presentationFactory;
     
+    /**
+     * Фабрика инспекторов частей урока
+     * @var Domain_Message_Factory_PartInspector
+     */
+    private $partInspectorFactory;
+    
     public function __construct(
         Data_State_Item_Lesson $state,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
         Domain_Message_Factory_VisitRequest $visitRequestFactory,
-        Domain_Message_Factory_LessonPresentation $presentationFactory
+        Domain_Message_Factory_LessonPresentation $presentationFactory,
+        Domain_Message_Factory_PartInspector $partInspectorFactory
     ) {
         
         $this->state = $state;
@@ -58,15 +65,26 @@ implements
         $this->continueRequestFactory = $continueRequestFactory;
         $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
+        $this->partInspectorFactory = $partInspectorFactory;
       
     }
     
     public function bePresented() {
         
+        $parts = $this->partCollection->readUsingLessonId( $this->state->getId() );
+        
+        $partInspector = $this->partInspectorFactory->makeMessage();
+        
+        foreach ($parts as $part) {
+            $part->beInspected($partInspector);
+        }
+        
         return $this->presentationFactory->makeMessage(
             $this->state->getId(), 
             $this->state->getTitle(), 
-            $this->state->getDescription()
+            $this->state->getDescription(),
+            $partInspector->getPartIds(),
+            $partInspector->getTotalPrice()
         );
         
     }
@@ -140,7 +158,19 @@ implements
             
     }
 
-
+    public function showPart($partId) {
+        
+        $part = $this->partCollection->readUsingId($partId);
+        
+        if (!$part->belongsToLesson( $this->state->getId() )) {
+            throw new DomainException('Часть не принадлежит уроку. Она не будет показана.');
+        }
+        
+        $partPresentation = $part->bePresented();
+        
+        return $partPresentation->toArray();
+        
+    }
     
     
     
@@ -151,8 +181,10 @@ implements
         $part = $this->partCollection->create(
             $this->state->getId()
         );
-        
-        $partCount = count($this->state->getPartIds());
+
+        $parts = $this->partCollection->readUsingLessonId( $this->state->getId() );
+
+        $partCount = count($parts);
 
         $part->setOrder($partCount + 1);
         $part->setPrice($price);

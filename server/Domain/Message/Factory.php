@@ -200,6 +200,42 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику инспекторов частей урока
+     * @return Domain_Message_Factory_PartInspector
+     */
+    public function makePartInspectorFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartInspector();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику запросов на прикрепление пособия к части урока
+     * @return Domain_Message_Factory_PartJoinCall
+     */
+    public function makePartJoinCallFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartJoinCall();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

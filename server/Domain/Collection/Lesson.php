@@ -49,13 +49,20 @@ class Domain_Collection_Lesson {
      */
     private $presentationFactory;
 
+    /**
+     * Фабрика инспекторов частей урока
+     * @var Domain_Message_Factory_PartInspector
+     */
+    private $partInspectorFactory;
+    
     public function __construct(
         Data_Access_Lesson $dataAccess,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
         Domain_Message_Factory_VisitRequest $visitRequestFactory,
-        Domain_Message_Factory_LessonPresentation $presentationFactory
+        Domain_Message_Factory_LessonPresentation $presentationFactory,
+        Domain_Message_Factory_PartInspector $partInspectorFactory
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -64,6 +71,7 @@ class Domain_Collection_Lesson {
         $this->continueRequestFactory = $continueRequestFactory;
         $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
+        $this->partInspectorFactory = $partInspectorFactory;
         
         $this->states = array();
         $this->items = array();
@@ -163,7 +171,7 @@ class Domain_Collection_Lesson {
             
             $state instanceof Data_State_Item_TrackableInterface;
 
-            if ($state->getId() === $id) {
+            if ($state->hasId() && $state->getId() === $id) {
                 return $this->items[spl_object_hash($state)];
             }
             
@@ -181,7 +189,8 @@ class Domain_Collection_Lesson {
             $this->visitCollection,
             $this->continueRequestFactory,
             $this->visitRequestFactory,
-            $this->presentationFactory
+            $this->presentationFactory,
+            $this->partInspectorFactory
         );
         
     }

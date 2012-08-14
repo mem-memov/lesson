@@ -62,17 +62,32 @@ class Domain_Teacher {
         
     }
     
-    public function prepare($lesson = null) {
+    /**
+     * 
+     * @param integer|null $lessonId Null означает, что нужно создать новый урок
+     * @param Domain_Lesson|null новый вариант урока
+     * @return Domain_Lesson
+     */
+    public function prepare($lessonId = null, $newVersion = null) {
         
-        if (is_null($lesson)) {
+        if (!is_null($newVersion)) {
+            
+            $this->lessonCollection->update($newVersion);
+            return $newVersion;
+            
+        }
+        
+        if (is_null($lessonId)) {
             
             $lesson = $this->lessonCollection->create(
                 $this->state->getId()
             );
             
+        } else {
+            
+            $lesson = $this->lessonCollection->readUsingId($lessonId);
+            
         }
-        
-        $this->lessonCollection->update($lesson);
         
         return $lesson;
 

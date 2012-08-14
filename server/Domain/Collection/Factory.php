@@ -59,7 +59,8 @@ class Domain_Collection_Factory {
                 $this->makeVisitCollection(),
                 $this->messageFactory->makeContinueRequestFactory(),
                 $this->messageFactory->makeVisitRequestFactory(),
-                $this->messageFactory->makeLessonPresentationFactory()
+                $this->messageFactory->makeLessonPresentationFactory(),
+                $this->messageFactory->makePartInspectorFactory()
             );
             
         }
@@ -115,7 +116,8 @@ class Domain_Collection_Factory {
                 $this->makeTextCollection(),
                 $this->makeVisitCollection(),
                 $this->messageFactory->makePartPresentationFactory(),
-                $this->messageFactory->makePartAnnouncementFactory()
+                $this->messageFactory->makePartAnnouncementFactory(),
+                $this->messageFactory->makePartJoinCallFactory()
             );
             
         }

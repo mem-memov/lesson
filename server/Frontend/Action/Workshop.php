@@ -9,15 +9,14 @@ class Frontend_Action_Workshop extends Frontend_Action_Abstract {
         
         $filter = array('teacher_id' => $teacherId);
         
-        $lessons = $school->offerLessons($filter);
+        $lessonPresentations = $school->offerLessons($filter);
 
         $lessonTitles = array();
         $lessonIds = array();
-        foreach ($lessons as $lesson) {
-            
-            $lesson instanceof Domain_Lesson;
-            $lessonTitles[] = $lesson->getTitle();
-            $lessonIds[] = $lesson->getId();
+        foreach ($lessonPresentations as $lessonPresentation) {
+            $lessonArray = $lessonPresentation->toArray();
+            $lessonTitles[] = $lessonArray['title'];
+            $lessonIds[] = $lessonArray['lesson_id'];
             
         }
         

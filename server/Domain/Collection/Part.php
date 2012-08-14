@@ -43,13 +43,19 @@ class Domain_Collection_Part {
      */
     private $announcementFactory;
 
+    /**
+     * Фабрика  запросов на прикрепление пособия к части урока
+     * @var Domain_Message_Factory_PartJoinCall
+     */
+    private $partJoinCallFactory;
     
     public function __construct(
         Data_Access_Part $dataAccess,
         Domain_Collection_Text $textCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_PartPresentation $presentationFactory,
-        Domain_Message_Factory_PartAnnouncement $announcementFactory
+        Domain_Message_Factory_PartAnnouncement $announcementFactory,
+        Domain_Message_Factory_PartJoinCall $partJoinCallFactory
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -57,6 +63,7 @@ class Domain_Collection_Part {
         $this->visitCollection = $visitCollection;
         $this->presentationFactory = $presentationFactory;
         $this->announcementFactory = $announcementFactory;
+        $this->partJoinCallFactory = $partJoinCallFactory;
         
         $this->states = array();
         $this->items = array();
@@ -109,8 +116,9 @@ class Domain_Collection_Part {
         
         $items = array();
         foreach ($states as $state) {
-            
+
             $existingItem = $this->findById( $state->getId() );
+
             if ($existingItem !== false) {
                 $items[] = $existingItem;
             } else {
@@ -162,7 +170,7 @@ class Domain_Collection_Part {
             
             $state instanceof Data_State_Item_TrackableInterface;
 
-            if ($state->getId() === $id) {
+            if ($state->hasId() && $state->getId() === $id) {
                 return $this->items[spl_object_hash($state)];
             }
             
@@ -179,7 +187,8 @@ class Domain_Collection_Part {
             $this->textCollection,
             $this->visitCollection,
             $this->presentationFactory,
-            $this->announcementFactory
+            $this->announcementFactory,
+            $this->partJoinCallFactory
         );
         
     }

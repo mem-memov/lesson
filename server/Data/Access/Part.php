@@ -258,6 +258,10 @@ class Data_Access_Part {
             
         }
         
+        if (empty($ids)) {
+            return;
+        }
+        
         $rows = $this->storage->fetchRows('
             SELECT
                 `part_id`,
