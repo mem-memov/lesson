@@ -61,6 +61,7 @@ class Domain_Factory {
         
         return new Domain_School(
             $collectionFactory->makeTeacherCollection(),
+            $collectionFactory->makeLessonCollection(),
             $messageFactory->makeEducationRequestFactory()
         );
         

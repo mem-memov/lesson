@@ -41,7 +41,6 @@ implements
     public function toArray() {
         
         return array(
-            'widget_type' => 'text',
             'text_id' => $this->textId,
             'text' => $this->text
         );

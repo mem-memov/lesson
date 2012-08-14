@@ -7,13 +7,12 @@ class Frontend_Action_LessonList extends Frontend_Action_Abstract {
         
         $filter = array();
         
-        $lessons = $school->offerLessons($filter);
+        $lessonPresentations = $school->offerLessons($filter);
         
         $lessonArrays = array();
-        foreach ($lessons as $lesson) {
-            
-            $lesson instanceof Domain_Lesson;
-            $lessonArrays[] = $lesson->toArray();
+        foreach ($lessonPresentations as $lessonPresentation) {
+
+            $lessonArrays[] = $lessonPresentation->toArray();
             
         }
 

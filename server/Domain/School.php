@@ -5,14 +5,17 @@
 class Domain_School {
     
     private $teacherCollection;
+    private $lessonCollection;
     private $educationRequestFactory;
     
     public function __construct(
         Domain_Collection_Teacher $teacherCollection,
+        Domain_Collection_Lesson $lessonCollection,
         Domain_Message_Factory_EducationRequest $educationRequestFactory
     ) {
 
         $this->teacherCollection = $teacherCollection;
+        $this->lessonCollection = $lessonCollection;
         $this->educationRequestFactory = $educationRequestFactory;
         
     }
@@ -28,7 +31,7 @@ class Domain_School {
         $educationRequest = $this->educationRequestFactory->makeMessage($studentId, $lessonId);
         $teacher = $this->teacherCollection->readUsingLessonId($lessonId);
         $presentation = $teacher->teach($educationRequest);
-        
+
         return $presentation;
 
     }
@@ -51,7 +54,16 @@ class Domain_School {
     
     public function offerLessons($filter) {
         
-        return $this->lessonCollection->readUsingFilter($filter);
+        $lessons = $this->lessonCollection->readUsingFilter($filter);
+        
+        $presentations = array();
+        foreach ($lessons as $lesson) {
+            
+            $presentations[] = $lesson->bePresented();
+            
+        }
+        
+        return $presentations;
 
     }
     

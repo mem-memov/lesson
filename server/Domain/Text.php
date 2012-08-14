@@ -1,7 +1,7 @@
 <?php
 class Domain_Text 
 implements
-    Domain_CanBeShown
+    Domain_CanBePresented
 {
     
     private $state;
@@ -18,6 +18,7 @@ implements
     ) {
         
         $this->state = $state;
+        $this->presentationFactory = $presentationFactory;
         
     }
     

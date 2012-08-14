@@ -14,6 +14,12 @@ class Domain_Collection_Visit {
     private $partIdentificationRequestFactory;
     
     /**
+     * Фабрика показа
+     * @var Domain_Message_Factory_Presentation
+     */
+    private $presentationFactory;
+    
+    /**
      * Состояния
      * @var array 
      */
@@ -27,11 +33,13 @@ class Domain_Collection_Visit {
 
     public function __construct(
         Data_Access_Visit $dataAccess,
-        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory
+        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
+        Domain_Message_Factory_Presentation $presentationFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
+        $this->presentationFactory = $presentationFactory;
         
         $this->states = array();
         $this->items = array();
@@ -138,7 +146,8 @@ class Domain_Collection_Visit {
         
         return new Domain_Visit(
             $state,
-            $this->partIdentificationRequestFactory
+            $this->partIdentificationRequestFactory,
+            $this->presentationFactory
          );
         
     }

@@ -50,7 +50,7 @@ implements
     public function toArray() {
         
         return array(
-            'lesson_id' => $lessonId,
+            'lesson_id' => $this->lessonId,
             'title' => $this->title,
             'description' => $this->description
         );

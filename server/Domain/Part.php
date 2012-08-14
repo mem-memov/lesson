@@ -1,7 +1,7 @@
 <?php
 class Domain_Part 
 implements
-    Domain_CanBeShown
+    Domain_CanBePresented
 {
     
     private $state;
@@ -30,15 +30,31 @@ implements
      */
     private $widgetTypes;
     
+    /**
+     * Фабрика показов частей урока
+     * @var Domain_Message_Factory_PartPresentation 
+     */
+    private $presentationFactory;
+    
+    /**
+     * Фабрика анонсов частей урока
+     * @var Domain_Message_Factory_PartAnnouncement 
+     */
+    private $announcementFactory;
+    
     public function __construct(
         Data_State_Item_Part $state,
         Domain_Collection_Text $textCollection,
-        Domain_Collection_Visit $visitCollection
+        Domain_Collection_Visit $visitCollection,
+        Domain_Message_Factory_PartPresentation $presentationFactory,
+        Domain_Message_Factory_PartAnnouncement $announcementFactory
     ) {
         
         $this->state = $state;
         $this->textCollection = $textCollection;
         $this->visitCollection = $visitCollection;
+        $this->presentationFactory = $presentationFactory;
+        $this->announcementFactory = $announcementFactory;
         
         $this->widgetIndex = array( // только уникальные соответствия!!!
             1 => 'Domain_Text'
@@ -58,7 +74,7 @@ implements
             $visitRequest->getStudentId(), 
             $visitRequest->getTeacherId(),
             $this->state->getLessonId(),
-            $this->getId()
+            $this->state->getId()
         );
         
         $this->visitCollection->update($visit);
@@ -77,62 +93,48 @@ implements
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public function getId() {
+    public function bePresented() {
         
-        return $this->state->getId();
-        
-    }
-    
-    public function setOrder($order) {
-        
-        $this->state->setOrder($order);
-        
-    }
-    
-    public function setPrice($price) {
-        
-        $this->state->setPrice($price);
-        
-    }
-    
-    public function show() {
-        
-        $data = array(
-            'part_id' => $this->state->getId(),
-            'lesson_id' => $this->state->getLessonId(),
-            'order' => $this->state->getOrder(),
-            'price' => $this->state->getPrice(),
-            'widgets' => array()
-        );
+        $widgetPresentations = array();
         
         $widgetIds = $this->state->getWidgetIds();
         $widgetTypeIds = $this->state->getWidgetTypeIds();
         
         foreach ($widgetIds as $index => $widgetId) {
             $widget = $this->getWidget($widgetTypeIds[$index], $widgetId);
-            $widget instanceof Domain_CanBeShown;
-            $widgetData = $widget->show();
-            $widgetData['widget_type'] = $this->widgetTypes[$widgetTypeIds[$index]];
-            $data['widgets'][] = $widgetData;
+            $widget instanceof Domain_CanBePresented;
+            $widgetPresentations[] = $widget->bePresented();
         }
-
-        return $data;
+        
+        $widgetTypes = array();
+        foreach ($widgetTypeIds as $widgetTypeId) {
+            $widgetTypes[] = $this->widgetTypes[$widgetTypeId];
+        }
+        
+        $partPresentation = $this->presentationFactory->makeMessage(
+                $this->state->getId(), 
+                $this->state->getOrder(),
+                $this->state->getPrice(),
+                $widgetPresentations,
+                $widgetTypes
+        );
+        
+        return $partPresentation;
         
     }
     
+    public function beAnnounced() {
+        
+        $partAnnouncement = $this->announcementFactory->makeMessage(
+                $this->state->getId(), 
+                $this->state->getOrder(),
+                $this->state->getPrice()
+        );
+        
+        return $partAnnouncement;
+        
+    }
+
     public function addText($textString) {
 
         $text = $this->textCollection->create($textString);

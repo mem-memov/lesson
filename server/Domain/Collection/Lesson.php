@@ -42,13 +42,20 @@ class Domain_Collection_Lesson {
      * @var Domain_Message_Factory_VisitRequest
      */
     private $visitRequestFactory;
+    
+    /**
+     * Фабрика показов уроков
+     * @var Domain_Message_Factory_LessonPresentation 
+     */
+    private $presentationFactory;
 
     public function __construct(
         Data_Access_Lesson $dataAccess,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_VisitRequest $visitRequestFactory
+        Domain_Message_Factory_VisitRequest $visitRequestFactory,
+        Domain_Message_Factory_LessonPresentation $presentationFactory
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -56,6 +63,7 @@ class Domain_Collection_Lesson {
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
         $this->visitRequestFactory = $visitRequestFactory;
+        $this->presentationFactory = $presentationFactory;
         
         $this->states = array();
         $this->items = array();
@@ -172,7 +180,8 @@ class Domain_Collection_Lesson {
             $this->partCollection,
             $this->visitCollection,
             $this->continueRequestFactory,
-            $this->visitRequestFactory
+            $this->visitRequestFactory,
+            $this->presentationFactory
         );
         
     }

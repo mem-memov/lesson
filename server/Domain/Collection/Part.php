@@ -30,17 +30,33 @@ class Domain_Collection_Part {
      * @var Domain_Collection_Visit
      */
     private $visitCollection;
+    
+    /**
+     * Фабрика показов частей урока
+     * @var Domain_Message_Factory_PartPresentation 
+     */
+    private $presentationFactory;
+    
+    /**
+     * Фабрика анонсов частей урока
+     * @var Domain_Message_Factory_PartAnnouncement 
+     */
+    private $announcementFactory;
 
     
     public function __construct(
         Data_Access_Part $dataAccess,
         Domain_Collection_Text $textCollection,
-        Domain_Collection_Visit $visitCollection
+        Domain_Collection_Visit $visitCollection,
+        Domain_Message_Factory_PartPresentation $presentationFactory,
+        Domain_Message_Factory_PartAnnouncement $announcementFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->textCollection = $textCollection;
         $this->visitCollection = $visitCollection;
+        $this->presentationFactory = $presentationFactory;
+        $this->announcementFactory = $announcementFactory;
         
         $this->states = array();
         $this->items = array();
@@ -161,7 +177,9 @@ class Domain_Collection_Part {
         return new Domain_Part(
             $state, 
             $this->textCollection,
-            $this->visitCollection
+            $this->visitCollection,
+            $this->presentationFactory,
+            $this->announcementFactory
         );
         
     }

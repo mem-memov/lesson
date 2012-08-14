@@ -58,7 +58,8 @@ class Domain_Collection_Factory {
                 $this->makePartCollection(),
                 $this->makeVisitCollection(),
                 $this->messageFactory->makeContinueRequestFactory(),
-                $this->messageFactory->makeVisitRequestFactory()
+                $this->messageFactory->makeVisitRequestFactory(),
+                $this->messageFactory->makeLessonPresentationFactory()
             );
             
         }
@@ -112,7 +113,9 @@ class Domain_Collection_Factory {
             $this->instances[$instance_key] = new Domain_Collection_Part(
                 $this->accessFactory->makePart(),
                 $this->makeTextCollection(),
-                $this->makeVisitCollection()
+                $this->makeVisitCollection(),
+                $this->messageFactory->makePartPresentationFactory(),
+                $this->messageFactory->makePartAnnouncementFactory()
             );
             
         }
@@ -128,7 +131,8 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Text(
-                $this->accessFactory->makeText()
+                $this->accessFactory->makeText(),
+                $this->messageFactory->makeTextPresentationFactory()
             );
             
         }
@@ -145,7 +149,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Visit(
                 $this->accessFactory->makeVisit(),
-                $this->messageFactory->makePartIdentificationRequestFactory()
+                $this->messageFactory->makePartIdentificationRequestFactory(),
+                $this->messageFactory->makePresentationFactory()
             );
             
         }

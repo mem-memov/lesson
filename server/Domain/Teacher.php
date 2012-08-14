@@ -45,16 +45,20 @@ class Domain_Teacher {
         
     }
     
-    
+    /**
+     * Показывает ученику очередную часть урока
+     * @param Domain_Message_Item_EducationRequest $educationRequest
+     * @return Domain_Message_Item_Presentation
+     */
     public function teach(
         Domain_Message_Item_EducationRequest $educationRequest
     ) {
         
         $lesson = $this->lessonCollection->readUsingId($educationRequest->getLessonId());
         $presentationRequest = $this->presentationRequestFactory->makeMessage($educationRequest->getStudentId());
-        $presentationResponce = $lesson->bePresented($presentationRequest);
+        $presentation = $lesson->goOn($presentationRequest);
         
-        return $presentationResponce;
+        return $presentation;
         
     }
     

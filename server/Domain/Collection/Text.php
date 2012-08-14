@@ -18,13 +18,20 @@ class Domain_Collection_Text {
      * @var array
      */
     private $items;
-
+    
+    /**
+     * Фабрика показов
+     * @var Domain_Message_Factory_TextPresentation 
+     */
+    private  $presentationFactory;
     
     public function __construct(
-        Data_Access_Text $dataAccess
+        Data_Access_Text $dataAccess,
+        Domain_Message_Factory_TextPresentation $presentationFactory
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->presentationFactory = $presentationFactory;
         
         $this->states = array();
         $this->items = array();
@@ -98,7 +105,10 @@ class Domain_Collection_Text {
     
     private function make($state) {
         
-        return new Domain_Text($state);
+        return new Domain_Text(
+            $state,
+            $this->presentationFactory
+        );
         
     }
     

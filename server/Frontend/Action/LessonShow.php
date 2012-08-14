@@ -12,15 +12,22 @@ class Frontend_Action_LessonShow extends Frontend_Action_Abstract {
         }
         
         $school = $this->domainFactory->makeSchool();
-        $partData = $school->educate($studentId, $lessonId);
-        
-        
-        return $this->responseFactory->makeHtmlResponse(
-            'client/Action/LessonShow/part.php',
-            $partData,
-            array(),
-            array()
-        );
+        $presentation = $school->educate($studentId, $lessonId);
+
+        if ($presentation->canBeContinued()) {
+            
+            return $this->responseFactory->makeHtmlResponse(
+                'client/Action/LessonShow/part.php',
+                $presentation->toArray(),
+                array(),
+                array()
+            );
+            
+        } else {
+            
+            return $this->chain->linkLessonList()->run();
+            
+        }
         
     }
     

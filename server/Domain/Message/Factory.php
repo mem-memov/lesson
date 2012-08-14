@@ -111,6 +111,24 @@ class Domain_Message_Factory {
     }
     
     /**
+     * Создаёт фабрику анонсов части урока
+     * @return Domain_Message_Factory_PartPAnnouncement 
+     */
+    public function makePartAnnouncementFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartAnnouncement();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
      * Создаёт фабрику показов урока
      * @return Domain_Message_Factory_LessonPresentation 
      */
@@ -121,6 +139,24 @@ class Domain_Message_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Message_Factory_LessonPresentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику показов
+     * @return Domain_Message_Factory_Presentation 
+     */
+    public function makePresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_Presentation();
             
         }
 

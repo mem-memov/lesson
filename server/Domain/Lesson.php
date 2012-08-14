@@ -2,7 +2,10 @@
 /**
  * Урок
  */
-class Domain_Lesson {
+class Domain_Lesson 
+implements
+    Domain_CanBePresented
+{
     
     /**
      * Состояние
@@ -34,12 +37,19 @@ class Domain_Lesson {
      */
     private $visitRequestFactory;
     
+    /**
+     * Фабрика показов уроков
+     * @var Domain_Message_Factory_LessonPresentation 
+     */
+    private $presentationFactory;
+    
     public function __construct(
         Data_State_Item_Lesson $state,
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_VisitRequest $visitRequestFactory
+        Domain_Message_Factory_VisitRequest $visitRequestFactory,
+        Domain_Message_Factory_LessonPresentation $presentationFactory
     ) {
         
         $this->state = $state;
@@ -47,18 +57,31 @@ class Domain_Lesson {
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
         $this->visitRequestFactory = $visitRequestFactory;
+        $this->presentationFactory = $presentationFactory;
       
+    }
+    
+    public function bePresented() {
+        
+        return $this->presentationFactory->makeMessage(
+            $this->state->getId(), 
+            $this->state->getTitle(), 
+            $this->state->getDescription()
+        );
+        
     }
 
     /**
      * 
      * @param Domain_Message_Item_PresentationRequest $presentationRequest
-     * @return type
+     * @return Domain_Message_Item_Presentation
      */
-    public function bePresented(
+    public function goOn(
         Domain_Message_Item_PresentationRequest $presentationRequest
     ) {
         
+        $lessonPresentation = $this->bePresented();
+
         try {
             
             $visit = $this->visitCollection->readForVisitingStudent(
@@ -78,20 +101,21 @@ class Domain_Lesson {
             
         }
         
-        try {
             
-            $continueRequest = $this->continueRequestFactory->makeMessage( $this->partCollection );
-            $presentationResponce = $visit->continuePresentation($continueRequest);
+        $continueRequest = $this->continueRequestFactory->makeMessage( 
+                $this->partCollection,
+                $lessonPresentation
+        );
+        $presentation = $visit->continuePresentation($continueRequest);
+        
+        if ($presentation->canBeContinued()) {
             $this->visitCollection->update($visit);
-        
+        } else {
+            $this->visitCollection->delete($visit);
         }
-        catch (Domain_Collection_Exception_LessonCanNotContinue $exception) {
-            
-            
-            
-        }
+
         
-        return $presentationResponce;
+        return $presentation;
 
     }
     
