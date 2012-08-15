@@ -129,6 +129,24 @@ class Domain_Message_Factory {
     }
     
     /**
+     * Создаёт фабрику запросов на изменение части урока
+     * @return Domain_Message_Factory_PartUpdateRequest
+     */
+    public function makePartUpdateRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartUpdateRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
      * Создаёт фабрику показов урока
      * @return Domain_Message_Factory_LessonPresentation 
      */

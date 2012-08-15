@@ -21,7 +21,7 @@ class Frontend_Action_PartCreate extends Frontend_Action_Abstract {
         
         $lesson = $school->prepareLesson($teacherId, $lessonId, $lesson);
         
-        return $this->chain->linkPartEdit()->respond($teacherId, $lesson->getId(), $partId);
+        return $this->chain->linkPartEdit()->respond($teacherId, $lessonId, $partId);
         
     }
     

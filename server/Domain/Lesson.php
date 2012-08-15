@@ -49,6 +49,12 @@ implements
      */
     private $partInspectorFactory;
     
+    /**
+     * Фабрика запросов на изменение части урока
+     * @var Domain_Message_Factory_PartUpdateRequest
+     */
+    private $partUpdateRequestFactory;
+    
     public function __construct(
         Data_State_Item_Lesson $state,
         Domain_Collection_Part $partCollection,
@@ -56,7 +62,8 @@ implements
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
         Domain_Message_Factory_VisitRequest $visitRequestFactory,
         Domain_Message_Factory_LessonPresentation $presentationFactory,
-        Domain_Message_Factory_PartInspector $partInspectorFactory
+        Domain_Message_Factory_PartInspector $partInspectorFactory,
+        Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
     ) {
         
         $this->state = $state;
@@ -66,6 +73,7 @@ implements
         $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->partInspectorFactory = $partInspectorFactory;
+        $this->partUpdateRequestFactory = $partUpdateRequestFactory;
       
     }
     
@@ -186,12 +194,19 @@ implements
 
         $partCount = count($parts);
 
-        $part->setOrder($partCount + 1);
-        $part->setPrice($price);
+        $order = $partCount + 1;
+        
+        $updateRequest = $this->partUpdateRequestFactory->makeMessage($price, $order);
+        $part->beUpdated($updateRequest);
         
         $this->partCollection->update($part);
         
-        return $part->getId();
+        $partInspector = $this->partInspectorFactory->makeMessage();
+        $part->beInspected($partInspector);
+        
+        $partId = array_pop($partInspector->getPartIds());
+        
+        return $partId;
        
     }
     

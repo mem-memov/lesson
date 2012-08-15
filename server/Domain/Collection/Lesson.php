@@ -55,6 +55,12 @@ class Domain_Collection_Lesson {
      */
     private $partInspectorFactory;
     
+    /**
+     * Фабрика запросов на изменение части урока
+     * @var Domain_Message_Factory_PartUpdateRequest
+     */
+    private $partUpdateRequestFactory;
+    
     public function __construct(
         Data_Access_Lesson $dataAccess,
         Domain_Collection_Part $partCollection,
@@ -62,7 +68,8 @@ class Domain_Collection_Lesson {
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
         Domain_Message_Factory_VisitRequest $visitRequestFactory,
         Domain_Message_Factory_LessonPresentation $presentationFactory,
-        Domain_Message_Factory_PartInspector $partInspectorFactory
+        Domain_Message_Factory_PartInspector $partInspectorFactory,
+        Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -72,6 +79,7 @@ class Domain_Collection_Lesson {
         $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->partInspectorFactory = $partInspectorFactory;
+        $this->partUpdateRequestFactory = $partUpdateRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -190,7 +198,8 @@ class Domain_Collection_Lesson {
             $this->continueRequestFactory,
             $this->visitRequestFactory,
             $this->presentationFactory,
-            $this->partInspectorFactory
+            $this->partInspectorFactory,
+            $this->partUpdateRequestFactory
         );
         
     }

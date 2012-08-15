@@ -157,6 +157,15 @@ implements
         return $this->state->getLessonId() === $lessonId;
         
     }
+    
+    public function beUpdated(
+        Domain_Message_Item_PartUpdateRequest $updateRequest
+    ) {
+        
+        $this->state->setPrice( $updateRequest->getPrice() );
+        $this->state->setOrder( $updateRequest->getOrder() );
+        
+    }
 
     public function addText($textString) {
 
