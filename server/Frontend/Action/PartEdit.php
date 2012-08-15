@@ -14,11 +14,19 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
             
             $parameters = array();
             if ($this->request->hasParameter('create_text')) {
+                
+                $parameters['command'] = 'create_text';
                 $parameters['widget_type'] = 'text';
                 $parameters['text'] = $this->request->hasParameter('text') 
                                                         ? $this->request->getParameter('text') 
                                                         : ''
                 ;
+                
+            } elseif ($this->request->hasParameter('change_price')) {
+                
+                $parameters['command'] = 'change_price';
+                $parameters['price'] = $this->request->getParameter('price');
+                
             }
 
             $response = $this->respond($teacherId, $lessonId, $partId, $parameters);
@@ -35,9 +43,12 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
         
         $lesson = $school->prepareLesson($teacherId, $lessonId);
 
-        switch ($parameters['widget_type']) {
-            case 'text':
-                $lesson->insertText($partId, $parameters['text']);
+        switch ($parameters['command']) {
+            case 'create_text':
+                $this->insertText($lesson, $partId, $parameters);
+                break;
+            case 'change_price':
+                $this->setPrice($lesson, $partId, $parameters);
                 break;
         }
 
@@ -52,6 +63,30 @@ class Frontend_Action_PartEdit extends Frontend_Action_Abstract {
             array(),
             array()
         );
+        
+    }
+    
+    private function insertText(
+        Domain_Lesson &$lesson, 
+        $partId,
+        array $parameters
+    ) {
+        
+        switch ($parameters['widget_type']) {
+            case 'text':
+                $lesson->insertText($partId, $parameters['text']);
+                break;
+        }
+        
+    }
+    
+    private function setPrice(
+        Domain_Lesson &$lesson, 
+        $partId,
+        array $parameters
+    ) {
+        
+        $lesson->setPartPrice($partId, $parameters['price']);
         
     }
     

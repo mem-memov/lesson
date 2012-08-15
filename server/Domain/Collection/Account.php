@@ -18,13 +18,21 @@ class Domain_Collection_Account {
      * @var array
      */
     private $items;
+    
+    /**
+     * Фабрика показов счетов
+     * @var Domain_Message_Factory_AccountPresentation 
+     */
+    private $presentationFactory;
 
     
     public function __construct(
-        Data_Access_Account $dataAccess
+        Data_Access_Account $dataAccess,
+        Domain_Message_Factory_AccountPresentation $presentationFactory
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->presentationFactory = $presentationFactory;
         
         $this->states = array();
         $this->items = array();
@@ -95,9 +103,12 @@ class Domain_Collection_Account {
         
     }
     
-    private function make($state) {
+    private function make(Data_State_Item_Account $state) {
         
-        return new Domain_Account($state);
+        return new Domain_Account(
+            $state,
+            $this->presentationFactory
+        );
         
     }
     

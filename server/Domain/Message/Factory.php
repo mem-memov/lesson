@@ -254,6 +254,60 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику показов счетов
+     * @return Domain_Message_Factory_AccountPresentation
+     */
+    public function makeAccountPresentationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_AccountPresentation();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику запросов на изучение части урока
+     * @return Domain_Message_Factory_LearnRequest
+     */
+    public function makeLearnRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_LearnRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику запросов на оплату части урока
+     * @return Domain_Message_Factory_PartPaymentRequest
+     */
+    public function makePartPaymentRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartPaymentRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

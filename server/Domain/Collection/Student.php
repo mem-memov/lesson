@@ -3,7 +3,7 @@ class Domain_Collection_Student {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_User 
+     * @var Data_Access_Student 
      */
     private $dataAccess;
     
@@ -12,6 +12,12 @@ class Domain_Collection_Student {
      * @var Domain_Collection_Account
      */
     private $accountCollection;
+    
+    /**
+     * Фабрика запросов на оплату части урока
+     * @var Domain_Message_Factory_PartPaymentRequest 
+     */
+    private $partPaymentRequestFactory;
     
     /**
      * Состояния
@@ -25,42 +31,39 @@ class Domain_Collection_Student {
      */
     private $items;
     
-    /**
-     * Счета
-     * @var array 
-     */
-    private $accounts;
-
-    
     public function __construct(
-        Data_Access_User $dataAccess,
-        Domain_Collection_Account $accountCollection
+        Data_Access_Student  $dataAccess,
+        Domain_Collection_Account $accountCollection,
+        Domain_Message_Factory_PartPaymentRequest $partPaymentRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->accountCollection = $accountCollection;
+        $this->partPaymentRequestFactory = $partPaymentRequestFactory;
         
         $this->states = array();
         $this->items = array();
-        $this->accounts = array();
         
     }
     
     public function create() {
         
         $state = $this->dataAccess->create();
-        $account = $this->accountCollection->create();
         
-        $item = $this->make($state,$account);
+        $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
-        $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
         
     }
     
+    /**
+     * 
+     * @param type $id
+     * @return Domain_Student
+     */
     public function readUsingId($id) {
         
         $existingItem = $this->findById($id);
@@ -70,13 +73,11 @@ class Domain_Collection_Student {
         
         
         $state = $this->dataAccess->readUsingId($id);
-        $account = $this->accountCollection->readUsingUserId($id);
         
-        $item = $this->make($state,$account);
+        $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
-        $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
         
@@ -86,17 +87,12 @@ class Domain_Collection_Student {
         
         $this->dataAccess->update( $this->states[spl_object_hash($item)] );
         
-        $this->accountCollection->update( $this->accounts[spl_object_hash($item)] );
-        
     }
     
     public function delete($item) {
         
         $this->dataAccess->delete( $this->states[spl_object_hash($item)] );
         unset($this->states[spl_object_hash($item)]);
-        
-        $this->accountCollection->delete( $this->accounts[spl_object_hash($item)] );
-        unset($this->accounts[spl_object_hash($item)]);
         
     }
     
@@ -116,9 +112,13 @@ class Domain_Collection_Student {
         
     }
     
-    private function make($state, $account) {
+    private function make(Data_State_Item_Student $state) {
         
-        return new Domain_Student($state, $account);
+        return new Domain_Student(
+            $state, 
+            $this->accountCollection,
+            $this->partPaymentRequestFactory
+        );
         
     }
 

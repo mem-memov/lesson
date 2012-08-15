@@ -218,4 +218,14 @@ implements
 
     }
     
+    public function setPartPrice($partId, $price) {
+        
+        $part = $this->partCollection->readUsingId($partId);
+        
+        $updateRequest = $this->partUpdateRequestFactory->makeMessage($price, null);
+        $part->beUpdated($updateRequest);
+        $this->partCollection->update($part);
+        
+    }
+    
 }

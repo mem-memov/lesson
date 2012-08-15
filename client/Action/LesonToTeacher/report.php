@@ -4,6 +4,8 @@
 
 <p><?php echo $data['description']; ?></p>
 
+Цена: <?php echo $data['total_price']; ?>
+
 <br />
 <a href="/lesson/part/create/<?php echo $data['id']; ?>/">Добавить часть</a>
 

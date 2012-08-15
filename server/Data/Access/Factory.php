@@ -160,4 +160,21 @@ class Data_Access_Factory {
         
     }
 
+    public function makeStudent() {
+
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Student(
+                $this->stateFactory->makeStudentFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
 }

@@ -8,6 +8,12 @@ class Domain_Collection_Visit {
     private $dataAccess; 
     
     /**
+     * Коллекция учеников
+     * @var Domain_Collection_Student
+     */
+    private $studentCollection;
+    
+    /**
      * Фабрика запросов на идентификацию части урока
      * @var Domain_Message_Factory_PartIdentificationRequest
      */
@@ -18,6 +24,12 @@ class Domain_Collection_Visit {
      * @var Domain_Message_Factory_Presentation
      */
     private $presentationFactory;
+    
+    /**
+     * Фабрика запросов на изучение части урока
+     * @var Domain_Message_Factory_LearnRequest
+     */
+    private $learnRequestFactory;
     
     /**
      * Состояния
@@ -33,13 +45,17 @@ class Domain_Collection_Visit {
 
     public function __construct(
         Data_Access_Visit $dataAccess,
+        Domain_Collection_Student $studentCollection,
         Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
-        Domain_Message_Factory_Presentation $presentationFactory
+        Domain_Message_Factory_Presentation $presentationFactory,
+        Domain_Message_Factory_LearnRequest $learnRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->studentCollection = $studentCollection;
         $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         $this->presentationFactory = $presentationFactory;
+        $this->learnRequestFactory = $learnRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -142,12 +158,16 @@ class Domain_Collection_Visit {
         
     }
     
-    private function make($state) {
+    private function make(
+        Data_State_Item_Visit $state
+    ) {
         
         return new Domain_Visit(
             $state,
+            $this->studentCollection,
             $this->partIdentificationRequestFactory,
-            $this->presentationFactory
+            $this->presentationFactory,
+            $this->learnRequestFactory
          );
         
     }

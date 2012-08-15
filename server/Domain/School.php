@@ -5,16 +5,19 @@
 class Domain_School {
     
     private $teacherCollection;
+    private $studentCollection;
     private $lessonCollection;
     private $educationRequestFactory;
     
     public function __construct(
         Domain_Collection_Teacher $teacherCollection,
+        Domain_Collection_Student $studentCollection,
         Domain_Collection_Lesson $lessonCollection,
         Domain_Message_Factory_EducationRequest $educationRequestFactory
     ) {
 
         $this->teacherCollection = $teacherCollection;
+        $this->studentCollection = $studentCollection;
         $this->lessonCollection = $lessonCollection;
         $this->educationRequestFactory = $educationRequestFactory;
         
@@ -74,9 +77,18 @@ class Domain_School {
         
     }
     
-    public function receiveTuition($studentId, $amount) {
-        
+    /**
+     * 
+     * @param integer $studentId
+     * @param integer $amount
+     * @return Domain_Message_Item_AccountPresentation
+     */
+    public function receiveTuition($studentId, $amount = null) {
+
         $student = $this->studentCollection->readUsingId($studentId);
+        $accountPresentation = $student->deposit($amount);
+        
+        return $accountPresentation;
         
     }
     

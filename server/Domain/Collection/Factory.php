@@ -31,6 +31,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию денежных счетов
+     * @return Domain_Collection_Account
+     */
     public function makeAccountCollection() {
         
         $instance_key = __FUNCTION__;
@@ -38,7 +42,8 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Account(
-                $this->accessFactory->makeAccount()
+                $this->accessFactory->makeAccount(),
+                $this->messageFactory->makeAccountPresentationFactory()
             );
             
         }
@@ -47,6 +52,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию уроков
+     * @return Domain_Collection_Lesson
+     */
     public function makeLessonCollection() {
         
         $instance_key = __FUNCTION__;
@@ -70,6 +79,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию учеников
+     * @return Domain_Collection_Student
+     */
     public function makeStudentCollection() {
         
         $instance_key = __FUNCTION__;
@@ -77,8 +90,9 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Student(
-                $this->accessFactory->makeUser(),
-                $this->makeAccountCollection()
+                $this->accessFactory->makeStudent(),
+                $this->makeAccountCollection(),
+                $this->messageFactory->makePartPaymentRequestFactory()
             );
             
         }
@@ -87,6 +101,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию учителей
+     * @return Domain_Collection_Teacher
+     */
     public function makeTeacherCollection() {
         
         $instance_key = __FUNCTION__;
@@ -106,6 +124,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию частей урока
+     * @return Domain_Collection_Part
+     */
     public function makePartCollection() {
         
         $instance_key = __FUNCTION__;
@@ -128,6 +150,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию текстовых учебных пособий
+     * @return Domain_Collection_Text
+     */
     public function makeTextCollection() {
         
         $instance_key = __FUNCTION__;
@@ -145,6 +171,10 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию посещений уроков
+     * @return Domain_Collection_Visit
+     */
     public function makeVisitCollection() {
         
         $instance_key = __FUNCTION__;
@@ -153,8 +183,10 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Visit(
                 $this->accessFactory->makeVisit(),
+                $this->makeStudentCollection(),
                 $this->messageFactory->makePartIdentificationRequestFactory(),
-                $this->messageFactory->makePresentationFactory()
+                $this->messageFactory->makePresentationFactory(),
+                $this->messageFactory->makeLearnRequestFactory()
             );
             
         }

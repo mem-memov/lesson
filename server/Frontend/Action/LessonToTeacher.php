@@ -31,6 +31,7 @@ class Frontend_Action_LessonToTeacher extends Frontend_Action_Abstract {
                 'id' => $lessonArray['lesson_id'],
                 'title' => $lessonArray['title'],
                 'description' => $lessonArray['description'],
+                'total_price' => $lessonArray['total_price'],
                 'part_ids' => $lessonArray['part_ids']
             ),
             array(),

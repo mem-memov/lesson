@@ -4,6 +4,12 @@ class Domain_Visit {
     private $state;
     
     /**
+     * Коллекция учеников
+     * @var Domain_Collection_Student
+     */
+    private $studentCollection;
+    
+    /**
      * Фабрика запросов на идентификацию части урока
      * @var Domain_Message_Factory_PartIdentificationRequest
      */
@@ -15,16 +21,26 @@ class Domain_Visit {
      */
     private $presentationFactory;
 
+    /**
+     * Фабрика запросов на изучение части урока
+     * @var Domain_Message_Factory_LearnRequest
+     */
+    private $learnRequestFactory;
+    
     
     public function __construct(
         Data_State_Item_Visit $state,
+        Domain_Collection_Student $studentCollection,
         Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
-        Domain_Message_Factory_Presentation $presentationFactory
+        Domain_Message_Factory_Presentation $presentationFactory,
+        Domain_Message_Factory_LearnRequest $learnRequestFactory
     ) {
         
         $this->state = $state;
+        $this->studentCollection = $studentCollection;
         $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         $this->presentationFactory = $presentationFactory;
+        $this->learnRequestFactory = $learnRequestFactory;
         
     }
     
@@ -51,6 +67,12 @@ class Domain_Visit {
         if ($index === false) {
             throw new Domain_Exception_PartIsMissing();
         }
+        
+        
+        $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
+        $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
+        $student->learn($learnRequest);
+        
 
         $newPartAnnouncement = null;
         if ($index < $maxIndex) {

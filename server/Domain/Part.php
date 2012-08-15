@@ -152,6 +152,14 @@ implements
         
     }
     
+    public function bePaidFor(
+        Domain_Message_Item_PartPaymentRequest $partPaymentRequest
+    ) {
+        
+        $partPaymentRequest->takePrice( $this->state->getPrice() );
+        
+    }
+    
     public function belongsToLesson($lessonId) {
         
         return $this->state->getLessonId() === $lessonId;
@@ -162,8 +170,18 @@ implements
         Domain_Message_Item_PartUpdateRequest $updateRequest
     ) {
         
-        $this->state->setPrice( $updateRequest->getPrice() );
-        $this->state->setOrder( $updateRequest->getOrder() );
+        if ( $updateRequest->mustSetPrice() ) {
+            
+            $this->state->setPrice( $updateRequest->getPrice() );
+            
+        }
+        
+        if ( $updateRequest->mustSetOrder() ) {
+            
+            $this->state->setOrder( $updateRequest->getOrder() );
+            
+        }
+        
         
     }
 

@@ -148,4 +148,22 @@ class Data_State_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику состояний учеников
+     * @return Data_State_Factory_Student
+     */
+    public function makeStudentFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Data_State_Factory_Student();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }
