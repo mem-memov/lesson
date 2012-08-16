@@ -33,10 +33,11 @@ class Domain_Student {
         $part = $learnRequest->getPart();
         $account = $this->accountCollection->readUsingUserId( $this->state->getId() );
         
-        $partPaymentRequest = $this->partPaymentRequestFactory->makeMessage($account);
+        $partPaymentRequest = $this->partPaymentRequestFactory->makeMessage(
+            $account,
+            $this->accountCollection
+        );
         $part->bePaidFor($partPaymentRequest);
-        
-        $this->accountCollection->update($account);
         
     }
     
@@ -52,18 +53,6 @@ class Domain_Student {
         $accountPresentation = $account->bePresented();
         
         return $accountPresentation;
-        
-    }
-    
-    private function canWithdraw($amount) {
-        
-        return $this->account->canDecrease($amount);
-        
-    }
-    
-    private function withdraw($amount) {
-        
-        $this->account->decrease($amount);
         
     }
     

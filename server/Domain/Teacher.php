@@ -8,10 +8,10 @@ class Domain_Teacher {
     private $state;
     
     /**
-     * Счёт
-     * @var Domain_Account 
+     * Коллекция счетов
+     * @var Domain_Collection_Account 
      */
-    private $account;
+    private $accountCollection;
     
     /**
      * Коллекция уроков
@@ -33,14 +33,14 @@ class Domain_Teacher {
     
     public function __construct(
         Data_State_Item_Teacher $state,
-        Domain_Account $account,
+        Domain_Collection_Account $accountCollection,
         Domain_Collection_Lesson $lessonCollection,
         Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
         Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
     ) {
         
         $this->state = $state;
-        $this->account = $account;
+        $this->accountCollection = $accountCollection;
         $this->lessonCollection = $lessonCollection;
         $this->presentationRequestFactory = $presentationRequestFactory;
         $this->partMoneyRequestFactory = $partMoneyRequestFactory;
@@ -102,7 +102,14 @@ class Domain_Teacher {
     public function earn(Domain_Message_Item_EarnRequest $earnRequest) {
         
         $part = $earnRequest->getPart();
-        $partMoneyRequest = $this->partMoneyRequestFactory->makeMessage( $this->account );
+        
+        $account = $this->accountCollection->readUsingUserId( $this->state->getId() );
+        
+        $partMoneyRequest = $this->partMoneyRequestFactory->makeMessage( 
+            $account, 
+            $this->accountCollection
+        );
+        
         $part->bringMoney($partMoneyRequest);
         
     }

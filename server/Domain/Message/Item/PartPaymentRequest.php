@@ -11,14 +11,23 @@ class Domain_Message_Item_PartPaymentRequest {
     private $account;
     
     /**
+     * Коллекция счетов
+     * @var Domain_Collection_Account
+     */
+    private $accountCollection;
+    
+    /**
      * Создаёт экземпляр класса
      * @param Domain_Account $account счёт
+     * @param Domain_Collection_Account $accountCollection коллекция счетов
      */
     public function __construct(
-        Domain_Account $account
+        Domain_Account $account,
+        Domain_Collection_Account $accountCollection
     ) {
         
         $this->account = $account;
+        $this->accountCollection = $accountCollection;
         
     }
     
@@ -29,6 +38,7 @@ class Domain_Message_Item_PartPaymentRequest {
     public function takePrice($price) {
         
         $this->account->decrease($price);
+        $this->accountCollection->update($this->account);
         
     }
     

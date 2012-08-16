@@ -42,12 +42,6 @@ class Domain_Collection_Teacher {
      * @var array
      */
     private $items;
-    
-    /**
-     * Счета
-     * @var array 
-     */
-    private $accounts;
 
     
     public function __construct(
@@ -66,20 +60,17 @@ class Domain_Collection_Teacher {
         
         $this->states = array();
         $this->items = array();
-        $this->accounts = array();
         
     }
     
     public function create() {
         
         $state = $this->dataAccess->create();
-        $account = $this->accountCollection->create();
         
-        $item = $this->make($state,$account);
+        $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
-        $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
         
@@ -95,13 +86,11 @@ class Domain_Collection_Teacher {
         
         
         $state = $this->dataAccess->readUsingId($id);
-        $account = $this->accountCollection->readUsingUserId($id);
         
-        $item = $this->make($state,$account);
+        $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
-        $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
         
@@ -116,15 +105,10 @@ class Domain_Collection_Teacher {
             return $existingItem;
         }
         
-        
-        
-        $account = $this->accountCollection->readUsingUserId($state->getId());
-        
-        $item = $this->make($state,$account);
+        $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
-        $this->accounts[spl_object_hash($item)] = $account;
         
         return $item;
         
@@ -134,17 +118,12 @@ class Domain_Collection_Teacher {
         
         $this->dataAccess->update( $this->states[spl_object_hash($item)] );
         
-        $this->accountCollection->update( $this->accounts[spl_object_hash($item)] );
-        
     }
     
     public function delete($item) {
         
         $this->dataAccess->delete( $this->states[spl_object_hash($item)] );
         unset($this->states[spl_object_hash($item)]);
-        
-        $this->accountCollection->delete( $this->accounts[spl_object_hash($item)] );
-        unset($this->accounts[spl_object_hash($item)]);
         
     }
     
@@ -164,11 +143,11 @@ class Domain_Collection_Teacher {
         
     }
     
-    private function make($state, $account) {
+    private function make($state) {
         
         return new Domain_Teacher(
             $state, 
-            $account, 
+            $this->accountCollection, 
             $this->lessonCollection,
             $this->presentationRequestFactory,
             $this->partMoneyRequestFactory

@@ -76,17 +76,14 @@ class Domain_Visit {
             throw new Domain_Exception_PartIsMissing();
         }
         
-        if ($student !== $teacher) {
-            
-            $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
-            $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
-            $student->learn($learnRequest);
-
-            $teacher = $continueRequest->getTeacher();
-            $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
-            $teacher->earn($earnRequest);
         
-        }
+        $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
+        $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
+        $student->learn($learnRequest);
+        
+        $teacher = $continueRequest->getTeacher();
+        $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
+        $teacher->earn($earnRequest);
 
         $newPartAnnouncement = null;
         if ($index < $maxIndex) {
