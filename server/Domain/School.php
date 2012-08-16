@@ -20,7 +20,7 @@ class Domain_School {
         $this->studentCollection = $studentCollection;
         $this->lessonCollection = $lessonCollection;
         $this->educationRequestFactory = $educationRequestFactory;
-        
+
     }
     
     /**

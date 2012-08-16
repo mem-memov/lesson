@@ -58,7 +58,7 @@ class Domain_Factory {
         
         $collectionFactory = $this->makeCollectionFactory();
         $messageFactory = $this->makeMessageFactory();
-        
+
         return new Domain_School(
             $collectionFactory->makeTeacherCollection(),
             $collectionFactory->makeStudentCollection(),

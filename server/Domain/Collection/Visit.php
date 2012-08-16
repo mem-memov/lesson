@@ -32,6 +32,12 @@ class Domain_Collection_Visit {
     private $learnRequestFactory;
     
     /**
+     * Фабрика запросов на зарабатывание
+     * @var Domain_Message_Factory_EarnRequest
+     */
+    private $earnRequestFactory;
+    
+    /**
      * Состояния
      * @var array 
      */
@@ -48,7 +54,8 @@ class Domain_Collection_Visit {
         Domain_Collection_Student $studentCollection,
         Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
         Domain_Message_Factory_Presentation $presentationFactory,
-        Domain_Message_Factory_LearnRequest $learnRequestFactory
+        Domain_Message_Factory_LearnRequest $learnRequestFactory,
+        Domain_Message_Factory_EarnRequest $earnRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -56,6 +63,7 @@ class Domain_Collection_Visit {
         $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->learnRequestFactory = $learnRequestFactory;
+        $this->earnRequestFactory = $earnRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -167,7 +175,8 @@ class Domain_Collection_Visit {
             $this->studentCollection,
             $this->partIdentificationRequestFactory,
             $this->presentationFactory,
-            $this->learnRequestFactory
+            $this->learnRequestFactory,
+            $this->earnRequestFactory
          );
         
     }

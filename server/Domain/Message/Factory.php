@@ -308,6 +308,42 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику запросов на зарабатывание
+     * @return Domain_Message_Factory_EarnRequest
+     */
+    public function makeEarnRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EarnRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику запросов на получение денег за показ части урока
+     * @return Domain_Message_Factory_PartMoneyRequest
+     */
+    public function makePartMoneyRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_PartMoneyRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

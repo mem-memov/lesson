@@ -160,6 +160,14 @@ implements
         
     }
     
+    public function bringMoney(
+        Domain_Message_Item_PartMoneyRequest $partMoneyRequest
+    ) {
+        
+        $partMoneyRequest->giveMoney( $this->state->getPrice() );
+        
+    }
+    
     public function belongsToLesson($lessonId) {
         
         return $this->state->getLessonId() === $lessonId;

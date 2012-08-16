@@ -27,13 +27,20 @@ class Domain_Visit {
      */
     private $learnRequestFactory;
     
+    /**
+     * Фабрика запросов на зарабатывание
+     * @var Domain_Message_Factory_EarnRequest
+     */
+    private $earnRequestFactory;
+    
     
     public function __construct(
         Data_State_Item_Visit $state,
         Domain_Collection_Student $studentCollection,
         Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
         Domain_Message_Factory_Presentation $presentationFactory,
-        Domain_Message_Factory_LearnRequest $learnRequestFactory
+        Domain_Message_Factory_LearnRequest $learnRequestFactory,
+        Domain_Message_Factory_EarnRequest $earnRequestFactory
     ) {
         
         $this->state = $state;
@@ -41,6 +48,7 @@ class Domain_Visit {
         $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->learnRequestFactory = $learnRequestFactory;
+        $this->earnRequestFactory = $earnRequestFactory;
         
     }
     
@@ -68,11 +76,17 @@ class Domain_Visit {
             throw new Domain_Exception_PartIsMissing();
         }
         
+        if ($student !== $teacher) {
+            
+            $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
+            $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
+            $student->learn($learnRequest);
+
+            $teacher = $continueRequest->getTeacher();
+            $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
+            $teacher->earn($earnRequest);
         
-        $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
-        $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
-        $student->learn($learnRequest);
-        
+        }
 
         $newPartAnnouncement = null;
         if ($index < $maxIndex) {

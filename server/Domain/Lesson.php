@@ -130,7 +130,8 @@ implements
             
         $continueRequest = $this->continueRequestFactory->makeMessage( 
                 $this->partCollection,
-                $lessonPresentation
+                $lessonPresentation,
+                $presentationRequest->getTeacher()
         );
         $presentation = $visit->continuePresentation($continueRequest);
         

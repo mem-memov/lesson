@@ -115,7 +115,8 @@ class Domain_Collection_Factory {
                 $this->accessFactory->makeTeacher(),
                 $this->makeAccountCollection(),
                 $this->makeLessonCollection(),
-                $this->messageFactory->makePresentationRequestFactory()
+                $this->messageFactory->makePresentationRequestFactory(),
+                $this->messageFactory->makePartMoneyRequestFactory()
             );
             
         }
@@ -186,7 +187,8 @@ class Domain_Collection_Factory {
                 $this->makeStudentCollection(),
                 $this->messageFactory->makePartIdentificationRequestFactory(),
                 $this->messageFactory->makePresentationFactory(),
-                $this->messageFactory->makeLearnRequestFactory()
+                $this->messageFactory->makeLearnRequestFactory(),
+                $this->messageFactory->makeEarnRequestFactory()
             );
             
         }

@@ -25,23 +25,25 @@ class Domain_Teacher {
      */
     private $presentationRequestFactory;
     
+    /**
+     * Фабрика запросов на получение денег за показ части урока
+     * @var Domain_Message_Factory_PartMoneyRequest
+     */
+    private $partMoneyRequestFactory;
+    
     public function __construct(
         Data_State_Item_Teacher $state,
         Domain_Account $account,
         Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_PresentationRequest $presentationRequestFactory
+        Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
+        Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
     ) {
         
         $this->state = $state;
         $this->account = $account;
         $this->lessonCollection = $lessonCollection;
         $this->presentationRequestFactory = $presentationRequestFactory;
-        
-    }
-    
-    public function getId() {
-        
-        return $this->state->getId();
+        $this->partMoneyRequestFactory = $partMoneyRequestFactory;
         
     }
     
@@ -55,7 +57,7 @@ class Domain_Teacher {
     ) {
         
         $lesson = $this->lessonCollection->readUsingId($educationRequest->getLessonId());
-        $presentationRequest = $this->presentationRequestFactory->makeMessage($educationRequest->getStudentId());
+        $presentationRequest = $this->presentationRequestFactory->makeMessage($educationRequest->getStudentId(), $this);
         $presentation = $lesson->goOn($presentationRequest);
         
         return $presentation;
@@ -92,23 +94,25 @@ class Domain_Teacher {
         return $lesson;
 
     }
-
-    public function canWithdraw($amount) {
+    
+    /**
+     * Приносит деньги за показ части урока
+     * @param Domain_Message_Item_EarnRequest $earnRequest
+     */
+    public function earn(Domain_Message_Item_EarnRequest $earnRequest) {
         
-        return $this->account->canDecrease($amount);
+        $part = $earnRequest->getPart();
+        $partMoneyRequest = $this->partMoneyRequestFactory->makeMessage( $this->account );
+        $part->bringMoney($partMoneyRequest);
         
     }
-    
+
+
     public function withdraw($amount) {
         
         $this->account->decrease($amount);
         
     }
-    
-    private function deposit($amount) {
-        
-        $this->account->increase($amount);
-        
-    } 
+
 
 }

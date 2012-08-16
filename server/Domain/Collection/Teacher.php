@@ -26,6 +26,12 @@ class Domain_Collection_Teacher {
     private $presentationRequestFactory;
     
     /**
+     * Фабрика запросов на получение денег за показ части урока
+     * @var Domain_Message_Factory_PartMoneyRequest
+     */
+    private $partMoneyRequestFactory;
+    
+    /**
      * Состояния
      * @var array 
      */
@@ -48,13 +54,15 @@ class Domain_Collection_Teacher {
         Data_Access_Teacher $dataAccess,
         Domain_Collection_Account $accountCollection,
         Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_PresentationRequest $presentationRequestFactory
+        Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
+        Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->accountCollection = $accountCollection;
         $this->lessonCollection = $lessonCollection;
         $this->presentationRequestFactory = $presentationRequestFactory;
+        $this->partMoneyRequestFactory = $partMoneyRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -162,7 +170,8 @@ class Domain_Collection_Teacher {
             $state, 
             $account, 
             $this->lessonCollection,
-            $this->presentationRequestFactory
+            $this->presentationRequestFactory,
+            $this->partMoneyRequestFactory
         );
         
     }

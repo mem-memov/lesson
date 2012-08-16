@@ -11,12 +11,23 @@ class Domain_Message_Item_PresentationRequest {
     private $studentId;
     
     /**
+     * Учитель
+     * @var Domain_Teacher
+     */
+    private $teacher;
+    
+    /**
      * Создаёт экземпляр класса
      * @param integer $studentId ID ученика
+     * @param Domain_Teacher $teacher учитель
      */
-    public function __construct($studentId) {
+    public function __construct(
+        $studentId,
+        Domain_Teacher $teacher
+    ) {
         
         $this->studentId = $studentId;
+        $this->teacher = $teacher;
         
     }
     
@@ -27,6 +38,16 @@ class Domain_Message_Item_PresentationRequest {
     public function getStudentId() {
         
         return $this->studentId;
+        
+    }
+    
+    /**
+     * Сообщает учителя
+     * @return Domain_Teacher
+     */
+    public function getTeacher() {
+        
+        return $this->teacher;
         
     }
     
