@@ -62,6 +62,8 @@ class Domain_Visit {
         Domain_Message_Item_ContinueRequest $continueRequest
     ) {
 
+        $problems = array();
+        
         $partCollection = $continueRequest->getPartCollection();
         
         $parts = $partCollection->readUsingLessonId( $this->state->getLessonId() );
@@ -79,11 +81,16 @@ class Domain_Visit {
         
         $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
         $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
-        $student->learn($learnRequest);
+        try {
+            $student->learn($learnRequest);
+        }
+        catch (Domain_Exception_NotEnoughMoney $exeption) {
+            $problems[] = $exeption;
+        }
         
         $teacher = $continueRequest->getTeacher();
         $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
-        $teacher->earn($earnRequest);
+        //$teacher->earn($earnRequest);
 
         $newPartAnnouncement = null;
         if ($index < $maxIndex) {
@@ -101,7 +108,8 @@ class Domain_Visit {
         $presentation = $this->presentationFactory->makeMessage(
             $continueRequest->getLessonPresentation(), 
             $oldPartPresentation, 
-            $newPartAnnouncement
+            $newPartAnnouncement,
+            $problems
         );
 
         return $presentation;

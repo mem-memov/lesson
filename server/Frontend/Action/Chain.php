@@ -129,4 +129,10 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkNotEnoughMoney() {
+        
+        return  new Frontend_Action_NotEnoughMoney($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

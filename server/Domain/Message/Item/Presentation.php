@@ -26,20 +26,29 @@ implements
     private $nextPartAnnouncement;
     
     /**
+     * Проблемы, возникшие во время посещения части урока
+     * @var Exception[]
+     */
+    private $problems;
+    
+    /**
      * Создаёт экземпляр класса
      * @param Domain_Message_Item_LessonPresentation $lessonPresentation показ урока
      * @param Domain_Message_Item_PartPresentation $partPresentation показ части урока
      * @param Domain_Message_Item_PartAnnouncement|null $nextPartAnnouncement анонс следующей части урока
+     * @param Exception[] $problems проблемы, возникшие во время посещения части урока
      */
     public function __construct(
         Domain_Message_Item_LessonPresentation $lessonPresentation,
         Domain_Message_Item_PartPresentation $partPresentation,
-        Domain_Message_Item_PartAnnouncement $nextPartAnnouncement = null
+        Domain_Message_Item_PartAnnouncement $nextPartAnnouncement = null,
+        array $problems = array()
     ) {
         
         $this->lessonPresentation = $lessonPresentation;
         $this->partPresentation = $partPresentation;
         $this->nextPartAnnouncement = $nextPartAnnouncement;
+        $this->problems = $problems;
         
     }
     
@@ -64,6 +73,26 @@ implements
             'part' => $this->partPresentation->toArray(),
             'next_part' => !is_null($this->nextPartAnnouncement) ? $this->nextPartAnnouncement->toArray() : false
         );
+        
+    }
+    
+    /**
+     * Сообщает о том, возникли ли проблемы во время посещения учеником части урока
+     * @return boolean
+     */
+    public function hasProblems() {
+        
+        return !empty($this->problems);
+        
+    }
+    
+    /**
+     * Сообщает о проблемах, которые возникли во время посещения учеником части урока
+     * @return Exception[]
+     */
+    public function getProblems() {
+        
+        return $this->problems;
         
     }
     
