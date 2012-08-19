@@ -12,7 +12,7 @@ class Frontend_Response_Html implements Frontend_Response_Interface {
         array $stylePaths,
         array $scriptPaths
     ) {
-        
+
         $this->templatePath = $templatePath;
         $this->data = $data;
         $this->stylePaths = $stylePaths;
@@ -24,7 +24,7 @@ class Frontend_Response_Html implements Frontend_Response_Interface {
         
         $data = $this->data;
         $path = __DIR__.'/../../../'.ltrim($this->templatePath, '/');
-   
+
         return self::fillTemplate($data, $path);
         
     }

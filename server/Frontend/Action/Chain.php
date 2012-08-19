@@ -135,4 +135,10 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkHybridAuth() {
+        
+        return  new Frontend_Action_HybridAuth($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

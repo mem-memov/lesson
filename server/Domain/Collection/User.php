@@ -1,36 +1,12 @@
 <?php
-class Domain_Collection_Teacher {
+class Domain_Collection_User {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_Teacher 
+     * @var Data_Access_User 
      */
     private $dataAccess;
-    
-    /**
-     * Коллекция счетов
-     * @var Domain_Collection_Account
-     */
-    private $accountCollection;
-    
-    /**
-     * Коллекция уроков
-     * @var Domain_Collection_Lesson
-     */
-    private $lessonCollection;
-    
-    /**
-     * Фабрика презентационных запросов
-     * @var Domain_Message_Factory_PresentationRequest
-     */
-    private $presentationRequestFactory;
-    
-    /**
-     * Фабрика запросов на получение денег за показ части урока
-     * @var Domain_Message_Factory_PartMoneyRequest
-     */
-    private $partMoneyRequestFactory;
-    
+
     /**
      * Состояния
      * @var array 
@@ -45,18 +21,10 @@ class Domain_Collection_Teacher {
 
     
     public function __construct(
-        Data_Access_Teacher $dataAccess,
-        Domain_Collection_Account $accountCollection,
-        Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
-        Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
+        Data_Access_User $dataAccess
     ) {
         
         $this->dataAccess = $dataAccess;
-        $this->accountCollection = $accountCollection;
-        $this->lessonCollection = $lessonCollection;
-        $this->presentationRequestFactory = $presentationRequestFactory;
-        $this->partMoneyRequestFactory = $partMoneyRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -86,24 +54,6 @@ class Domain_Collection_Teacher {
         
         
         $state = $this->dataAccess->readUsingId($id);
-        
-        $item = $this->make($state);
-        
-        $this->states[spl_object_hash($item)] = $state;
-        $this->items[spl_object_hash($state)] = $item;
-        
-        return $item;
-        
-    }
-
-    public function readUsingLessonId($lessonId) {
-        
-        $state = $this->dataAccess->readUsingLessonId($lessonId);
-        
-        $existingItem = $this->findById( $state->getId() );
-        if ($existingItem !== false) {
-            return $existingItem;
-        }
         
         $item = $this->make($state);
         
@@ -145,12 +95,8 @@ class Domain_Collection_Teacher {
     
     private function make($state) {
         
-        return new Domain_Teacher(
-            $state, 
-            $this->accountCollection, 
-            $this->lessonCollection,
-            $this->presentationRequestFactory,
-            $this->partMoneyRequestFactory
+        return new Domain_User(
+            $state
         );
         
     }

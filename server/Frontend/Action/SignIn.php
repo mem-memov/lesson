@@ -8,6 +8,8 @@ class Frontend_Action_SignIn extends Frontend_Action_Abstract {
             &&  $this->request->hasParameter('password')
         ) {
             return $this->signIn();
+        } elseif ($this->request->hasParameter('use_twitter')) {
+            return $this->useTwitter();
         } else {
             return $this->showForm();
         }
@@ -17,11 +19,13 @@ class Frontend_Action_SignIn extends Frontend_Action_Abstract {
     private function showForm() {
         
         return $this->responseFactory->makeHtmlResponse(
-            'client/Action/SignIn/form.php',
+            '/client/Action/SignIn/form.php',
             array(
                 
             ),
-            array(),
+            array(
+                
+            ),
             array()
         );
         
@@ -36,6 +40,13 @@ class Frontend_Action_SignIn extends Frontend_Action_Abstract {
 
         $this->request->redirectSignedUpUser('12', 'dfddgf', $mustRemember);
 
+    }
+    
+    private function useTwitter() {
+        
+        $guard = $this->domainFactory->makeGuard();
+        $guard->recognizeByTwitter();
+        
     }
     
 }

@@ -11,7 +11,7 @@
 
 return 
 	array(
-		"base_url" => "http://localhost/hybridauth-git/hybridauth/",  
+		"base_url" => "http://umapalata.info/server/Service/Authentication/HybridAuth/hybridauth-2.0.11/hybridauth/",  
 
 		"providers" => array ( 
 			// openid providers

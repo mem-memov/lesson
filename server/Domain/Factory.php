@@ -51,6 +51,21 @@ class Domain_Factory {
     }
     
     /**
+     * Создаёт охранника
+     * @return Domain_Guard
+     */
+    public function makeGuard() {
+        
+        $collectionFactory = $this->makeCollectionFactory();
+
+        return new Domain_Guard(
+            $this->serviceFactory->makeAuthentication(),
+            $collectionFactory->makeUserCollection()
+        );
+        
+    }
+    
+    /**
      * Создаёт школу
      * @return Domain_School
      */

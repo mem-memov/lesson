@@ -12,7 +12,7 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
             '/client/library/jquery/jquery-1.7.2.js'
         );
         
-        
+var_dump($this->request);
         if (!$this->request->hasDirectory(1)) {
             $contentResponse = $this->chain->linkProjectPresentation()->run();
         } else {
@@ -37,6 +37,9 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
                     break;
                 case 'signout':
                     $contentResponse = $this->chain->linkSignOut()->run();
+                    break;
+                case 'hybridauth':
+                    $contentResponse = $this->chain->linkHybridAuth()->run();
                     break;
                 default:
                     $contentResponse = $this->chain->linkPageNotFound()->run();

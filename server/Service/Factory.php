@@ -36,6 +36,10 @@ class Service_Factory {
 
     }
     
+    /**
+     * 
+     * @return Service_Storage_Interface
+     */
     public function makeStorage() {
         
         $instance_key = __FUNCTION__;
@@ -52,6 +56,26 @@ class Service_Factory {
                 $configuration['password'], 
                 $configuration['database']
             );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * 
+     * @return Service_Authentication_Interface
+     */
+    public function makeAuthentication() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $authenticationFactory = $this->makeAuthenticationFactory();
+            
+            $this->instances[$instance_key] = $authenticationFactory->makeHybridAuthAdapter();
             
         }
 
@@ -98,5 +122,27 @@ class Service_Factory {
         return $this->instances[$instance_key];
         
     }
+    
+    /**
+     *
+     * @return Service_Authentication_Factory 
+     */
+    private function makeAuthenticationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Service_Authentication_Factory(
+                $this->configuration['Authentication']
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+
     
 }

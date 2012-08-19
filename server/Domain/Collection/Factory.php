@@ -197,6 +197,26 @@ class Domain_Collection_Factory {
         
     }
     
+    /**
+     * Создаёт коллекцию пользователей
+     * @return Domain_Collection_User
+     */
+    public function makeUserCollection() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_User(
+                $this->accessFactory->makeUser()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 
     
 }
