@@ -12,7 +12,6 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
             '/client/library/jquery/jquery-1.7.2.js'
         );
         
-var_dump($this->request);
         if (!$this->request->hasDirectory(1)) {
             $contentResponse = $this->chain->linkProjectPresentation()->run();
         } else {
