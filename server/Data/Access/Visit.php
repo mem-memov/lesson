@@ -130,7 +130,7 @@ class Data_Access_Visit {
                 `visit`
             SET
                 `lesson_id` = '.$state->getLessonId().',
-                `part_id` = '.$state->getPartId().',
+                `part_id` = '.($state->getPartId() ? $state->getPartId() : 'NULL').',
                 `student_id` = '.$state->getStudentId().',
                 `teacher_id` = '.$state->getTeacherId().'
             WHERE

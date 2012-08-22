@@ -61,13 +61,30 @@ class Domain_Visit {
     public function continuePresentation(
         Domain_Message_Item_ContinueRequest $continueRequest
     ) {
+/*
+        // выпроваживаем учеников с оконченного урока
+        $partId = $this->state->getPartId();
+        if (empty($partId)) {
+            $presentation = $this->presentationFactory->makeMessage(
+                $continueRequest->getLessonPresentation()
+            );
 
+            return $presentation;
+        }
+*/        
+        
+        
+        // создаём контейнер для передачи сообщений об ошибках
         $problems = array();
+        
+
         
         $partCollection = $continueRequest->getPartCollection();
         
+        // получаем все части данного урока
         $parts = $partCollection->readUsingLessonId( $this->state->getLessonId() );
         
+        // получаем текущую часть урока
         $oldPart = $partCollection->readUsingId( $this->state->getPartId() );
 
         $maxIndex = count($parts) - 1;
@@ -78,7 +95,7 @@ class Domain_Visit {
             throw new Domain_Exception_PartIsMissing();
         }
         
-        
+        // ученик обучается
         $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
         $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
         try {
@@ -88,17 +105,28 @@ class Domain_Visit {
             $problems[] = $exeption;
         }
         
+        // учитель преподаёт
         $teacher = $continueRequest->getTeacher();
         $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
-        //$teacher->earn($earnRequest);
+        $teacher->earn($earnRequest);
 
+        // создаём анонс следующей части урока
         $newPartAnnouncement = null;
         if ($index < $maxIndex) {
             
             $newPart = $parts[$index + 1];
+            
+            // устанавливаем часть для следующего посещения
             $partIdentificationRequest = $this->partIdentificationRequestFactory->makeMessage($this->state);
             $newPart->transferId($partIdentificationRequest);
+            
+            // получаем анонс
             $newPartAnnouncement = $newPart->beAnnounced();
+            
+        } else {
+            
+            // показываем, что урок окончен
+            $this->state->setPartId(null);
             
         }
 

@@ -229,4 +229,22 @@ implements
         
     }
     
+    public function setDescription($description) {
+        
+        return $this->state->setDescription($description);
+        
+    }
+    
+    public function setTitle($title) {
+        
+        return $this->state->setTitle($title);
+        
+    }
+    
+    public function getId() {
+        
+        return $this->state->getId();
+        
+    }
+    
 }

@@ -84,6 +84,7 @@ class Domain_Teacher {
             $lesson = $this->lessonCollection->create(
                 $this->state->getId()
             );
+            $this->lessonCollection->update($lesson);
             
         } else {
             

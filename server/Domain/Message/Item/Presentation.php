@@ -34,13 +34,13 @@ implements
     /**
      * Создаёт экземпляр класса
      * @param Domain_Message_Item_LessonPresentation $lessonPresentation показ урока
-     * @param Domain_Message_Item_PartPresentation $partPresentation показ части урока
+     * @param Domain_Message_Item_PartPresentation|null $partPresentation показ части урока
      * @param Domain_Message_Item_PartAnnouncement|null $nextPartAnnouncement анонс следующей части урока
      * @param Exception[] $problems проблемы, возникшие во время посещения части урока
      */
     public function __construct(
         Domain_Message_Item_LessonPresentation $lessonPresentation,
-        Domain_Message_Item_PartPresentation $partPresentation,
+        Domain_Message_Item_PartPresentation $partPresentation = null,
         Domain_Message_Item_PartAnnouncement $nextPartAnnouncement = null,
         array $problems = array()
     ) {
@@ -58,7 +58,7 @@ implements
      */
     public function canBeContinued() {
         
-        return !is_null($this->nextPartAnnouncement);
+        return !is_null($this->lessonPresentation);
         
     }
     

@@ -47,7 +47,7 @@ class Domain_School {
      * @return Domain_Lesson
      */
     public function prepareLesson($teacherId, $lessonId = null, $newVersion = null) {
-        
+
         $teacher = $this->teacherCollection->readUsingId($teacherId);
 
         $lesson = $teacher->prepare($lessonId, $newVersion);

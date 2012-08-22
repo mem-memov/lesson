@@ -117,7 +117,7 @@ class Domain_Collection_Lesson {
         if ($existingItem !== false) {
             return $existingItem;
         }
-        
+
         $state = $this->dataAccess->readUsingId($id);
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;

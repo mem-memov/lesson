@@ -22,7 +22,7 @@ class Frontend_Action_LessonCreate extends Frontend_Action_Abstract {
                 $lesson = $school->prepareLesson($teacherId);
                 $lesson->setTitle($title);
                 $lesson->setDescription($description);
-                $lesson = $school->prepareLesson($teacherId, $lesson);
+                $lesson = $school->prepareLesson($teacherId, $lesson->getId(), $lesson);
             
             } else {
                 

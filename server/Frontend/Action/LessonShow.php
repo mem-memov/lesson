@@ -26,7 +26,7 @@ class Frontend_Action_LessonShow extends Frontend_Action_Abstract {
                 array(),
                 array()
             );
-            
+
         } else {
             
             return $this->chain->linkLessonList()->run();
