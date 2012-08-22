@@ -58,7 +58,7 @@ implements
      */
     public function canBeContinued() {
         
-        return !is_null($this->lessonPresentation);
+        return !is_null($this->partPresentation);
         
     }
     

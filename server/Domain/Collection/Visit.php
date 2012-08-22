@@ -74,12 +74,12 @@ class Domain_Collection_Visit {
      * Создаёт посещение
      * @return Domain_Visit
      */
-    public function create($studentId, $teacherId, $lessonId, $partId) {
+    public function create($studentId, $teacherId, $lessonId) {
 
         $state = $this->dataAccess->create();
         
         $state->setLessonId($lessonId);
-        $state->setPartId($partId);
+        $state->setPartId(null);
         $state->setTeacherId($teacherId);
         $state->setStudentId($studentId);
 

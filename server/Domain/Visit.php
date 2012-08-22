@@ -61,19 +61,7 @@ class Domain_Visit {
     public function continuePresentation(
         Domain_Message_Item_ContinueRequest $continueRequest
     ) {
-/*
-        // выпроваживаем учеников с оконченного урока
-        $partId = $this->state->getPartId();
-        if (empty($partId)) {
-            $presentation = $this->presentationFactory->makeMessage(
-                $continueRequest->getLessonPresentation()
-            );
 
-            return $presentation;
-        }
-*/        
-        
-        
         // создаём контейнер для передачи сообщений об ошибках
         $problems = array();
         
@@ -84,63 +72,80 @@ class Domain_Visit {
         // получаем все части данного урока
         $parts = $partCollection->readUsingLessonId( $this->state->getLessonId() );
         
-        // получаем текущую часть урока
-        $oldPart = $partCollection->readUsingId( $this->state->getPartId() );
-
+        // проверяем, что урок содержит части
+        if (count($parts) === 0) {
+            throw new Domain_Exception_LessonIsEmpty();
+        }
+        
+        // определяем номер последней части урока
         $maxIndex = count($parts) - 1;
-
-        $index = array_search($oldPart, $parts, true);
-
-        if ($index === false) {
-            throw new Domain_Exception_PartIsMissing();
+    
+        // получаем номер текущей части урока
+        if (is_null( $this->state->getPartId() )) {
+            $currentIndex = 0;
+        } else {
+            $oldPart = $partCollection->readUsingId( $this->state->getPartId() );
+            $oldPartIndex = array_search($oldPart, $parts, true);
+            if ($oldPartIndex === false) {
+                throw new Domain_Exception_PartIsMissing();
+            }
+            $currentIndex = $oldPartIndex + 1;
         }
-        
-        // ученик обучается
-        $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
-        $learnRequest = $this->learnRequestFactory->makeMessage($oldPart);
-        try {
-            $student->learn($learnRequest);
-        }
-        catch (Domain_Exception_NotEnoughMoney $exeption) {
-            $problems[] = $exeption;
-        }
-        
-        // учитель преподаёт
-        $teacher = $continueRequest->getTeacher();
-        $earnRequest = $this->earnRequestFactory->makeMessage($oldPart);
-        $teacher->earn($earnRequest);
 
-        // создаём анонс следующей части урока
-        $newPartAnnouncement = null;
-        if ($index < $maxIndex) {
+        if ($currentIndex <= $maxIndex) {
             
-            $newPart = $parts[$index + 1];
+            // получаем текущую часть урока
+            $currentPart = $parts[$currentIndex];
             
-            // устанавливаем часть для следующего посещения
+            // отмечаем, что эту часть урока ученик посетил
             $partIdentificationRequest = $this->partIdentificationRequestFactory->makeMessage($this->state);
-            $newPart->transferId($partIdentificationRequest);
-            
-            // получаем анонс
-            $newPartAnnouncement = $newPart->beAnnounced();
+            $currentPart->transferId($partIdentificationRequest);
+
+            // ученик обучается
+            $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
+            $learnRequest = $this->learnRequestFactory->makeMessage($currentPart);
+            try {
+                $student->learn($learnRequest);
+            }
+            catch (Domain_Exception_NotEnoughMoney $exeption) {
+                $problems[] = $exeption;
+            }
+
+            // учитель преподаёт
+            $teacher = $continueRequest->getTeacher();
+            $earnRequest = $this->earnRequestFactory->makeMessage($currentPart);
+            $teacher->earn($earnRequest);
+
+            // создаём анонс следующей части урока
+            $nextPartAnnouncement = null;
+            if ($currentIndex < $maxIndex) {
+
+                $nextPart = $parts[$index + 1];
+                $nextPartAnnouncement = $nextPart->beAnnounced();
+
+            }
+
+            $currentPart instanceof Domain_CanBePresented;
+            $currentPartPresentation = $currentPart->bePresented();
+
+            $presentation = $this->presentationFactory->makeMessage(
+                $continueRequest->getLessonPresentation(), 
+                $currentPartPresentation, 
+                $nextPartAnnouncement,
+                $problems
+            );
+
+            return $presentation;
             
         } else {
             
-            // показываем, что урок окончен
-            $this->state->setPartId(null);
+            // выпроваживаем ученика с оконченного урока
+            $presentation = $this->presentationFactory->makeMessage(
+                $continueRequest->getLessonPresentation() // не даём презентацию части
+            );
+            return $presentation;
             
         }
-
-        $oldPart instanceof Domain_CanBePresented;
-        $oldPartPresentation = $oldPart->bePresented();
-
-        $presentation = $this->presentationFactory->makeMessage(
-            $continueRequest->getLessonPresentation(), 
-            $oldPartPresentation, 
-            $newPartAnnouncement,
-            $problems
-        );
-
-        return $presentation;
 
     }
     

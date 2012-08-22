@@ -74,21 +74,6 @@ implements
         
     }
     
-    public function startVisit(
-        Domain_Message_Item_VisitRequest $visitRequest
-    ) {
-        
-        $visit = $this->visitCollection->create(
-            $visitRequest->getStudentId(), 
-            $visitRequest->getTeacherId(),
-            $this->state->getLessonId(),
-            $this->state->getId()
-        );
-        
-        $this->visitCollection->update($visit);
-        
-    }
-    
     /**
      * Сообщает ID части урокаs
      * @param Domain_Message_Item_PartIdentificationRequest $partIdentificationRequest

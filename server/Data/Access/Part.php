@@ -111,7 +111,7 @@ class Data_Access_Part {
                 '.implode(' ', $conditions).'
             ;
         ');
-        
+
         $states = $this->rowsToStates($rows);
         $this->addWidgetsToStates($states);
 

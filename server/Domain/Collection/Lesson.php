@@ -36,13 +36,7 @@ class Domain_Collection_Lesson {
      * @var Domain_Message_Factory_ContinueRequest
      */
     private $continueRequestFactory;
-    
-    /**
-     * Фабрика запросов на посещение урока
-     * @var Domain_Message_Factory_VisitRequest
-     */
-    private $visitRequestFactory;
-    
+
     /**
      * Фабрика показов уроков
      * @var Domain_Message_Factory_LessonPresentation 
@@ -66,7 +60,6 @@ class Domain_Collection_Lesson {
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_VisitRequest $visitRequestFactory,
         Domain_Message_Factory_LessonPresentation $presentationFactory,
         Domain_Message_Factory_PartInspector $partInspectorFactory,
         Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
@@ -76,7 +69,6 @@ class Domain_Collection_Lesson {
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
-        $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->partInspectorFactory = $partInspectorFactory;
         $this->partUpdateRequestFactory = $partUpdateRequestFactory;
@@ -196,7 +188,6 @@ class Domain_Collection_Lesson {
             $this->partCollection,
             $this->visitCollection,
             $this->continueRequestFactory,
-            $this->visitRequestFactory,
             $this->presentationFactory,
             $this->partInspectorFactory,
             $this->partUpdateRequestFactory

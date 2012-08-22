@@ -67,7 +67,6 @@ class Domain_Collection_Factory {
                 $this->makePartCollection(),
                 $this->makeVisitCollection(),
                 $this->messageFactory->makeContinueRequestFactory(),
-                $this->messageFactory->makeVisitRequestFactory(),
                 $this->messageFactory->makeLessonPresentationFactory(),
                 $this->messageFactory->makePartInspectorFactory(),
                 $this->messageFactory->makePartUpdateRequestFactory()

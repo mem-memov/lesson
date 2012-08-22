@@ -48,7 +48,7 @@
                     
 			'Twitter' => array ( 
 				'enabled' => true,
-				'keys'    => array ( 'key' => 'RxMSp0vQriGIiOOFlxIQ', 'secret' => '5AXpnoBalOf74zowbB8g9MOwYqyP8U5pLmrsPOP8B4' ) 
+				'keys'    => array ( 'key' => 'RxMSp9vQriGIiOOFlxIQ', 'secret' => '4AXpnoBalOf74zowbB8g9MOwYqyP8U5pLmrsPOP8B4' ) 
 			)
                     
                 ),

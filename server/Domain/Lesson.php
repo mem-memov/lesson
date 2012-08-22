@@ -30,13 +30,7 @@ implements
      * @var Domain_Message_Factory_ContinueRequest
      */
     private $continueRequestFactory;
-    
-    /**
-     * Фабрика запросов на посещение урока
-     * @var Domain_Message_Factory_VisitRequest
-     */
-    private $visitRequestFactory;
-    
+
     /**
      * Фабрика показов уроков
      * @var Domain_Message_Factory_LessonPresentation 
@@ -60,7 +54,6 @@ implements
         Domain_Collection_Part $partCollection,
         Domain_Collection_Visit $visitCollection,
         Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_VisitRequest $visitRequestFactory,
         Domain_Message_Factory_LessonPresentation $presentationFactory,
         Domain_Message_Factory_PartInspector $partInspectorFactory,
         Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
@@ -70,7 +63,6 @@ implements
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
         $this->continueRequestFactory = $continueRequestFactory;
-        $this->visitRequestFactory = $visitRequestFactory;
         $this->presentationFactory = $presentationFactory;
         $this->partInspectorFactory = $partInspectorFactory;
         $this->partUpdateRequestFactory = $partUpdateRequestFactory;
@@ -118,13 +110,12 @@ implements
         }
         catch (Domain_Collection_Exception_StudentIsAbsent $exception) {
 
-            $this->visitFirstPart( $presentationRequest->getStudentId() );
-            
-            $visit = $this->visitCollection->readForVisitingStudent(
-                $this->state->getId(),
-                $presentationRequest->getStudentId()
+            $visit = $this->visitCollection->create(
+                $presentationRequest->getStudentId(), 
+                $this->state->getTeacherId(),
+                $this->state->getId()
             );
-            
+
         }
         
             
