@@ -4,6 +4,7 @@
     <input type="password" name="password" />
     <input type="checkbox" name="rememberme" value="1">
     <input type="submit" />
+    <a href="/signup">Регистрация</a>
 </form>
 
 

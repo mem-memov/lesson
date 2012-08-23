@@ -87,6 +87,12 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkSignUp() {
+        
+        return  new Frontend_Action_SignUp($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
     public function linkSignIn() {
         
         return  new Frontend_Action_SignIn($this->request, $this->responseFactory, $this, $this->domainFactory);

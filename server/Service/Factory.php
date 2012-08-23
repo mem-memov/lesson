@@ -143,6 +143,26 @@ class Service_Factory {
         
     }
     
+    /**
+     *
+     * @return Service_Mail_Factory
+     */
+    private function makeAuthenticationFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Service_Mail_Factory(
+                $this->configuration['Mail']
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 
     
 }

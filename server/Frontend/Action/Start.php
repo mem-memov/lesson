@@ -34,6 +34,9 @@ class Frontend_Action_Start extends Frontend_Action_Abstract {
                 case '!':
                     $contentResponse = $this->chain->linkSignIn()->run();
                     break;
+                case 'signup':
+                    $contentResponse = $this->chain->linkSignUp()->run();
+                    break;
                 case 'signout':
                     $contentResponse = $this->chain->linkSignOut()->run();
                     break;
