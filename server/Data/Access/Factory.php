@@ -177,4 +177,21 @@ class Data_Access_Factory {
         
     }
 
+    public function makeEmail() {
+
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $this->instances[$instance_key] = new Data_Access_Email(
+                $this->stateFactory->makeEmailFactory(),
+                $this->storage
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
 }

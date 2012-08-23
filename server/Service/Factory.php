@@ -84,6 +84,26 @@ class Service_Factory {
     }
     
     /**
+     * 
+     * @return Service_Mailer_Interface
+     */
+    public function makeMailer() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+            
+            $mailerFactory = $this->makeMailerFactory();
+            
+            $this->instances[$instance_key] = $mailerFactory->makeSwiftMailerAdapter();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
      *
      * @return Service_Storage_Factory 
      */
@@ -145,15 +165,15 @@ class Service_Factory {
     
     /**
      *
-     * @return Service_Mail_Factory
+     * @return Service_Mailer_Factory
      */
-    private function makeAuthenticationFactory() {
+    private function makeMailerFactory() {
         
         $instance_key = __FUNCTION__;
 
         if (!isset($this->instances[$instance_key])) {
             
-            $this->instances[$instance_key] = new Service_Mail_Factory(
+            $this->instances[$instance_key] = new Service_Mailer_Factory(
                 $this->configuration['Mail']
             );
             

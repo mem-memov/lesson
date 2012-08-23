@@ -60,6 +60,7 @@ class Domain_Factory {
 
         return new Domain_Guard(
             $this->serviceFactory->makeAuthentication(),
+            $this->serviceFactory->makeMailer(),
             $collectionFactory->makeUserCollection()
         );
         

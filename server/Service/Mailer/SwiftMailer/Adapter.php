@@ -1,7 +1,7 @@
 <?php
-class Service_Mail_SwiftMailer_Adapter 
+class Service_Mailer_SwiftMailer_Adapter 
 implements
-    Service_Mail_Interface
+    Service_Mailer_Interface
 {
     
     /**

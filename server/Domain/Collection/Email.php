@@ -1,9 +1,9 @@
 <?php
-class Domain_Collection_Lesson {
+class Domain_Collection_Email {
 
     /**
      * Объект доступа к данным (DAO)
-     * @var Data_Access_Crud_Lesson 
+     * @var Data_Access_Crud_Email 
      */
     private $dataAccess;
     
@@ -19,59 +19,11 @@ class Domain_Collection_Lesson {
      */
     private $items;
     
-    /**
-     * Коллекция частей урока
-     * @var Domain_Collection_Part
-     */
-    private $partCollection;
-    
-    /**
-     * Коллекция посещений
-     * @var Domain_Collection_Visit
-     */
-    private $visitCollection;
-    
-    /**
-     * Фабрика запросов на продолжение урока
-     * @var Domain_Message_Factory_ContinueRequest
-     */
-    private $continueRequestFactory;
-
-    /**
-     * Фабрика показов уроков
-     * @var Domain_Message_Factory_LessonPresentation 
-     */
-    private $presentationFactory;
-
-    /**
-     * Фабрика инспекторов частей урока
-     * @var Domain_Message_Factory_PartInspector
-     */
-    private $partInspectorFactory;
-    
-    /**
-     * Фабрика запросов на изменение части урока
-     * @var Domain_Message_Factory_PartUpdateRequest
-     */
-    private $partUpdateRequestFactory;
-    
     public function __construct(
-        Data_Access_Lesson $dataAccess,
-        Domain_Collection_Part $partCollection,
-        Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_LessonPresentation $presentationFactory,
-        Domain_Message_Factory_PartInspector $partInspectorFactory,
-        Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
+        Data_Access_Lesson $dataAccess
     ) {
         
         $this->dataAccess = $dataAccess;
-        $this->partCollection = $partCollection;
-        $this->visitCollection = $visitCollection;
-        $this->continueRequestFactory = $continueRequestFactory;
-        $this->presentationFactory = $presentationFactory;
-        $this->partInspectorFactory = $partInspectorFactory;
-        $this->partUpdateRequestFactory = $partUpdateRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -79,15 +31,15 @@ class Domain_Collection_Lesson {
     }
     
     /**
-     * Создаёт урок
-     * @param integer $teacherId
-     * @return Domain_Lesson
+     * Создаёт почтовый адрес
+     * @param integer $userId
+     * @return Domain_Email
      */
-    public function create($teacherId) {
+    public function create($userId) {
         
         $state = $this->dataAccess->create();
 
-        $state->setTeacherId($teacherId);
+        $state->setUserId($userId);
         
         $item = $this->make($state);
         
@@ -99,7 +51,7 @@ class Domain_Collection_Lesson {
     }
     
     /**
-     * Извлекает урок по ID
+     * Извлекает почтовый адрес по ID
      * @param integer $id
      * @return Domain_Lesson
      */
@@ -190,14 +142,8 @@ class Domain_Collection_Lesson {
     
     private function make($state) {
         
-        return new Domain_Lesson(
-            $state, 
-            $this->partCollection,
-            $this->visitCollection,
-            $this->continueRequestFactory,
-            $this->presentationFactory,
-            $this->partInspectorFactory,
-            $this->partUpdateRequestFactory
+        return new Domain_Email(
+            $state
         );
         
     }

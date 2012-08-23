@@ -72,7 +72,7 @@ class Data_Access_Lesson {
     }
     
     public function readUsingFilter($filter) {
-       
+      
         $conditions = array();
         
         if (array_key_exists('lesson_id', $filter) && $filter['lesson_id'] > 0) {
@@ -94,6 +94,28 @@ class Data_Access_Lesson {
             WHERE
                 TRUE
                 '.implode(' ', $conditions).'
+            ;
+        ');
+        
+        $states = $this->rowsToStates($rows);
+
+        return $states;
+        
+    }
+    
+    public function readUsingTeacherId($teacherId) {
+
+        $rows = $this->storage->fetchRows('
+            SELECT
+                `lesson`.`id` AS `id`,
+                `lesson`.`title` AS `title`,
+                `lesson`.`description` AS `description`,
+                `teacher_lesson`.`teacher_id` AS `teacher_id`
+            FROM
+                `lesson`
+                LEFT JOIN `teacher_lesson` ON (`lesson`.`id` = `teacher_lesson`.`lesson_id`)
+            WHERE
+                `teacher_lesson`.`teacher_id` = '.$teacherId.'
             ;
         ');
         

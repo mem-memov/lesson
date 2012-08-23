@@ -8,6 +8,12 @@ class Domain_Guard {
     private $authentication;
     
     /**
+     * Почтовый рассыльщик
+     * @var Service_Mailer_Interface
+     */
+    private $mailer;
+    
+    /**
      * Коллекция пользователей
      * @var Domain_Collection_User
      */
@@ -15,10 +21,12 @@ class Domain_Guard {
     
     public function __construct(
         Service_Authentication_Interface $authentication,
+        Service_Mailer_Interface $mailer,
         Domain_Collection_User $userCollection
     ) {
         
         $this->authentication = $authentication;
+        $this->mailer = $mailer;
         $this->userCollection = $userCollection;
         
     }
@@ -26,6 +34,12 @@ class Domain_Guard {
     public function recognizeByTwitter() {
         
         $this->authentication->useTwitter();
+        
+    }
+    
+    public function enroll($email, $password) {
+        
+        $user = $this->userCollection->create();
         
     }
     

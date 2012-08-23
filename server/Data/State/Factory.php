@@ -166,4 +166,22 @@ class Data_State_Factory {
         
     }
     
+    /**
+     * Создаёт фабрику почтовых адоесов
+     * @return Data_State_Factory_Email
+     */
+    public function makeEmailFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Data_State_Factory_Email();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
 }

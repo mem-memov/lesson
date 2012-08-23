@@ -2,7 +2,7 @@
 /**
  * Фабрика рассыльщиков почты
  */
-class Service_Mail_Factory {
+class Service_Mailer_Factory {
     
     /**
      * Контейнер для уникальных объектов
@@ -32,6 +32,10 @@ class Service_Mail_Factory {
 
     }
     
+    /**
+     * 
+     * @return Service_Mail_SwiftMailer_Adapter
+     */
     public function makeSwiftMailerAdapter() {
         
         require_once( dirname(__FILE__).'/Swift-4.2.1/lib/swift_required.php' );

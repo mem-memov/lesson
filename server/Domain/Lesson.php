@@ -136,27 +136,6 @@ implements
         return $presentation;
 
     }
-    
-    public function visitFirstPart($studentId) {
-        
-        $parts = $this->partCollection->readUsingLessonId( $this->state->getId() );
-        
-        if (empty($parts)) {
-            throw new Domain_Exception_LessonIsEmpty();
-        }
-        
-        $firstPart = $parts[0];
-        
-        $firstPart instanceof Domain_Part;
-        
-        $visitRequest = $this->visitRequestFactory->makeMessage(
-                                                                $studentId, 
-                                                                $this->state->getTeacherId()
-        );
-        
-        $firstPart->startVisit($visitRequest);
-            
-    }
 
     public function showPart($partId) {
         
@@ -171,11 +150,7 @@ implements
         return $partPresentation->toArray();
         
     }
-    
-    
-    
-    
-    
+
     public function addPart($price, $after = null) {
         
         $part = $this->partCollection->create(
