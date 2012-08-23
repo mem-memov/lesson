@@ -61,6 +61,17 @@
                 
             ) 
             
+        ),
+        
+        'Mail' => array(
+            
+            'SMTP' => array(
+                'server' => 'smtp.umapalata.info',
+                'port' => 25,
+                'user' => 'robot',
+                'password' => '1234567'
+            )
+            
         )
         
     )
