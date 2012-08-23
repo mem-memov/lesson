@@ -207,7 +207,29 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_User(
-                $this->accessFactory->makeUser()
+                $this->accessFactory->makeUser(),
+                $this->makeEmailCollection(),
+                $this->messageFactory->makeEmailInspectorFactory()
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт коллекцию почтовых адресов
+     * @return Domain_Collection_Email
+     */
+    public function makeEmailCollection() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collection_Email(
+                $this->accessFactory->makeEmail()
             );
             
         }

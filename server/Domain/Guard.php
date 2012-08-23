@@ -39,7 +39,11 @@ class Domain_Guard {
     
     public function enroll($email, $password) {
         
+        $existingUser = $this->userCollection->readUsingEmail($email);
+        
         $user = $this->userCollection->create();
+        $this->userCollection->update($user);
+        $user->acquireMailBox($email);
         
     }
     

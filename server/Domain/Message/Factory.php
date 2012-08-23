@@ -326,6 +326,24 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику инспекторов почтовых адресов
+     * @return Domain_Message_Factory_EmailInspector
+     */
+    public function makeEmailInspectorFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EmailInspector();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

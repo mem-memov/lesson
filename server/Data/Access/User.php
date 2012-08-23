@@ -55,19 +55,34 @@ class Data_Access_User {
                 `id` = '.$id.'
             ;
         ');
-        
+
         if (empty($row)) {
             throw new Data_Access_Exception('Пользователь с идентификатором - '.$id.' не существует. Чтение невозможно.');
         }
         
-        $state = $this->create();
+        $state = $this->rowToState($row);
         
-        $state instanceof Data_State_Item_TrackableInterface;
-        $state->setId($id);
+        return $state;
         
-        $state instanceof Data_State_Item_User;
-        $state->setFirstName($row['first_name']);
-        $state->setLastName($row['last_name']);
+    }
+    
+    public function readUsingEmail($email) {
+
+        $row = $this->storage->fetchRow('
+            SELECT
+                `first_name`,
+                `last_name`
+            FROM
+                `user`
+                LEFT JOIN `email` ON (`user`.`id` = `email`.`user_id`)
+            WHERE
+                `email`.`email` = "'.$email.'"
+            LIMIT
+                1
+            ;
+        ');
+        
+        $state = $this->rowToState($row);
         
         return $state;
         
@@ -115,6 +130,33 @@ class Data_Access_User {
             ');
         
         }
+        
+    }
+    
+    private function rowsToStates(array $rows) {
+        
+        $states = array();
+
+        foreach ($rows as $row) {
+            $states[] = $this->rowToState($row);
+        }
+        
+        return $states;
+        
+    }
+    
+    private function rowToState(array $row) {
+        
+        $state = $this->create();
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+        $state->setId($row['id']);
+        
+        $state instanceof Data_State_Item_Teacher;
+        $state->setFirstName($row['first_name']);
+        $state->setLastName($row['last_name']);
+        
+        return $state;
         
     }
     

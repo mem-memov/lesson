@@ -8,7 +8,8 @@ interface Service_Mailer_Interface {
         array $from,
         array $to, 
         $subject = '',
-        $body = '',
+        $template = '',
+        array $data = array(),
         array $attachments = array()
     );
     

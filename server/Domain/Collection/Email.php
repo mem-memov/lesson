@@ -20,7 +20,7 @@ class Domain_Collection_Email {
     private $items;
     
     public function __construct(
-        Data_Access_Lesson $dataAccess
+        Data_Access_Email $dataAccess
     ) {
         
         $this->dataAccess = $dataAccess;
@@ -33,13 +33,15 @@ class Domain_Collection_Email {
     /**
      * Создаёт почтовый адрес
      * @param integer $userId
+     * @param string $email
      * @return Domain_Email
      */
-    public function create($userId) {
+    public function create($userId, $email) {
         
         $state = $this->dataAccess->create();
 
         $state->setUserId($userId);
+        $state->setEmail($email);
         
         $item = $this->make($state);
         
