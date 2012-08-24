@@ -39,14 +39,10 @@ class Frontend_ClassLoader_Php_5_2 implements Frontend_ClassLoader_Interface {
      */
     public function autoload($class) {
 
-
         $path = $this->buildUnderscoreClassPath($class);
         if (is_readable($path)) {
             require_once($path);
-        } else {
-            throw new Frontend_ClassLoader_Exception('Файл "'.$path.'" не найден для класса "'.$class.'".');
         }
-
 
     }
     

@@ -57,11 +57,12 @@ class Domain_Factory {
     public function makeGuard() {
         
         $collectionFactory = $this->makeCollectionFactory();
-
+        $messageFactory = $this->makeMessageFactory();
+        
         return new Domain_Guard(
             $this->serviceFactory->makeAuthentication(),
-            $this->serviceFactory->makeMailer(),
-            $collectionFactory->makeUserCollection()
+            $collectionFactory->makeUserCollection(),
+            $messageFactory->makeMailReceptionRequestFactory()
         );
         
     }
@@ -96,6 +97,7 @@ class Domain_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Factory(
                 $this->dataFactory->makeAccessFactory(),
+                $this->serviceFactory,
                 $this->makeMessageFactory()
             );
             

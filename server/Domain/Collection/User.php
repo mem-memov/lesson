@@ -85,6 +85,10 @@ class Domain_Collection_User {
         
         $state = $this->dataAccess->readUsingEmail($email);
         
+        if (is_null($state)) {
+            return $state;
+        }
+
         $item = $this->make($state);
         
         $this->states[spl_object_hash($item)] = $state;

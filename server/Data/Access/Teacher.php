@@ -100,14 +100,15 @@ class Data_Access_Teacher {
      */
     public function update(Data_State_Item_User $state) {
         
-        $state instanceof Data_State_Item_TrackableInterface;
+        // Находим ID для пользователя
+        $this->secureId($state);
         
         $this->storage->query('
             UPDATE
                 `user`
             SET
-                `first_name` = '.$state->getFirstName().',
-                `last_name` = '.$state->getLastName().'
+                `first_name` = "'.$state->getFirstName().'",
+                `last_name` = "'.$state->getLastName().'"
             WHERE
                 `id` = '.$state->getId().'
             ;

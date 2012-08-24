@@ -65,11 +65,20 @@
         
         'Mail' => array(
             
-            'SMTP' => array(
+            'robot' => array(
                 'server' => 'smtp.umapalata.info',
                 'port' => 25,
                 'user' => 'robot',
-                'password' => '1234567'
+                'password' => '1234567',
+                'sender_email' => 'robot@umapalata.info'
+            )
+            
+        ),
+        
+        'WebDisk' => array(
+            
+            'Google' => array(
+                
             )
             
         )

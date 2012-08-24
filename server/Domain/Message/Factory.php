@@ -344,6 +344,24 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику запросов на получение почты
+     * @return Domain_Message_Factory_MailReceptionRequest
+     */
+    public function makeMailReceptionRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_MailReceptionRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

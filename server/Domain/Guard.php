@@ -8,26 +8,26 @@ class Domain_Guard {
     private $authentication;
     
     /**
-     * Почтовый рассыльщик
-     * @var Service_Mailer_Interface
-     */
-    private $mailer;
-    
-    /**
      * Коллекция пользователей
      * @var Domain_Collection_User
      */
     private $userCollection;
     
+    /**
+     * Фабрика запросов на получение почты
+     * @var Domain_Message_Factory_MailReceptionRequest
+     */
+    private $mailReceptionRequestFactory;
+    
     public function __construct(
         Service_Authentication_Interface $authentication,
-        Service_Mailer_Interface $mailer,
-        Domain_Collection_User $userCollection
+        Domain_Collection_User $userCollection,
+        Domain_Message_Factory_MailReceptionRequest $mailReceptionRequestFactory
     ) {
         
         $this->authentication = $authentication;
-        $this->mailer = $mailer;
         $this->userCollection = $userCollection;
+        $this->mailReceptionRequestFactory = $mailReceptionRequestFactory;
         
     }
     
@@ -41,9 +41,24 @@ class Domain_Guard {
         
         $existingUser = $this->userCollection->readUsingEmail($email);
         
+        if (!is_null($existingUser)) {
+            
+        }
+
         $user = $this->userCollection->create();
+
         $this->userCollection->update($user);
+
         $user->acquireMailBox($email);
+        
+        $mailReceptionRequest = $this->mailReceptionRequestFactory->makeMessage(
+            'signup/confirm_email', 
+            array(
+                'email' => $email
+            )
+        );
+        
+        $user->receiveMail($mailReceptionRequest);
         
     }
     

@@ -14,6 +14,13 @@ class Domain_Collection_Factory {
     private $accessFactory;
     
     /**
+     * Фабрика слоя сервисов
+     * 
+     * @var Service_Factory
+     */
+    private $serviceFactory;
+    
+    /**
      * Фабрика, создающая фабрики сообщений
      * @var Domain_Message_Factory
      */
@@ -21,10 +28,12 @@ class Domain_Collection_Factory {
 
     public function __construct(
         Data_Access_Factory $accessFactory,
+        Service_Factory $serviceFactory,
         Domain_Message_Factory $messageFactory
     ) {
 
         $this->accessFactory = $accessFactory;
+        $this->serviceFactory = $serviceFactory;
         $this->messageFactory = $messageFactory;
         
         $this->uniqueInstances = array();
@@ -229,7 +238,8 @@ class Domain_Collection_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Collection_Email(
-                $this->accessFactory->makeEmail()
+                $this->accessFactory->makeEmail(),
+                $this->serviceFactory->makeMailer()
             );
             
         }

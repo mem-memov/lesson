@@ -94,14 +94,15 @@ class Data_Access_User {
      */
     public function update(Data_State_Item_User $state) {
         
-        $state instanceof Data_State_Item_TrackableInterface;
+        // Находим ID для пользователя
+        $this->secureId($state);
         
         $this->storage->query('
             UPDATE
                 `user`
             SET
-                `first_name` = '.$state->getFirstName().',
-                `last_name` = '.$state->getLastName().'
+                `first_name` = "'.$state->getFirstName().'",
+                `last_name` = "'.$state->getLastName().'"
             WHERE
                 `id` = '.$state->getId().'
             ;
@@ -147,6 +148,10 @@ class Data_Access_User {
     
     private function rowToState(array $row) {
         
+        if (empty($row)) {
+            return null;
+        }
+        
         $state = $this->create();
         
         $state instanceof Data_State_Item_TrackableInterface;
@@ -157,6 +162,30 @@ class Data_Access_User {
         $state->setLastName($row['last_name']);
         
         return $state;
+        
+    }
+    
+    /**
+     * Снабжает состояние идентификатором, если его пока нет
+     * @param Data_State_Item_Part $state
+     */
+    private function secureId(Data_State_Item_User &$state) {
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+
+        if(!$state->hasId()) {
+
+            $this->storage->query('
+                INSERT INTO
+                    `user`
+                SET
+                    `id` = DEFAULT
+                ;
+            ');
+            $id = $this->storage->lastId();
+            $state->setId($id);
+            
+        }
         
     }
     

@@ -34,6 +34,10 @@ class Frontend_Action_SignUp extends Frontend_Action_Abstract {
     
     private function signUp($email, $password) {
         
+        $guard = $this->domainFactory->makeGuard();
+        
+        $guard->enroll($email, $password);
+        
         return $this->responseFactory->makeHtmlResponse(
             '/client/Action/SignUp/form.php',
             array(),

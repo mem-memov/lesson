@@ -38,21 +38,27 @@ class Service_Mailer_Factory {
      */
     public function makeSwiftMailerAdapter() {
         
-        require_once( dirname(__FILE__).'/Swift-4.2.1/lib/swift_required.php' );
+        require_once( dirname(__FILE__).'/SwiftMailer/Swift-4.2.1/lib/swift_required.php' );
         
-        $server = $this->configuration['SMTP']['server'];
-        $port = $this->configuration['SMTP']['port'];
-        $user = $this->configuration['SMTP']['user'];
-        $password = $this->configuration['SMTP']['password'];
+        $server = $this->configuration['robot']['server'];
+        $port = $this->configuration['robot']['port'];
+        $user = $this->configuration['robot']['user'];
+        $password = $this->configuration['robot']['password'];
         
         $transport = Swift_SmtpTransport::newInstance($server, $port)
             ->setUsername($user)
             ->setPassword($password)
         ;
         
+        $templateDirectory = __DIR__.'/template';
+
         $mailer = Swift_Mailer::newInstance($transport);
         
-        return new Service_Mail_SwiftMailer_Adapter($mailer);
+        return new Service_Mailer_SwiftMailer_Adapter(
+            $mailer,
+            $this->configuration['robot']['sender_email'],
+            $templateDirectory
+        );
         
     }
     

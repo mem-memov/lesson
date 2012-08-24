@@ -12,12 +12,20 @@ implements
      * @var Data_State_Item_Email
      */
     private $state;
+
+    /**
+     * Почтовый рассыльщик
+     * @var Service_Mailer_Interface
+     */
+    private $mailer;
     
     public function __construct(
-        Data_State_Item_Email $state
+        Data_State_Item_Email $state,
+        Service_Mailer_Interface $mailer
     ) {
         
         $this->state = $state;
+        $this->mailer = $mailer;
       
     }
     
@@ -38,6 +46,14 @@ implements
             $partInspector->getPartIds(),
             $partInspector->getTotalPrice()
         );
+        
+    }
+    
+    public function beInspected(
+        Domain_Message_Item_EmailInspector $emailInspector
+    ) {
+        
+        $emailInspector->addEmail( $this->state->getEmail() );
         
     }
 

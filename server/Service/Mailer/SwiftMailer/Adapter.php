@@ -10,30 +10,48 @@ implements
      */
     private $mailer;
     
+    /**
+     * Адрес почты, с которого уходят письма
+     * @var string 
+     */
+    private $senderEmail;
+    
+    /**
+     * Путь к папке с шаблонами
+     * @var string
+     */
+    private $templateDirectory;
+    
     public function __construct(
-        Swift_Mailer $mailer
+        Swift_Mailer $mailer,
+        $senderEmail,
+        $templateDirectory
     ) {
         
         $this->mailer = $mailer;
+        $this->senderEmail = $senderEmail;
+        $this->templateDirectory = $templateDirectory;
         
     }
     
     public function send(
-        array $from,
         array $to, 
-        $subject = '',
         $template = '',
         array $data = array(),
         array $attachments = array()
     ) {
         
         $message = Swift_Message::newInstance($subject)
-            ->setFrom($from)
+            ->setFrom($this->senderEmail)
             ->setTo($to)
             ->setBody($body)
         ;
         
         $result = $this->mailer->send($message);
+        
+    }
+    
+    private function fillTemplate($template, array $data) {
         
     }
     

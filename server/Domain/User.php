@@ -36,6 +36,21 @@ class Domain_User {
         $email = $this->emailCollection->create( $this->state->getId(), $emailAddress );
         
         $this->emailCollection->update( $email );
+
+    }
+    
+    public function receiveMail(
+        Domain_Message_Item_MailReceptionRequest $mailReceptionRequest
+    ) {
+        
+        $emails = $this->emailCollection->readUsingUserId( $this->state->getId() );
+        
+        $emailInspector = $this->emailInspectorFactory->makeMessage();
+        
+        foreach ($emails as $email) {
+            $email instanceof Domain_Email;
+            $email->beInspected($emailInspector);
+        }
         
     }
 

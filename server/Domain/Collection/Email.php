@@ -19,11 +19,19 @@ class Domain_Collection_Email {
      */
     private $items;
     
+    /**
+     * Почтовый рассыльщик
+     * @var Service_Mailer_Interface
+     */
+    private $mailer;
+    
     public function __construct(
-        Data_Access_Email $dataAccess
+        Data_Access_Email $dataAccess,
+        Service_Mailer_Interface $mailer
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->mailer = $mailer;
         
         $this->states = array();
         $this->items = array();
@@ -72,31 +80,9 @@ class Domain_Collection_Email {
         
     }
     
-    public function readUsingFilter($filter) {
+    public function readUsingUserId($userId) {
         
-        $states = $this->dataAccess->readUsingFilter($filter);
-        
-        $items = array();
-        foreach ($states as $state) {
-            
-            $existingItem = $this->findById( $state->getId() );
-            if ($existingItem !== false) {
-                $items[] = $existingItem;
-            } else {
-                $item = $this->make($state);
-                $this->states[spl_object_hash($item)] = $state;
-                $this->items[spl_object_hash($state)] = $item;
-                $items[] = $item;
-            }
-            
-        }
-
-        return $items;
-    }
-    
-    public function readUsingTeacherId($teacherId) {
-        
-        $states = $this->dataAccess->readUsingTeacherId($teacherId);
+        $states = $this->dataAccess->readUsingUserId($userId);
         
         $items = array();
         foreach ($states as $state) {
@@ -145,7 +131,8 @@ class Domain_Collection_Email {
     private function make($state) {
         
         return new Domain_Email(
-            $state
+            $state,
+            $this->mailer
         );
         
     }
