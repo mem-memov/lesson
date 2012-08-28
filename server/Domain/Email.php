@@ -56,5 +56,17 @@ implements
         $emailInspector->addEmail( $this->state->getEmail() );
         
     }
+    
+    public function exceptMessage( 
+        Domain_Message_Item_MailRequest $mailRequest
+    ) {
+        
+        $this->mailer->send(
+            array( $this->state->getEmail() ), 
+            $mailRequest->getLetterTemplateName(),
+            $mailRequest->getData()
+        );
+        
+    }
 
 }

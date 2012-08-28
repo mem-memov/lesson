@@ -218,7 +218,8 @@ class Domain_Collection_Factory {
             $this->instances[$instance_key] = new Domain_Collection_User(
                 $this->accessFactory->makeUser(),
                 $this->makeEmailCollection(),
-                $this->messageFactory->makeEmailInspectorFactory()
+                $this->messageFactory->makeEmailInspectorFactory(),
+                $this->messageFactory->makeMailRequestFactory()
             );
             
         }

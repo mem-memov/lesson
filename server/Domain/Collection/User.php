@@ -31,17 +31,24 @@ class Domain_Collection_User {
      * @var Domain_Message_Factory_EmailInspector
      */
     private $emailInspectorFactory;
-
+    
+    /**
+     * Фабрика запросов на перемещение почтового сообщения
+     * @var Domain_Message_Factory_MailRequest
+     */
+    private $mailRequestFactory;
     
     public function __construct(
         Data_Access_User $dataAccess,
         Domain_Collection_Email $emailCollection,
-        Domain_Message_Factory_EmailInspector $emailInspectorFactory
+        Domain_Message_Factory_EmailInspector $emailInspectorFactory,
+        Domain_Message_Factory_MailRequest $mailRequestFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->emailCollection = $emailCollection;
         $this->emailInspectorFactory = $emailInspectorFactory;
+        $this->mailRequestFactory = $mailRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -132,7 +139,8 @@ class Domain_Collection_User {
         return new Domain_User(
             $state,
             $this->emailCollection,
-            $this->emailInspectorFactory
+            $this->emailInspectorFactory,
+            $this->mailRequestFactory
         );
         
     }

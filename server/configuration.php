@@ -25,7 +25,7 @@
             
             'HybridAuth' => array(
                 
-                "base_url" => 'http://umapalata.info/hybridauth/',
+                'base_url' => 'http://umapalata.info/hybridauth/',
                 
 		'providers' => array (
                     
@@ -66,9 +66,9 @@
         'Mail' => array(
             
             'robot' => array(
-                'server' => 'smtp.umapalata.info',
-                'port' => 25,
-                'user' => 'robot',
+                'server' => 'umapalata.info',
+                'port' => 587,
+                'user' => 'robot@umapalata.info',
                 'password' => '1234567',
                 'sender_email' => 'robot@umapalata.info'
             )

@@ -362,6 +362,24 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику запросов на перемещение почтового сообщения
+     * @return Domain_Message_Factory_MailRequest
+     */
+    public function makeMailRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_MailRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

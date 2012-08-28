@@ -41,6 +41,8 @@ implements
         array $attachments = array()
     ) {
         
+        list($subject, $body) = $this->fillTemplate($template, $data);
+        
         $message = Swift_Message::newInstance($subject)
             ->setFrom($this->senderEmail)
             ->setTo($to)
@@ -49,9 +51,23 @@ implements
         
         $result = $this->mailer->send($message);
         
+        return $result;
+        
     }
     
     private function fillTemplate($template, array $data) {
+        
+        $path = __DIR__.'/../template/'.$template.'.php';
+
+        if (!is_readable($path)) {
+            throw new Service_Mailer_Exception('Шаблон письма '.$template.' не найден.');
+        }
+        
+        ob_start();
+        require($path);
+        $body = ob_get_flush();
+        
+        return array($subject, $body); // тему письма нужно определять в шаблоне
         
     }
     

@@ -132,7 +132,8 @@ class Domain_Collection_Email {
         
         return new Domain_Email(
             $state,
-            $this->mailer
+            $this->mailer,
+            $this->mailRequestFactory
         );
         
     }
