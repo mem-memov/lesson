@@ -147,4 +147,10 @@ class Frontend_Action_Chain {
 
     }
     
+    public function linkActivateEmail() {
+        
+        return  new Frontend_Action_ActivateEmail($this->request, $this->responseFactory, $this, $this->domainFactory);
+
+    }
+    
 }

@@ -68,5 +68,11 @@ implements
         );
         
     }
+    
+    public function beConfirmed() {
+        
+        $this->state->setIsConfirmed(true);
+        
+    }
 
 }

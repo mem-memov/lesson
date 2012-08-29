@@ -65,7 +65,7 @@ implements
         
         ob_start();
         require($path);
-        $body = ob_get_flush();
+        $body = ob_get_clean();
         
         return array($subject, $body); // тему письма нужно определять в шаблоне
         

@@ -50,6 +50,7 @@ class Domain_Collection_Email {
 
         $state->setUserId($userId);
         $state->setEmail($email);
+        $state->setIsConfirmed(false);
         
         $item = $this->make($state);
         
@@ -76,6 +77,23 @@ class Domain_Collection_Email {
         $item = $this->make($state);
         $this->states[spl_object_hash($item)] = $state;
         $this->items[spl_object_hash($state)] = $item;
+        return $item;
+        
+    }
+    
+    public function readUsingEmail($email) {
+        
+        $state = $this->dataAccess->readUsingEmail($email);
+        
+        if (is_null($state)) {
+            return $state;
+        }
+        
+        $item = $this->make($state);
+        
+        $this->states[spl_object_hash($item)] = $state;
+        $this->items[spl_object_hash($state)] = $item;
+        
         return $item;
         
     }

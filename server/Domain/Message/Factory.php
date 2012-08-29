@@ -380,6 +380,78 @@ class Domain_Message_Factory {
         
     }
 
+    /**
+     * Создаёт фабрику отчётов о начале регистрации пользователя
+     * @return Domain_Message_Factory_EnrollmentReport
+     */
+    public function makeEnrollmentReportFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EnrollmentReport();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику запросов подтвердить адрес электронной почты
+     * @return Domain_Message_Factory_EmailConfirmationRequest
+     */
+    public function makeEmailConfirmationRequestFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EmailConfirmationRequest();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику отчётов о подтверждении адреса электронной почты
+     * @return Domain_Message_Factory_EmailConfirmationReport
+     */
+    public function makeEmailConfirmationReportFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EmailConfirmationReport();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
+    /**
+     * Создаёт фабрику отчётов об активации адреса электронной почты
+     * @return Domain_Message_Factory_EmailActivationReport
+     */
+    public function makeEmailActivationReportFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Message_Factory_EmailActivationReport();
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+
     
 
     

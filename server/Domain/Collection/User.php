@@ -27,6 +27,12 @@ class Domain_Collection_User {
     private $emailCollection;
     
     /**
+     * Фабрика помошников активации адреса электронной почты
+     * @var Domain_Collaborator_Factory_EmailActivation
+     */
+    private $emailActivationFactory;
+    
+    /**
      * Фабрика инспекторов почтовых адресов
      * @var Domain_Message_Factory_EmailInspector
      */
@@ -38,17 +44,27 @@ class Domain_Collection_User {
      */
     private $mailRequestFactory;
     
+    /**
+     * Фабрика отчётов о подтверждении владения адресом электронной почты
+     * @var Domain_Message_Factory_EmailConfirmationReport
+     */
+    private $emailConfirmationReportFactory;
+    
     public function __construct(
         Data_Access_User $dataAccess,
         Domain_Collection_Email $emailCollection,
+        Domain_Collaborator_Factory_EmailActivation $emailActivationFactory,
         Domain_Message_Factory_EmailInspector $emailInspectorFactory,
-        Domain_Message_Factory_MailRequest $mailRequestFactory
+        Domain_Message_Factory_MailRequest $mailRequestFactory,
+        Domain_Message_Factory_EmailConfirmationReport $emailConfirmationReportFactory
     ) {
         
         $this->dataAccess = $dataAccess;
         $this->emailCollection = $emailCollection;
+        $this->emailActivationFactory = $emailActivationFactory;
         $this->emailInspectorFactory = $emailInspectorFactory;
         $this->mailRequestFactory = $mailRequestFactory;
+        $this->emailConfirmationReportFactory = $emailConfirmationReportFactory;
         
         $this->states = array();
         $this->items = array();
@@ -139,8 +155,10 @@ class Domain_Collection_User {
         return new Domain_User(
             $state,
             $this->emailCollection,
+            $this->emailActivationFactory,
             $this->emailInspectorFactory,
-            $this->mailRequestFactory
+            $this->mailRequestFactory,
+            $this->emailConfirmationReportFactory
         );
         
     }

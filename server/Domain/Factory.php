@@ -58,11 +58,16 @@ class Domain_Factory {
         
         $collectionFactory = $this->makeCollectionFactory();
         $messageFactory = $this->makeMessageFactory();
+        $collaboratorFactory = $this->makeCollaboratorFactory();
         
         return new Domain_Guard(
             $this->serviceFactory->makeAuthentication(),
             $collectionFactory->makeUserCollection(),
-            $messageFactory->makeMailReceptionRequestFactory()
+            $collaboratorFactory->makeEmailActivationFactory(),
+            $messageFactory->makeMailReceptionRequestFactory(),
+            $messageFactory->makeEnrollmentReportFactory(),
+            $messageFactory->makeEmailConfirmationRequestFactory(),
+            $messageFactory->makeEmailActivationReportFactory()
         );
         
     }
@@ -98,7 +103,8 @@ class Domain_Factory {
             $this->instances[$instance_key] = new Domain_Collection_Factory(
                 $this->dataFactory->makeAccessFactory(),
                 $this->serviceFactory,
-                $this->makeMessageFactory()
+                $this->makeMessageFactory(),
+                $this->makeCollaboratorFactory()
             );
             
         }
@@ -118,6 +124,26 @@ class Domain_Factory {
         if (!isset($this->instances[$instance_key])) {
 
             $this->instances[$instance_key] = new Domain_Message_Factory(
+                
+            );
+            
+        }
+
+        return $this->instances[$instance_key];
+        
+    }
+    
+    /**
+     * Создаёт фабрику, создающую фабрики помошников
+     * @return Domain_Collaborator_Factory
+     */
+    private function makeCollaboratorFactory() {
+        
+        $instance_key = __FUNCTION__;
+
+        if (!isset($this->instances[$instance_key])) {
+
+            $this->instances[$instance_key] = new Domain_Collaborator_Factory(
                 
             );
             

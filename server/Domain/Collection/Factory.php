@@ -25,16 +25,24 @@ class Domain_Collection_Factory {
      * @var Domain_Message_Factory
      */
     private $messageFactory;
+    
+    /**
+     * Фабрика, создающая фабрики помошников
+     * @var Domain_Collaborator_Factory
+     */
+    private $collaboratorFactory;
 
     public function __construct(
         Data_Access_Factory $accessFactory,
         Service_Factory $serviceFactory,
-        Domain_Message_Factory $messageFactory
+        Domain_Message_Factory $messageFactory,
+        Domain_Collaborator_Factory $collaboratorFactory
     ) {
 
         $this->accessFactory = $accessFactory;
         $this->serviceFactory = $serviceFactory;
         $this->messageFactory = $messageFactory;
+        $this->collaboratorFactory = $collaboratorFactory;
         
         $this->uniqueInstances = array();
         
@@ -218,8 +226,10 @@ class Domain_Collection_Factory {
             $this->instances[$instance_key] = new Domain_Collection_User(
                 $this->accessFactory->makeUser(),
                 $this->makeEmailCollection(),
+                $this->collaboratorFactory->makeEmailActivationFactory(),
                 $this->messageFactory->makeEmailInspectorFactory(),
-                $this->messageFactory->makeMailRequestFactory()
+                $this->messageFactory->makeMailRequestFactory(),
+                $this->messageFactory->makeEmailConfirmationReportFactory()
             );
             
         }

@@ -48,7 +48,8 @@ class Data_Access_Email {
             SELECT
                 `id`,
                 `user_id`,
-                `email`
+                `email`,
+                `is_confirmed`
             FROM
                 `email`
             WHERE
@@ -69,13 +70,42 @@ class Data_Access_Email {
         
     }
     
+    public function readUsingEmail($email) {
+        
+        $row = $this->storage->fetchRow('
+            SELECT
+                `id`,
+                `user_id`,
+                `email`,
+                `is_confirmed`
+            FROM
+                `email`
+            WHERE
+                `email` = "'.$email.'"
+            LIMIT
+                1
+            ;
+        ');
+        
+        if (empty($row)) {
+            throw new Data_Access_Exception('Почтового адреса - '.$email.' не существует. Чтение невозможно.');
+        }
+        
+        
+        $state = $this->rowToState($row);
+        
+        return $state;
+        
+    }
+    
     public function readUsingUserId($userId) {
 
         $rows = $this->storage->fetchRows('
             SELECT
                 `id`,
                 `user_id`,
-                `email`
+                `email`,
+                `is_confirmed`
             FROM
                 `email`
             WHERE
@@ -126,7 +156,8 @@ class Data_Access_Email {
                 `email`
             SET
                 `email` = "'.$state->getEmail().'",
-                `user_id` = "'.$state->getUserId().'"
+                `user_id` = "'.$state->getUserId().'",
+                `is_confirmed` = '.($state->getIsConfirmed() ? 'TRUE' : 'FALSE').'
             WHERE
                 `id` = '.$state->getId().'
             ;
@@ -172,6 +203,10 @@ class Data_Access_Email {
     
     private function rowToState(array $row) {
         
+        if (empty($row)) {
+            return null;
+        }
+        
         $state = $this->create();
         
         $state instanceof Data_State_Item_TrackableInterface;
@@ -180,6 +215,7 @@ class Data_Access_Email {
         $state instanceof Data_State_Item_Email;
         $state->setEmail($row['email']);
         $state->setUserId($row['user_id']);
+        $state->setIsConfirmed((bool)$row['is_confirmed']);
         
         return $state;
         

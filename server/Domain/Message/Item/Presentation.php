@@ -27,7 +27,7 @@ implements
     
     /**
      * Проблемы, возникшие во время посещения части урока
-     * @var Exception[]
+     * @var Domain_Exception[]
      */
     private $problems;
     
@@ -36,7 +36,7 @@ implements
      * @param Domain_Message_Item_LessonPresentation $lessonPresentation показ урока
      * @param Domain_Message_Item_PartPresentation|null $partPresentation показ части урока
      * @param Domain_Message_Item_PartAnnouncement|null $nextPartAnnouncement анонс следующей части урока
-     * @param Exception[] $problems проблемы, возникшие во время посещения части урока
+     * @param Domain_Exception[] $problems проблемы, возникшие во время посещения части урока
      */
     public function __construct(
         Domain_Message_Item_LessonPresentation $lessonPresentation,
@@ -88,7 +88,7 @@ implements
     
     /**
      * Сообщает о проблемах, которые возникли во время посещения учеником части урока
-     * @return Exception[]
+     * @return Domain_Exception[]
      */
     public function getProblems() {
         

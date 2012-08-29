@@ -36,10 +36,23 @@ class Frontend_Action_SignUp extends Frontend_Action_Abstract {
         
         $guard = $this->domainFactory->makeGuard();
         
-        $guard->enroll($email, $password);
+        $enrollmentReport = $guard->enroll($email, $password);
+        
+        if ( $enrollmentReport->emailIsOccupied() ) {
+            
+            return $this->responseFactory->makeHtmlResponse(
+                '/client/Action/SignUp/email_occupied.php',
+                array(
+                    'email' => $email
+                ),
+                array(),
+                array()
+            );
+            
+        }
         
         return $this->responseFactory->makeHtmlResponse(
-            '/client/Action/SignUp/form.php',
+            '/client/Action/SignUp/check_mail.php',
             array(),
             array(),
             array()

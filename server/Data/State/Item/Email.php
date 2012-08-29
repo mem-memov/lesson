@@ -28,4 +28,16 @@ class Data_State_Item_Email extends Data_State_Item_Abstract {
         return $this->userId;
     }
     
+    /**
+     * Флаг проверенного адреса
+     * @var boolean
+     */
+    private $isConfirmed = null;
+    public function setIsConfirmed($isConfirmed) {
+        $this->isConfirmed = $isConfirmed;
+    }
+    public function getIsConfirmed() {
+        return $this->isConfirmed;
+    }
+    
 }
