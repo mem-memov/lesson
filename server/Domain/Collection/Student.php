@@ -8,16 +8,16 @@ class Domain_Collection_Student {
     private $dataAccess;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Student_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция счетов
      * @var Domain_Collection_Account
      */
     private $accountCollection;
-    
-    /**
-     * Фабрика запросов на оплату части урока
-     * @var Domain_Message_Factory_PartPaymentRequest 
-     */
-    private $partPaymentRequestFactory;
     
     /**
      * Состояния
@@ -33,13 +33,13 @@ class Domain_Collection_Student {
     
     public function __construct(
         Data_Access_Student  $dataAccess,
-        Domain_Collection_Account $accountCollection,
-        Domain_Message_Factory_PartPaymentRequest $partPaymentRequestFactory
+        Domain_Message_Student_Factory $messageFactory,
+        Domain_Collection_Account $accountCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->accountCollection = $accountCollection;
-        $this->partPaymentRequestFactory = $partPaymentRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -116,8 +116,8 @@ class Domain_Collection_Student {
         
         return new Domain_Student(
             $state, 
-            $this->accountCollection,
-            $this->partPaymentRequestFactory
+            $this->messageFactory,
+            $this->accountCollection
         );
         
     }

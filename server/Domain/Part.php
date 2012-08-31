@@ -5,6 +5,12 @@ implements
 {
     
     private $state;
+    
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_Part_Factory 
+     */
+    private $messageFactory;
 
     /**
      * Коллекция тексов
@@ -30,39 +36,18 @@ implements
      */
     private $widgetTypes;
     
-    /**
-     * Фабрика показов частей урока
-     * @var Domain_Message_Factory_PartPresentation 
-     */
-    private $presentationFactory;
-    
-    /**
-     * Фабрика анонсов частей урока
-     * @var Domain_Message_Factory_PartAnnouncement 
-     */
-    private $announcementFactory;
-    
-    /**
-     * Фабрика  запросов на прикрепление пособия к части урока
-     * @var Domain_Message_Factory_PartJoinCall
-     */
-    private $partJoinCallFactory;
     
     public function __construct(
         Data_State_Item_Part $state,
+        Domain_Message_Part_Factory $messageFactory,
         Domain_Collection_Text $textCollection,
-        Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_PartPresentation $presentationFactory,
-        Domain_Message_Factory_PartAnnouncement $announcementFactory,
-        Domain_Message_Factory_PartJoinCall $partJoinCallFactory
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->state = $state;
+        $this->messageFactory = $messageFactory;
         $this->textCollection = $textCollection;
         $this->visitCollection = $visitCollection;
-        $this->presentationFactory = $presentationFactory;
-        $this->announcementFactory = $announcementFactory;
-        $this->partJoinCallFactory = $partJoinCallFactory;
         
         $this->widgetIndex = array( // только уникальные соответствия!!!
             1 => 'Domain_Text'
@@ -104,7 +89,7 @@ implements
             $widgetTypes[] = $this->widgetTypes[$widgetTypeId];
         }
         
-        $partPresentation = $this->presentationFactory->makeMessage(
+        $partPresentation = $this->messageFactory->makePartPresentation(
                 $this->state->getId(), 
                 $this->state->getOrder(),
                 $this->state->getPrice(),
@@ -118,7 +103,7 @@ implements
     
     public function beAnnounced() {
         
-        $partAnnouncement = $this->announcementFactory->makeMessage(
+        $partAnnouncement = $this->messageFactory->makePartAnnouncement(
                 $this->state->getId(), 
                 $this->state->getOrder(),
                 $this->state->getPrice()
@@ -187,7 +172,7 @@ implements
         $widgetTypeIds = $this->state->getWidgetTypeIds();
 
         // дополняет список ID пособий
-        $joinCall = $this->partJoinCallFactory->makeMessage($widgetIds);
+        $joinCall = $this->messageFactory->makeTextJoinCall($widgetIds);
         $text->joinPart($joinCall);
         $widgetTypeIds[] = $this->getWidgetTypeId($text);
 

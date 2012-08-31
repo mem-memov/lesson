@@ -62,12 +62,9 @@ class Domain_Factory {
         
         return new Domain_Guard(
             $this->serviceFactory->makeAuthentication(),
+            $messageFactory->makeGuardMessageFactory(),
             $collectionFactory->makeUserCollection(),
-            $collaboratorFactory->makeEmailActivationFactory(),
-            $messageFactory->makeMailReceptionRequestFactory(),
-            $messageFactory->makeEnrollmentReportFactory(),
-            $messageFactory->makeEmailConfirmationRequestFactory(),
-            $messageFactory->makeEmailActivationReportFactory()
+            $collaboratorFactory->makeEmailActivationFactory()
         );
         
     }
@@ -82,10 +79,10 @@ class Domain_Factory {
         $messageFactory = $this->makeMessageFactory();
 
         return new Domain_School(
+            $messageFactory->makeSchoolMessageFactory(),
             $collectionFactory->makeTeacherCollection(),
             $collectionFactory->makeStudentCollection(),
-            $collectionFactory->makeLessonCollection(),
-            $messageFactory->makeEducationRequestFactory()
+            $collectionFactory->makeLessonCollection()
         );
         
     }

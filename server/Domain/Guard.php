@@ -8,6 +8,12 @@ class Domain_Guard {
     private $authentication;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Guard_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция пользователей
      * @var Domain_Collection_User
      */
@@ -19,47 +25,19 @@ class Domain_Guard {
      */
     private $emailActivationFactory;
     
-    /**
-     * Фабрика запросов на получение почты
-     * @var Domain_Message_Factory_MailReceptionRequest
-     */
-    private $mailReceptionRequestFactory;
-    
-    /**
-     * Фабрика отчётов о начале регистрации пользователя
-     * @var Domain_Message_Factory_EnrollmentReport
-     */
-    private $enrollmentReportFactory;
-    
-    /**
-     * Фабрика запросов подтвердить адрес электронной почты
-     * @var Domain_Message_Factory_EmailConfirmationRequest
-     */
-    private $emailConfirmationRequestFactory;
-    
-    /**
-     * Фабрика отчётов об активации адреса электронной почты
-     * @var Domain_Message_Factory_EmailActivationReport
-     */
-    private $emailActivationReportFactory;
+
     
     public function __construct(
         Service_Authentication_Interface $authentication,
+        Domain_Message_Guard_Factory $messageFactory,
         Domain_Collection_User $userCollection,
-        Domain_Collaborator_Factory_EmailActivation $emailActivationFactory,
-        Domain_Message_Factory_MailReceptionRequest $mailReceptionRequestFactory,
-        Domain_Message_Factory_EnrollmentReport $enrollmentReportFactory,
-        Domain_Message_Factory_EmailConfirmationRequest $emailConfirmationRequestFactory,
-        Domain_Message_Factory_EmailActivationReport $emailActivationReportFactory
+        Domain_Collaborator_Factory_EmailActivation $emailActivationFactory
     ) {
         
         $this->authentication = $authentication;
+        $this->messageFactory = $messageFactory;
         $this->userCollection = $userCollection;
         $this->emailActivationFactory = $emailActivationFactory;
-        $this->mailReceptionRequestFactory = $mailReceptionRequestFactory;
-        $this->enrollmentReportFactory = $enrollmentReportFactory;
-        $this->emailConfirmationRequestFactory = $emailConfirmationRequestFactory;
-        $this->emailActivationReportFactory = $emailActivationReportFactory;
         
     }
     
@@ -74,7 +52,7 @@ class Domain_Guard {
         $existingUser = $this->userCollection->readUsingEmail($email);
         
         if (!is_null($existingUser)) {
-            $enrollmentReport = $this->enrollmentReportFactory->makeMessage(
+            $enrollmentReport = $this->messageFactory->makeEnrollmentReport(
                 $emailIsOccupied = true
             );
             return $enrollmentReport;
@@ -86,7 +64,7 @@ class Domain_Guard {
 
         $user->acquireMailBox($email);
         
-        $mailReceptionRequest = $this->mailReceptionRequestFactory->makeMessage(
+        $mailReceptionRequest = $this->messageFactory->makeMailReceptionRequest(
             'signup/confirm_email', 
             array(
                 'email' => $email,
@@ -98,7 +76,7 @@ class Domain_Guard {
         
         $user->receiveMail($mailReceptionRequest);
         
-        $enrollmentReport = $this->enrollmentReportFactory->makeMessage(
+        $enrollmentReport = $this->messageFactory->makeEnrollmentReport(
             $emailIsOccupied = false
         );
         return $enrollmentReport;
@@ -112,16 +90,16 @@ class Domain_Guard {
         if ( $emailActivationCollaborator->checkEmailActivationKey($activationKey) ) {
             
             $user = $this->userCollection->readUsingId($userId);
-            $emailConfirmationRequest = $this->emailConfirmationRequestFactory->makeMessage($email);
+            $emailConfirmationRequest = $this->messageFactory->makeEmailConfirmationRequest($email);
             $emailConfirmationReport = $user->confirmEmail($emailConfirmationRequest);
-            $emailActivationReport = $this->emailActivationReportFactory->makeMessage(
+            $emailActivationReport = $this->messageFactory->makeEmailActivationReport(
                 $emailConfirmationReport->getProblems()
             );
             return $emailActivationReport;
 
         }
         
-        $emailActivationReport = $this->emailActivationReportFactory->makeMessage(
+        $emailActivationReport = $this->messageFactory->makeEmailActivationReport(
             new Domain_Exception_EmailActivationKeyDoesNotMatch()
         );
         return $emailActivationReport;

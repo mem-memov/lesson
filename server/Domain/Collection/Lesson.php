@@ -20,6 +20,12 @@ class Domain_Collection_Lesson {
     private $items;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Lesson_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция частей урока
      * @var Domain_Collection_Part
      */
@@ -30,48 +36,18 @@ class Domain_Collection_Lesson {
      * @var Domain_Collection_Visit
      */
     private $visitCollection;
-    
-    /**
-     * Фабрика запросов на продолжение урока
-     * @var Domain_Message_Factory_ContinueRequest
-     */
-    private $continueRequestFactory;
 
-    /**
-     * Фабрика показов уроков
-     * @var Domain_Message_Factory_LessonPresentation 
-     */
-    private $presentationFactory;
-
-    /**
-     * Фабрика инспекторов частей урока
-     * @var Domain_Message_Factory_PartInspector
-     */
-    private $partInspectorFactory;
-    
-    /**
-     * Фабрика запросов на изменение части урока
-     * @var Domain_Message_Factory_PartUpdateRequest
-     */
-    private $partUpdateRequestFactory;
-    
     public function __construct(
         Data_Access_Lesson $dataAccess,
+        Domain_Message_Lesson_Factory $messageFactory,
         Domain_Collection_Part $partCollection,
-        Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_ContinueRequest $continueRequestFactory,
-        Domain_Message_Factory_LessonPresentation $presentationFactory,
-        Domain_Message_Factory_PartInspector $partInspectorFactory,
-        Domain_Message_Factory_PartUpdateRequest $partUpdateRequestFactory
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->partCollection = $partCollection;
         $this->visitCollection = $visitCollection;
-        $this->continueRequestFactory = $continueRequestFactory;
-        $this->presentationFactory = $presentationFactory;
-        $this->partInspectorFactory = $partInspectorFactory;
-        $this->partUpdateRequestFactory = $partUpdateRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -192,12 +168,9 @@ class Domain_Collection_Lesson {
         
         return new Domain_Lesson(
             $state, 
+            $this->messageFactory,
             $this->partCollection,
-            $this->visitCollection,
-            $this->continueRequestFactory,
-            $this->presentationFactory,
-            $this->partInspectorFactory,
-            $this->partUpdateRequestFactory
+            $this->visitCollection
         );
         
     }

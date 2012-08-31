@@ -12,6 +12,12 @@ implements
      * @var Data_State_Item_Email
      */
     private $state;
+    
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_Email_Factory 
+     */
+    private $messageFactory;
 
     /**
      * Почтовый рассыльщик
@@ -21,16 +27,18 @@ implements
     
     public function __construct(
         Data_State_Item_Email $state,
+        Domain_Message_Email_Factory $messageFactory,
         Service_Mailer_Interface $mailer
     ) {
         
         $this->state = $state;
+        $this->messageFactory = $messageFactory;
         $this->mailer = $mailer;
       
     }
     
     public function bePresented() {
-        
+        /*
         $parts = $this->partCollection->readUsingLessonId( $this->state->getId() );
         
         $partInspector = $this->partInspectorFactory->makeMessage();
@@ -46,7 +54,7 @@ implements
             $partInspector->getPartIds(),
             $partInspector->getTotalPrice()
         );
-        
+        */
     }
     
     public function beInspected(

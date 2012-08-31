@@ -4,22 +4,27 @@
  */
 class Domain_School {
     
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_School_Factory 
+     */
+    private $messageFactory;
+    
     private $teacherCollection;
     private $studentCollection;
     private $lessonCollection;
-    private $educationRequestFactory;
     
     public function __construct(
+        Domain_Message_School_Factory $messageFactory,
         Domain_Collection_Teacher $teacherCollection,
         Domain_Collection_Student $studentCollection,
-        Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_EducationRequest $educationRequestFactory
+        Domain_Collection_Lesson $lessonCollection
     ) {
 
+        $this->messageFactory = $messageFactory;
         $this->teacherCollection = $teacherCollection;
         $this->studentCollection = $studentCollection;
         $this->lessonCollection = $lessonCollection;
-        $this->educationRequestFactory = $educationRequestFactory;
 
     }
     
@@ -31,7 +36,7 @@ class Domain_School {
      */
     public function educate($studentId, $lessonId) {
 
-        $educationRequest = $this->educationRequestFactory->makeMessage($studentId, $lessonId);
+        $educationRequest = $this->messageFactory->makeEducationRequest($studentId, $lessonId);
         $teacher = $this->teacherCollection->readUsingLessonId($lessonId);
         $presentation = $teacher->teach($educationRequest);
 

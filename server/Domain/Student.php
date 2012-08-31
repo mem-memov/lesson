@@ -4,26 +4,27 @@ class Domain_Student {
     private $state;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Student_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция счетов
      * @var Domain_Collection_Account 
      */
     private $accountCollection;
-    
-    /**
-     * Фабрика запросов на оплату части урока
-     * @var Domain_Message_Factory_PartPaymentRequest 
-     */
-    private $partPaymentRequestFactory;
+
     
     public function __construct(
         Data_State_Item_Student $state,
-        Domain_Collection_Account $accountCollection,
-        Domain_Message_Factory_PartPaymentRequest $partPaymentRequestFactory
+        Domain_Message_Student_Factory $messageFactory,
+        Domain_Collection_Account $accountCollection
     ) {
         
         $this->state = $state;
+        $this->messageFactory = $messageFactory;
         $this->accountCollection = $accountCollection;
-        $this->partPaymentRequestFactory = $partPaymentRequestFactory;
         
     }
     
@@ -33,7 +34,7 @@ class Domain_Student {
         $part = $learnRequest->getPart();
         $account = $this->accountCollection->readUsingUserId( $this->state->getId() );
         
-        $partPaymentRequest = $this->partPaymentRequestFactory->makeMessage(
+        $partPaymentRequest = $this->messageFactory->makePartPaymentRequest(
             $account,
             $this->accountCollection
         );

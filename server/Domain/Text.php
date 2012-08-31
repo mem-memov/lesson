@@ -7,24 +7,24 @@ implements
     private $state;
     
     /**
-     * Фабрика показов
-     * @var Domain_Message_Factory_TextPresentation 
+     * Фабрика сообщений
+     * @var Domain_Message_Text_Factory 
      */
-    private  $presentationFactory;
+    private $messageFactory;
     
     public function __construct(
         Data_State_Item_Text $state,
-        Domain_Message_Factory_TextPresentation $presentationFactory
+        Domain_Message_Text_Factory $messageFactory
     ) {
         
         $this->state = $state;
-        $this->presentationFactory = $presentationFactory;
+        $this->messageFactory = $messageFactory;
         
     }
     
     public function bePresented() {
         
-        return $this->presentationFactory->makeMessage(
+        return $this->messageFactory->makeTextPresentation(
             $this->state->getId(),
             $this->state->getText()
         );

@@ -6,37 +6,7 @@ class Domain_Collection_Visit {
      * @var Data_Access_Visit
      */
     private $dataAccess; 
-    
-    /**
-     * Коллекция учеников
-     * @var Domain_Collection_Student
-     */
-    private $studentCollection;
-    
-    /**
-     * Фабрика запросов на идентификацию части урока
-     * @var Domain_Message_Factory_PartIdentificationRequest
-     */
-    private $partIdentificationRequestFactory;
-    
-    /**
-     * Фабрика показа
-     * @var Domain_Message_Factory_Presentation
-     */
-    private $presentationFactory;
-    
-    /**
-     * Фабрика запросов на изучение части урока
-     * @var Domain_Message_Factory_LearnRequest
-     */
-    private $learnRequestFactory;
-    
-    /**
-     * Фабрика запросов на зарабатывание
-     * @var Domain_Message_Factory_EarnRequest
-     */
-    private $earnRequestFactory;
-    
+
     /**
      * Состояния
      * @var array 
@@ -48,22 +18,29 @@ class Domain_Collection_Visit {
      * @var array
      */
     private $items;
+    
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_Visit_Factory 
+     */
+    private $messageFactory;
+    
+    /**
+     * Коллекция учеников
+     * @var Domain_Collection_Student
+     */
+    private $studentCollection;
+
 
     public function __construct(
         Data_Access_Visit $dataAccess,
-        Domain_Collection_Student $studentCollection,
-        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
-        Domain_Message_Factory_Presentation $presentationFactory,
-        Domain_Message_Factory_LearnRequest $learnRequestFactory,
-        Domain_Message_Factory_EarnRequest $earnRequestFactory
+        Domain_Message_Visit_Factory $messageFactory,
+        Domain_Collection_Student $studentCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->studentCollection = $studentCollection;
-        $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
-        $this->presentationFactory = $presentationFactory;
-        $this->learnRequestFactory = $learnRequestFactory;
-        $this->earnRequestFactory = $earnRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -172,11 +149,8 @@ class Domain_Collection_Visit {
         
         return new Domain_Visit(
             $state,
-            $this->studentCollection,
-            $this->partIdentificationRequestFactory,
-            $this->presentationFactory,
-            $this->learnRequestFactory,
-            $this->earnRequestFactory
+            $this->messageFactory,
+            $this->studentCollection
          );
         
     }

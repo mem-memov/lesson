@@ -20,18 +20,18 @@ class Domain_Collection_Text {
     private $items;
     
     /**
-     * Фабрика показов
-     * @var Domain_Message_Factory_TextPresentation 
+     * Фабрика сообщений
+     * @var Domain_Message_Text_Factory 
      */
-    private  $presentationFactory;
+    private $messageFactory;
     
     public function __construct(
         Data_Access_Text $dataAccess,
-        Domain_Message_Factory_TextPresentation $presentationFactory
+        Domain_Message_Text_Factory $messageFactory
     ) {
         
         $this->dataAccess = $dataAccess;
-        $this->presentationFactory = $presentationFactory;
+        $this->messageFactory = $messageFactory;
         
         $this->states = array();
         $this->items = array();
@@ -107,7 +107,7 @@ class Domain_Collection_Text {
         
         return new Domain_Text(
             $state,
-            $this->presentationFactory
+            $this->messageFactory
         );
         
     }

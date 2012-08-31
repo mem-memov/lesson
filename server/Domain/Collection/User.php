@@ -19,7 +19,12 @@ class Domain_Collection_User {
      */
     private $items;
     
-
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_User_Factory 
+     */
+    private $messageFactory;
+    
     /**
      * Коллекция почтовых адресов
      * @var Domain_Collection_Email 
@@ -32,39 +37,19 @@ class Domain_Collection_User {
      */
     private $emailActivationFactory;
     
-    /**
-     * Фабрика инспекторов почтовых адресов
-     * @var Domain_Message_Factory_EmailInspector
-     */
-    private $emailInspectorFactory;
-    
-    /**
-     * Фабрика запросов на перемещение почтового сообщения
-     * @var Domain_Message_Factory_MailRequest
-     */
-    private $mailRequestFactory;
-    
-    /**
-     * Фабрика отчётов о подтверждении владения адресом электронной почты
-     * @var Domain_Message_Factory_EmailConfirmationReport
-     */
-    private $emailConfirmationReportFactory;
+
     
     public function __construct(
         Data_Access_User $dataAccess,
+        Domain_Message_User_Factory $messageFactory,
         Domain_Collection_Email $emailCollection,
-        Domain_Collaborator_Factory_EmailActivation $emailActivationFactory,
-        Domain_Message_Factory_EmailInspector $emailInspectorFactory,
-        Domain_Message_Factory_MailRequest $mailRequestFactory,
-        Domain_Message_Factory_EmailConfirmationReport $emailConfirmationReportFactory
+        Domain_Collaborator_Factory_EmailActivation $emailActivationFactory
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->emailCollection = $emailCollection;
         $this->emailActivationFactory = $emailActivationFactory;
-        $this->emailInspectorFactory = $emailInspectorFactory;
-        $this->mailRequestFactory = $mailRequestFactory;
-        $this->emailConfirmationReportFactory = $emailConfirmationReportFactory;
         
         $this->states = array();
         $this->items = array();
@@ -154,11 +139,9 @@ class Domain_Collection_User {
         
         return new Domain_User(
             $state,
+            $this->messageFactory,
             $this->emailCollection,
-            $this->emailActivationFactory,
-            $this->emailInspectorFactory,
-            $this->mailRequestFactory,
-            $this->emailConfirmationReportFactory
+            $this->emailActivationFactory
         );
         
     }

@@ -20,6 +20,12 @@ class Domain_Collection_Email {
     private $items;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Email_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Почтовый рассыльщик
      * @var Service_Mailer_Interface
      */
@@ -27,10 +33,12 @@ class Domain_Collection_Email {
     
     public function __construct(
         Data_Access_Email $dataAccess,
+        Domain_Message_Email_Factory $messageFactory,
         Service_Mailer_Interface $mailer
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->mailer = $mailer;
         
         $this->states = array();
@@ -150,8 +158,8 @@ class Domain_Collection_Email {
         
         return new Domain_Email(
             $state,
-            $this->mailer,
-            $this->mailRequestFactory
+            $this->messageFactory,
+            $this->mailer
         );
         
     }

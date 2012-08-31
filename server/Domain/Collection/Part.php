@@ -18,6 +18,12 @@ class Domain_Collection_Part {
      * @var array
      */
     private $items;
+    
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_Part_Factory 
+     */
+    private $messageFactory;
 
     /**
      * Коллекция тексов
@@ -31,39 +37,18 @@ class Domain_Collection_Part {
      */
     private $visitCollection;
     
-    /**
-     * Фабрика показов частей урока
-     * @var Domain_Message_Factory_PartPresentation 
-     */
-    private $presentationFactory;
-    
-    /**
-     * Фабрика анонсов частей урока
-     * @var Domain_Message_Factory_PartAnnouncement 
-     */
-    private $announcementFactory;
-
-    /**
-     * Фабрика  запросов на прикрепление пособия к части урока
-     * @var Domain_Message_Factory_PartJoinCall
-     */
-    private $partJoinCallFactory;
     
     public function __construct(
         Data_Access_Part $dataAccess,
+        Domain_Message_Part_Factory $messageFactory,
         Domain_Collection_Text $textCollection,
-        Domain_Collection_Visit $visitCollection,
-        Domain_Message_Factory_PartPresentation $presentationFactory,
-        Domain_Message_Factory_PartAnnouncement $announcementFactory,
-        Domain_Message_Factory_PartJoinCall $partJoinCallFactory
+        Domain_Collection_Visit $visitCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->textCollection = $textCollection;
         $this->visitCollection = $visitCollection;
-        $this->presentationFactory = $presentationFactory;
-        $this->announcementFactory = $announcementFactory;
-        $this->partJoinCallFactory = $partJoinCallFactory;
         
         $this->states = array();
         $this->items = array();
@@ -184,11 +169,9 @@ class Domain_Collection_Part {
         
         return new Domain_Part(
             $state, 
+            $this->messageFactory,
             $this->textCollection,
-            $this->visitCollection,
-            $this->presentationFactory,
-            $this->announcementFactory,
-            $this->partJoinCallFactory
+            $this->visitCollection
         );
         
     }

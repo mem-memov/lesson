@@ -8,6 +8,12 @@ class Domain_Teacher {
     private $state;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Teacher_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция счетов
      * @var Domain_Collection_Account 
      */
@@ -19,31 +25,17 @@ class Domain_Teacher {
      */
     private $lessonCollection;
     
-    /**
-     * Фабрика презентационных запросов
-     * @var Domain_Message_Factory_PresentationRequest
-     */
-    private $presentationRequestFactory;
-    
-    /**
-     * Фабрика запросов на получение денег за показ части урока
-     * @var Domain_Message_Factory_PartMoneyRequest
-     */
-    private $partMoneyRequestFactory;
-    
     public function __construct(
         Data_State_Item_Teacher $state,
+        Domain_Message_Teacher_Factory $messageFactory,
         Domain_Collection_Account $accountCollection,
-        Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
-        Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
+        Domain_Collection_Lesson $lessonCollection
     ) {
         
         $this->state = $state;
+        $this->messageFactory = $messageFactory;
         $this->accountCollection = $accountCollection;
         $this->lessonCollection = $lessonCollection;
-        $this->presentationRequestFactory = $presentationRequestFactory;
-        $this->partMoneyRequestFactory = $partMoneyRequestFactory;
         
     }
     
@@ -57,7 +49,7 @@ class Domain_Teacher {
     ) {
         
         $lesson = $this->lessonCollection->readUsingId($educationRequest->getLessonId());
-        $presentationRequest = $this->presentationRequestFactory->makeMessage($educationRequest->getStudentId(), $this);
+        $presentationRequest = $this->messageFactory->makePresentationRequest($educationRequest->getStudentId(), $this);
         $presentation = $lesson->goOn($presentationRequest);
         
         return $presentation;
@@ -106,7 +98,7 @@ class Domain_Teacher {
         
         $account = $this->accountCollection->readUsingUserId( $this->state->getId() );
         
-        $partMoneyRequest = $this->partMoneyRequestFactory->makeMessage( 
+        $partMoneyRequest = $this->messageFactory->makePartMoneyRequest( 
             $account, 
             $this->accountCollection
         );

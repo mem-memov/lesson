@@ -4,51 +4,26 @@ class Domain_Visit {
     private $state;
     
     /**
+     * Фабрика сообщений
+     * @var Domain_Message_Visit_Factory 
+     */
+    private $messageFactory;
+    
+    /**
      * Коллекция учеников
      * @var Domain_Collection_Student
      */
     private $studentCollection;
-    
-    /**
-     * Фабрика запросов на идентификацию части урока
-     * @var Domain_Message_Factory_PartIdentificationRequest
-     */
-    private $partIdentificationRequestFactory;
-    
-    /**
-     * Фабрика показа
-     * @var Domain_Message_Factory_Presentation
-     */
-    private $presentationFactory;
 
-    /**
-     * Фабрика запросов на изучение части урока
-     * @var Domain_Message_Factory_LearnRequest
-     */
-    private $learnRequestFactory;
-    
-    /**
-     * Фабрика запросов на зарабатывание
-     * @var Domain_Message_Factory_EarnRequest
-     */
-    private $earnRequestFactory;
-    
-    
     public function __construct(
         Data_State_Item_Visit $state,
-        Domain_Collection_Student $studentCollection,
-        Domain_Message_Factory_PartIdentificationRequest $partIdentificationRequestFactory,
-        Domain_Message_Factory_Presentation $presentationFactory,
-        Domain_Message_Factory_LearnRequest $learnRequestFactory,
-        Domain_Message_Factory_EarnRequest $earnRequestFactory
+        Domain_Message_Visit_Factory $messageFactory,
+        Domain_Collection_Student $studentCollection
     ) {
         
         $this->state = $state;
+        $this->messageFactory = $messageFactory;
         $this->studentCollection = $studentCollection;
-        $this->partIdentificationRequestFactory = $partIdentificationRequestFactory;
-        $this->presentationFactory = $presentationFactory;
-        $this->learnRequestFactory = $learnRequestFactory;
-        $this->earnRequestFactory = $earnRequestFactory;
         
     }
     
@@ -98,12 +73,12 @@ class Domain_Visit {
             $currentPart = $parts[$currentIndex];
             
             // отмечаем, что эту часть урока ученик посетил
-            $partIdentificationRequest = $this->partIdentificationRequestFactory->makeMessage($this->state);
+            $partIdentificationRequest = $this->messageFactory->makePartIdentificationRequest($this->state);
             $currentPart->transferId($partIdentificationRequest);
 
             // ученик обучается
             $student = $this->studentCollection->readUsingId( $this->state->getStudentId() );
-            $learnRequest = $this->learnRequestFactory->makeMessage($currentPart);
+            $learnRequest = $this->messageFactory->makeLearnRequest($currentPart);
             try {
                 $student->learn($learnRequest);
             }
@@ -113,7 +88,7 @@ class Domain_Visit {
 
             // учитель преподаёт
             $teacher = $continueRequest->getTeacher();
-            $earnRequest = $this->earnRequestFactory->makeMessage($currentPart);
+            $earnRequest = $this->messageFactory->makeEarnRequest($currentPart);
             $teacher->earn($earnRequest);
 
             // создаём анонс следующей части урока
@@ -128,7 +103,7 @@ class Domain_Visit {
             $currentPart instanceof Domain_CanBePresented;
             $currentPartPresentation = $currentPart->bePresented();
 
-            $presentation = $this->presentationFactory->makeMessage(
+            $presentation = $this->messageFactory->makeLessonPresentation(
                 $continueRequest->getLessonPresentation(), 
                 $currentPartPresentation, 
                 $nextPartAnnouncement,
@@ -140,7 +115,7 @@ class Domain_Visit {
         } else {
             
             // выпроваживаем ученика с оконченного урока
-            $presentation = $this->presentationFactory->makeMessage(
+            $presentation = $this->messageFactory->makeLessonPresentation(
                 $continueRequest->getLessonPresentation() // не даём презентацию части
             );
             return $presentation;

@@ -7,24 +7,24 @@ implements
     private $state;
     
     /**
-     * Фабрика показов счетов
-     * @var Domain_Message_Factory_AccountPresentation 
+     * Фабрика сообщений
+     * @var Domain_Message_Account_Factory 
      */
-    private $presentationFactory;
+    private $messageFactory;
     
     public function __construct(
         Data_State_Item_Account $state,
-        Domain_Message_Factory_AccountPresentation $presentationFactory
+        Domain_Message_Account_Factory $messageFactory
     ) {
         
         $this->state = $state;
-        $this->presentationFactory = $presentationFactory;
+        $this->messageFactory = $messageFactory;
         
     }
     
     public function bePresented() {
         
-        $presentation = $this->presentationFactory->makeMessage( $this->state->getAmount() );
+        $presentation = $this->messageFactory->makeAccountPresentation( $this->state->getAmount() );
         return $presentation;
         
     }

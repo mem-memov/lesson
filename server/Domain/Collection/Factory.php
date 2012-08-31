@@ -60,7 +60,7 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Account(
                 $this->accessFactory->makeAccount(),
-                $this->messageFactory->makeAccountPresentationFactory()
+                $this->messageFactory->makeAccountMessageFactory()
             );
             
         }
@@ -81,12 +81,9 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Lesson(
                 $this->accessFactory->makeLesson(),
+                $this->messageFactory->makeLessonMessageFactory(),
                 $this->makePartCollection(),
-                $this->makeVisitCollection(),
-                $this->messageFactory->makeContinueRequestFactory(),
-                $this->messageFactory->makeLessonPresentationFactory(),
-                $this->messageFactory->makePartInspectorFactory(),
-                $this->messageFactory->makePartUpdateRequestFactory()
+                $this->makeVisitCollection()
             );
             
         }
@@ -107,8 +104,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Student(
                 $this->accessFactory->makeStudent(),
-                $this->makeAccountCollection(),
-                $this->messageFactory->makePartPaymentRequestFactory()
+                $this->messageFactory->makeStudentMessageFactory(),
+                $this->makeAccountCollection()
             );
             
         }
@@ -129,10 +126,9 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Teacher(
                 $this->accessFactory->makeTeacher(),
+                $this->messageFactory->makeTeacherMessageFactory(),
                 $this->makeAccountCollection(),
-                $this->makeLessonCollection(),
-                $this->messageFactory->makePresentationRequestFactory(),
-                $this->messageFactory->makePartMoneyRequestFactory()
+                $this->makeLessonCollection()
             );
             
         }
@@ -153,12 +149,9 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Part(
                 $this->accessFactory->makePart(),
+                $this->messageFactory->makePartMessageFactory(),
                 $this->makeTextCollection(),
-                $this->makeVisitCollection(),
-                $this->messageFactory->makePartPresentationFactory(),
-                $this->messageFactory->makePartAnnouncementFactory(),
-                $this->messageFactory->makePartJoinCallFactory(),
-                $this->messageFactory->makePartUpdateRequestFactory()
+                $this->makeVisitCollection()
             );
             
         }
@@ -179,7 +172,7 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Text(
                 $this->accessFactory->makeText(),
-                $this->messageFactory->makeTextPresentationFactory()
+                $this->messageFactory->makeTextMessageFactory()
             );
             
         }
@@ -200,11 +193,8 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Visit(
                 $this->accessFactory->makeVisit(),
-                $this->makeStudentCollection(),
-                $this->messageFactory->makePartIdentificationRequestFactory(),
-                $this->messageFactory->makePresentationFactory(),
-                $this->messageFactory->makeLearnRequestFactory(),
-                $this->messageFactory->makeEarnRequestFactory()
+                $this->messageFactory->makeVisitMessageFactory(),
+                $this->makeStudentCollection()
             );
             
         }
@@ -225,11 +215,9 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_User(
                 $this->accessFactory->makeUser(),
+                $this->messageFactory->makeUserMessageFactory(),
                 $this->makeEmailCollection(),
-                $this->collaboratorFactory->makeEmailActivationFactory(),
-                $this->messageFactory->makeEmailInspectorFactory(),
-                $this->messageFactory->makeMailRequestFactory(),
-                $this->messageFactory->makeEmailConfirmationReportFactory()
+                $this->collaboratorFactory->makeEmailActivationFactory()
             );
             
         }
@@ -250,7 +238,7 @@ class Domain_Collection_Factory {
 
             $this->instances[$instance_key] = new Domain_Collection_Email(
                 $this->accessFactory->makeEmail(),
-                $this->serviceFactory->makeMailer()
+                $this->messageFactory->makeEmailMessageFactory()
             );
             
         }

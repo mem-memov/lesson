@@ -20,19 +20,19 @@ class Domain_Collection_Account {
     private $items;
     
     /**
-     * Фабрика показов счетов
-     * @var Domain_Message_Factory_AccountPresentation 
+     * Фабрика сообщений
+     * @var Domain_Message_Account_Factory 
      */
-    private $presentationFactory;
+    private $messageFactory;
 
     
     public function __construct(
         Data_Access_Account $dataAccess,
-        Domain_Message_Factory_AccountPresentation $presentationFactory
+        Domain_Message_Account_Factory $messageFactory
     ) {
         
         $this->dataAccess = $dataAccess;
-        $this->presentationFactory = $presentationFactory;
+        $this->messageFactory = $messageFactory;
         
         $this->states = array();
         $this->items = array();
@@ -107,7 +107,7 @@ class Domain_Collection_Account {
         
         return new Domain_Account(
             $state,
-            $this->presentationFactory
+            $this->messageFactory
         );
         
     }

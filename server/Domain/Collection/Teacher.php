@@ -6,6 +6,24 @@ class Domain_Collection_Teacher {
      * @var Data_Access_Teacher 
      */
     private $dataAccess;
+
+    /**
+     * Состояния
+     * @var array 
+     */
+    private $states;
+    
+    /**
+     * Экземпляры
+     * @var array
+     */
+    private $items;
+    
+    /**
+     * Фабрика сообщений
+     * @var Domain_Message_Teacher_Factory 
+     */
+    private $messageFactory;
     
     /**
      * Коллекция счетов
@@ -19,44 +37,17 @@ class Domain_Collection_Teacher {
      */
     private $lessonCollection;
     
-    /**
-     * Фабрика презентационных запросов
-     * @var Domain_Message_Factory_PresentationRequest
-     */
-    private $presentationRequestFactory;
-    
-    /**
-     * Фабрика запросов на получение денег за показ части урока
-     * @var Domain_Message_Factory_PartMoneyRequest
-     */
-    private $partMoneyRequestFactory;
-    
-    /**
-     * Состояния
-     * @var array 
-     */
-    private $states;
-    
-    /**
-     * Экземпляры
-     * @var array
-     */
-    private $items;
-
-    
     public function __construct(
         Data_Access_Teacher $dataAccess,
+        Domain_Message_Teacher_Factory $messageFactory,
         Domain_Collection_Account $accountCollection,
-        Domain_Collection_Lesson $lessonCollection,
-        Domain_Message_Factory_PresentationRequest $presentationRequestFactory,
-        Domain_Message_Factory_PartMoneyRequest $partMoneyRequestFactory
+        Domain_Collection_Lesson $lessonCollection
     ) {
         
         $this->dataAccess = $dataAccess;
+        $this->messageFactory = $messageFactory;
         $this->accountCollection = $accountCollection;
         $this->lessonCollection = $lessonCollection;
-        $this->presentationRequestFactory = $presentationRequestFactory;
-        $this->partMoneyRequestFactory = $partMoneyRequestFactory;
         
         $this->states = array();
         $this->items = array();
@@ -147,10 +138,9 @@ class Domain_Collection_Teacher {
         
         return new Domain_Teacher(
             $state, 
+            $this->messageFactory,
             $this->accountCollection, 
-            $this->lessonCollection,
-            $this->presentationRequestFactory,
-            $this->partMoneyRequestFactory
+            $this->lessonCollection
         );
         
     }
