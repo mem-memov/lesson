@@ -17,7 +17,7 @@ class Domain_Message_Factory_PartPresentation {
         array $widgetTypes
     ) {
         
-        return new Domain_Message_Item_PartPresentation(
+        return new Domain_Message_Part_Response_PartPresentation(
             $partId,
             $order,
             $price,

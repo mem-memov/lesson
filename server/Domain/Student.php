@@ -28,7 +28,7 @@ class Domain_Student {
     }
     
     
-    public function learn(Domain_Message_Item_LearnRequest $learnRequest) {
+    public function learn(Domain_Message_Student_Request_LearnRequest $learnRequest) {
         
         $part = $learnRequest->getPart();
         $account = $this->accountCollection->readUsingUserId( $this->state->getId() );

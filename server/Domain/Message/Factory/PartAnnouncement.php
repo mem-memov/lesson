@@ -13,7 +13,7 @@ class Domain_Message_Factory_PartAnnouncement {
         $price
     ) {
         
-        return new Domain_Message_Item_PartAnnouncement(
+        return new Domain_Message_Part_Response_PartAnnouncement(
             $partId,
             $order,
             $price

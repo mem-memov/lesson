@@ -91,11 +91,11 @@ implements
 
     /**
      * 
-     * @param Domain_Message_Item_PresentationRequest $presentationRequest
+     * @param Domain_Message_Lesson_Request_PresentationRequest $presentationRequest
      * @return Domain_Message_Item_Presentation
      */
     public function goOn(
-        Domain_Message_Item_PresentationRequest $presentationRequest
+        Domain_Message_Lesson_Request_PresentationRequest $presentationRequest
     ) {
         
         $lessonPresentation = $this->bePresented();

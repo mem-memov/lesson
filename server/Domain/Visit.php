@@ -54,12 +54,12 @@ class Domain_Visit {
     
     /**
      * 
-     * @param Domain_Message_Item_ContinueRequest $continueRequest
+     * @param Domain_Message_Visit_Request_ContinueRequest $continueRequest
      * @return Domain_Message_Item_Presentation
      * @throws Domain_Exception_PartIsMissing
      */
     public function continuePresentation(
-        Domain_Message_Item_ContinueRequest $continueRequest
+        Domain_Message_Visit_Request_ContinueRequest $continueRequest
     ) {
 
         // создаём контейнер для передачи сообщений об ошибках

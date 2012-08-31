@@ -49,11 +49,11 @@ class Domain_Teacher {
     
     /**
      * Показывает ученику очередную часть урока
-     * @param Domain_Message_Item_EducationRequest $educationRequest
+     * @param Domain_Message_Teacher_Request_EducationRequest $educationRequest
      * @return Domain_Message_Item_Presentation
      */
     public function teach(
-        Domain_Message_Item_EducationRequest $educationRequest
+        Domain_Message_Teacher_Request_EducationRequest $educationRequest
     ) {
         
         $lesson = $this->lessonCollection->readUsingId($educationRequest->getLessonId());
@@ -98,9 +98,9 @@ class Domain_Teacher {
     
     /**
      * Приносит деньги за показ части урока
-     * @param Domain_Message_Item_EarnRequest $earnRequest
+     * @param Domain_Message_Teacher_Request_EarnRequest $earnRequest
      */
-    public function earn(Domain_Message_Item_EarnRequest $earnRequest) {
+    public function earn(Domain_Message_Teacher_Request_EarnRequest $earnRequest) {
         
         $part = $earnRequest->getPart();
         

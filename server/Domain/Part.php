@@ -76,10 +76,10 @@ implements
     
     /**
      * Сообщает ID части урокаs
-     * @param Domain_Message_Item_PartIdentificationRequest $partIdentificationRequest
+     * @param Domain_Message_Part_Request_PartIdentificationRequest $partIdentificationRequest
      */
     public function transferId(
-        Domain_Message_Item_PartIdentificationRequest $partIdentificationRequest
+        Domain_Message_Part_Request_PartIdentificationRequest $partIdentificationRequest
     ) {
         
         $partIdentificationRequest->setPartId( $this->state->getId() );
@@ -129,7 +129,7 @@ implements
     }
     
     public function beInspected(
-        Domain_Message_Item_PartInspector $partInspector
+        Domain_Message_Part_Request_PartInspector $partInspector
     ) {
         
         $partInspector->addPartId( $this->state->getId() );
@@ -138,7 +138,7 @@ implements
     }
     
     public function bePaidFor(
-        Domain_Message_Item_PartPaymentRequest $partPaymentRequest
+        Domain_Message_Part_Request_PartPaymentRequest $partPaymentRequest
     ) {
         
         $partPaymentRequest->takePrice( $this->state->getPrice() );
@@ -146,7 +146,7 @@ implements
     }
     
     public function bringMoney(
-        Domain_Message_Item_PartMoneyRequest $partMoneyRequest
+        Domain_Message_Part_Request_PartMoneyRequest $partMoneyRequest
     ) {
         
         $partMoneyRequest->giveMoney( $this->state->getPrice() );
@@ -160,7 +160,7 @@ implements
     }
     
     public function beUpdated(
-        Domain_Message_Item_PartUpdateRequest $updateRequest
+        Domain_Message_Part_Request_PartUpdateRequest $updateRequest
     ) {
         
         if ( $updateRequest->mustSetPrice() ) {

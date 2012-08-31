@@ -50,7 +50,7 @@ implements
     }
     
     public function beInspected(
-        Domain_Message_Item_EmailInspector $emailInspector
+        Domain_Message_Email_Request_EmailInspector $emailInspector
     ) {
         
         $emailInspector->addEmail( $this->state->getEmail() );
@@ -58,7 +58,7 @@ implements
     }
     
     public function exceptMessage( 
-        Domain_Message_Item_MailRequest $mailRequest
+        Domain_Message_Email_Request_MailRequest $mailRequest
     ) {
         
         $this->mailer->send(

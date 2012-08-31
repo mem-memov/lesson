@@ -81,7 +81,7 @@ class Domain_School {
      * 
      * @param integer $studentId
      * @param integer $amount
-     * @return Domain_Message_Item_AccountPresentation
+     * @return Domain_Message_Account_Response_AccountPresentation
      */
     public function receiveTuition($studentId, $amount = null) {
 

@@ -32,7 +32,7 @@ implements
     }
     
     public function joinPart(
-        Domain_Message_Item_PartJoinCall $joinCall
+        Domain_Message_Text_Request_PartJoinCall $joinCall
     ) {
         
         $joinCall->addWidgetId( $this->state->getId() );

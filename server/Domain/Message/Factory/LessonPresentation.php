@@ -8,7 +8,7 @@ class Domain_Message_Factory_LessonPresentation {
      * @param string $description описание урока
      * @param integer[] $partIds ID частей урока
      * @param integer стоимость всего урока
-     * @return Domain_Message_Item_LessonPresentation
+     * @return Domain_Message_Lesson_Response_LessonPresentation
      */
     public function makeMessage(
         $lessonId,
@@ -18,7 +18,7 @@ class Domain_Message_Factory_LessonPresentation {
         $totalPrice
     ) {
         
-        return new Domain_Message_Item_LessonPresentation(
+        return new Domain_Message_Lesson_Response_LessonPresentation(
             $lessonId,
             $title,
             $description,

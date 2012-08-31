@@ -64,7 +64,7 @@ class Domain_User {
     }
     
     public function receiveMail(
-        Domain_Message_Item_MailReceptionRequest $mailReceptionRequest
+        Domain_Message_User_Request_MailReceptionRequest $mailReceptionRequest
     ) {
         
         $emails = $this->emailCollection->readUsingUserId( $this->state->getId() );
@@ -88,7 +88,7 @@ class Domain_User {
     }
     
     public function confirmEmail( 
-        Domain_Message_Item_EmailConfirmationRequest $emailConfirmationRequest
+        Domain_Message_User_Request_EmailConfirmationRequest $emailConfirmationRequest
     ) {
         
         $email = $this->emailCollection->readUsingEmail( $emailConfirmationRequest->getEmail() );

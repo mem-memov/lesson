@@ -4,17 +4,17 @@ class Domain_Message_Factory_ContinueRequest {
     /**
      * Создаёт сообщение
      * @param Domain_Collection_Part $partCollection коллекция частей урока
-     * @param Domain_Message_Item_LessonPresentation $lessonPresentation показ урока
+     * @param Domain_Message_Lesson_Response_LessonPresentation $lessonPresentation показ урока
      * @param Domain_Teacher $teacher учитель
-     * @return Domain_Message_Item_ContinueRequest
+     * @return Domain_Message_Visit_Request_ContinueRequest
      */
     public function makeMessage(
         Domain_Collection_Part $partCollection,
-        Domain_Message_Item_LessonPresentation $lessonPresentation,
+        Domain_Message_Lesson_Response_LessonPresentation $lessonPresentation,
         Domain_Teacher $teacher
     ) {
         
-        return new Domain_Message_Item_ContinueRequest(
+        return new Domain_Message_Visit_Request_ContinueRequest(
             $partCollection,
             $lessonPresentation,
             $teacher
