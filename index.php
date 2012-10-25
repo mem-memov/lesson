@@ -1,4 +1,4 @@
-<?php require('server/main.php'); ?>   uuuu
+<?php require('server/main.php'); ?>
 
     
     
