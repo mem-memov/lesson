@@ -1,0 +1,39 @@
+/* http://www.secondpicture.com/tutorials/web_design/css_ul_li_horizontal_css_menu.html */
+
+.Start .top {
+
+}
+
+
+.Start .top ul.menu { 
+    list-style-type: none;
+    background-image: url(navi_bg.png);
+    height: 80px;
+    width: 100%;
+    margin: auto; 
+}
+
+.Start .top ul.menu li {
+    float: left;
+}
+
+.Start .top ul.menu li a {
+    background-image: url(navi_bg_divider.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    padding-right: 32px;
+    padding-left: 32px;
+    display: block;
+    line-height: 80px;
+    text-decoration: none;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 21px;
+    color: #999999;
+    outline: 0;
+}
+
+.Start .top ul.menu li a:hover,
+.Start .top ul.menu li a:active,
+.Start .top ul.menu li a:focus {
+    color: #FFFFFF;
+}

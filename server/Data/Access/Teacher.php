@@ -1,0 +1,194 @@
+<?php
+/**
+ * Доступ к данным учителей
+ */
+class Data_Access_Teacher {
+    
+    /**
+     * Фабрика состояний
+     * @var Data_State_Factory_Interface
+     */
+    protected $stateFactory;
+    
+    /**
+     * Хранилище
+     * @var Service_Storage_Interface
+     */
+    protected $storage;
+
+    public function __construct(
+        Data_State_Factory_Interface $stateFactory,
+        Service_Storage_Interface $storage
+    ) {
+        
+        $this->stateFactory = $stateFactory;
+        $this->storage = $storage;
+        
+    }
+    
+    /**
+     * Создаёт состояние пользователя
+     * @return Data_State_Item_Lesson
+     */
+    public function create() {
+        
+        return $this->stateFactory->makeState();
+
+    }
+    
+    /**
+     * Находит состояние пользователя по ID
+     * @param integer $id
+     * @return Data_State_Item_User
+     * @throws Data_Access_Exception
+     */
+    public function readUsingId($id) {
+        
+        $row = $this->storage->fetchRow('
+            SELECT
+                `id`,
+                `first_name`,
+                `last_name`
+            FROM
+                `user`
+            WHERE
+                `id` = '.$id.'
+            ;
+        ');
+        
+        if (empty($row)) {
+            throw new Data_Access_Exception('Пользователь с идентификатором - '.$id.' не существует. Чтение невозможно.');
+        }
+        
+        $state = $this->rowToState($row);
+        
+        return $state;
+        
+    }
+    
+    /**
+     * Находит состояние учителя по ID урока
+     * @param integer $lessonId
+     * @return Data_State_Item_User
+     * @throws Data_Access_Exception
+     */
+    public function readUsingLessonId($lessonId) {
+        
+        $teacherId = $this->storage->fetchValue('
+            SELECT
+                `teacher_id`
+            FROM
+                `teacher_lesson`
+            WHERE
+                `lesson_id` = '.$lessonId.'
+            LIMIT
+                1
+            ;
+        ');
+        
+        if (is_null($teacherId)) {
+            throw new Data_Access_Exception('Урок без учителя - '.$lessonId);
+        }
+        
+        return $this->readUsingId($teacherId);
+        
+    }
+    
+    /**
+     * Сохраняет состояние пользователя
+     * @param Data_State_Item_User $state
+     */
+    public function update(Data_State_Item_User $state) {
+        
+        // Находим ID для пользователя
+        $this->secureId($state);
+        
+        $this->storage->query('
+            UPDATE
+                `user`
+            SET
+                `first_name` = "'.$state->getFirstName().'",
+                `last_name` = "'.$state->getLastName().'"
+            WHERE
+                `id` = '.$state->getId().'
+            ;
+        ');
+        
+    }
+    
+    /**
+     * Удаляет состояние пользователя
+     * @param Data_State_Item_User $state
+     */
+    public function delete(Data_State_Item_User $state) {
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+        
+        if($state->hasId()) {
+        
+            $this->storage->query('
+                DELETE FROM
+                    `user`
+                WHERE
+                    `id` = '.$state->getId().'
+                LIMIT
+                    1
+                ;
+            ');
+        
+        }
+        
+    }
+    
+    private function rowsToStates(array $rows) {
+        
+        $states = array();
+
+        foreach ($rows as $row) {
+            $states[] = $this->rowToState($row);
+        }
+        
+        return $states;
+        
+    }
+    
+    private function rowToState(array $row) {
+        
+        $state = $this->create();
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+        $state->setId($row['id']);
+        
+        $state instanceof Data_State_Item_Teacher;
+        $state->setFirstName($row['first_name']);
+        $state->setLastName($row['last_name']);
+        
+        return $state;
+        
+    }
+    
+    /**
+     * Снабжает состояние идентификатором, если его пока нет
+     * @param Data_State_Item_Part $state
+     */
+    private function secureId(Data_State_Item_Lesson &$state) {
+        
+        $state instanceof Data_State_Item_TrackableInterface;
+
+        if(!$state->hasId()) {
+
+            $this->storage->query('
+                INSERT INTO
+                    `user`
+                SET
+                    `id` = DEFAULT
+                ;
+            ');
+            $id = $this->storage->lastId();
+            $state->setId($id);
+            
+        }
+        
+    }
+
+}

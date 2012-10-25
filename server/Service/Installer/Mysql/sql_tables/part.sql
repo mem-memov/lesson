@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `part` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `lesson_id` INT NOT NULL,
+    `price` SMALLINT NOT NULL,
+    `order` SMALLINT NOT NULL
+);
